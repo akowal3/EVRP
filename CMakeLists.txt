@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 find_library(RK_LIB libroutingkit.so PATHS RoutingKit/lib)
 include_directories(RoutingKit/include)
 
-add_executable(EVRP main.cpp)
+add_executable(EVRP src/main.cpp)
 
 # Link external libraries to the executable
 target_link_libraries(EVRP ${RK_LIB})

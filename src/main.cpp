@@ -23,6 +23,7 @@ int main() {
     // Besides the CH itself we need a query object.
     ContractionHierarchyQuery ch_query(ch);
 
+    std::cout << "Provide latitude and longitude of start and end points" << std::endl;
     // Use the query object to answer queries from stdin to stdout
     float from_latitude, from_longitude, to_latitude, to_longitude;
     while (std::cin >> from_latitude >> from_longitude >> to_latitude >>

@@ -57,7 +57,6 @@ void graph_build() {
 
     std::vector<Edge> edges = {Edge(0, 1, 10), Edge(0, 2, 7), Edge(1, 3, 5), Edge(1, 4, 12), Edge(2, 3, 11), Edge(3, 4, 2)};
     Graph g = Graph(node_count, edges);
-    Car c = Car();
 
     for (auto h : g.head) {
         std::cout << h << ", ";
@@ -75,6 +74,18 @@ void graph_build() {
     //        std::cout << w(c) << ", ";
     //    }
 
+    unsigned source_node = 0;
+    unsigned target_node = 4;
+
+    std::cout << "Give source and target nodes" << std::endl;
+    std::cin >> source_node >> target_node;
+
+    unsigned t;
+    std::cout << "Give car var" << std::endl;
+    std::cin >> t;
+
+    Car c = Car(t);
+
     for (int i = 0; i < g.size(); ++i) {
         travel_time[i] = g.eval(i, c);
         std::cout << travel_time[i] << ", ";
@@ -85,12 +96,6 @@ void graph_build() {
     auto ch = ContractionHierarchy::build(node_count, g.tail, g.head, travel_time);
 
     ContractionHierarchyQuery query(ch);
-
-    unsigned source_node = 0;
-    unsigned target_node = 4;
-
-    std::cout << "Give source and target nodes" << std::endl;
-    std::cin >> source_node >> target_node;
 
 
     query.reset().add_source(source_node).add_target(target_node).run();

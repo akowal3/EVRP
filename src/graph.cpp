@@ -21,6 +21,7 @@ Graph::Graph(unsigned int node_count, const std::vector<Edge> &edges) {
 Graph::~Graph() {
     delete this->weights;
 }
+
 unsigned Graph::eval(int i, const Car &c) {
     return this->weights->at(i)(c);
 }

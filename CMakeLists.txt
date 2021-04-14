@@ -12,7 +12,7 @@ find_library(RK_LIB libroutingkit.so PATHS RoutingKit/lib)
 include_directories(RoutingKit/include)
 include_directories(include)
 
-add_executable(EVRP src/main.cpp src/graph.cpp src/edge.cpp src/car.cpp include/car.h)
+add_executable(EVRP src/main.cpp src/graph.cpp src/edge.cpp src/car.cpp)
 
 # Link external libraries to the executable
 target_link_libraries(EVRP PUBLIC ${RK_LIB})

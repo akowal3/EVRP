@@ -21,7 +21,7 @@ Time Edge::get_total_time(const Car &c) const {
     if (get_energy(c) < 7)//c.capacity)
         return Time(RoutingKit::inf_weight);
 
-    return get_travel_time() + get_charge_time();
+    return get_travel_time() + get_charge_time() + c.t;
 }
 
 Energy Edge::get_energy(const Car &c) const {

@@ -14,9 +14,9 @@
 class Graph {
 public:
     Graph(unsigned node_count, const std::vector<Edge> &edges);
+    ~Graph();
     std::vector<unsigned> head;
     std::vector<unsigned> tail;
-    ~Graph();
     unsigned eval(int i, const Car &c);
     unsigned size();
 

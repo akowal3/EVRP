@@ -8,7 +8,10 @@
 
 class Car {
 public:
-    Car() = default;
+    explicit Car(unsigned _t);
+    unsigned t;
+
+private:
 };
 
 

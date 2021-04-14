@@ -15,11 +15,11 @@ typedef double Energy;
 class Edge {
 private:
     //    std::unordered_map<unsigned, Time> roads;// speed limit: length
-    unsigned from{};
-    unsigned to{};
-    unsigned distance{};
-    double end_charge{};
-    unsigned max_speed{};
+    unsigned from;
+    unsigned to;
+    unsigned distance;
+    double end_charge;
+    unsigned max_speed;
     Time get_travel_time() const;
     Time get_charge_time() const;
     Energy get_energy(const Car &c) const;

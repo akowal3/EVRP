@@ -17,15 +17,15 @@ public:
     ~Graph();
     std::vector<unsigned> head;
     std::vector<unsigned> tail;
-    unsigned eval(int i, const Car &c);
-    unsigned size();
+    unsigned eval(int i, const Car &c) const;
+    unsigned size() const;
 
 private:
     std::vector<Edge> edges;
     std::vector<std::function<Time(const Car &)>> *weights;
 
     static constexpr int CHARGER_STEPS = 4;
-    static constexpr int SPEED_STEPS = 4;
+    static std::vector<double> SPEED_STEPS;
 };
 
 

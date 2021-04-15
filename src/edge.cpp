@@ -5,32 +5,26 @@
 #include "edge.h"
 #include "routingkit/constants.h"
 
-Edge::Edge(unsigned _from, unsigned _to, unsigned _distance) : from(_from), to(_to), distance(_distance) {}
+Edge::Edge(unsigned _from, unsigned _to, unsigned _distance, unsigned _max_speed) : from(_from), to(_to), distance(_distance), max_speed(_max_speed) {}
 
-Time Edge::get_travel_time() const {
-    return distance;
-}
-Time Edge::get_charge_time() const {
-    return 0;
-}
-Time Edge::get_total_time() const {
-    return get_travel_time() + get_charge_time();
+Time Edge::get_travel_time(double speed_modifier) const {
+    return Time(distance / (max_speed * speed_modifier));
 }
 
-Time Edge::get_total_time(const Car &c) const {
-    if (get_energy(c) < 7)//c.capacity)
-        return Time(RoutingKit::inf_weight);
+Time Edge::get_total_time(const Car &c, double speed_modifier) const {
 
-    return get_travel_time() + get_charge_time() + c.t;
+    if (!c.can_traverse(*this)) return Time(RoutingKit::inf_weight);
+
+    return get_travel_time(speed_modifier) + c.get_charge_time(*this);
 }
 
-Energy Edge::get_energy(const Car &c) const {
-    return 8;
-}
 unsigned Edge::tail() const {
     return this->from;
 }
 
 unsigned Edge::head() const {
     return this->to;
+}
+unsigned Edge::get_distance() const {
+    return this->distance;
 }

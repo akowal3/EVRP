@@ -5,14 +5,27 @@
 #ifndef EVRP_CAR_H
 #define EVRP_CAR_H
 
+class Edge;
+#include <edge.h>
 
 class Car {
+
 public:
-    explicit Car(unsigned _t);
-    unsigned t;// leave for now not to break main executable
+    Car(double batteryCapacity, double energyConsumption, double chargingPower, double socMin, double socMax, double range);
+    Car();
+    bool can_traverse(const Edge &e) const;
+    Time get_charge_time(const Edge &e) const;
 
 private:
+    double battery_capacity;  // in Wh
+    double energy_consumption;// in Wh/km
+    double charging_power;    // in kW
+    double soc_min;           // in percentage
+    double soc_max;           //in percentage
+    double range;             // in km
+    double consumed_power(const Edge &e) const;
+    double power_left(const Edge &e) const;
 };
 
 
-#endif//EVRP_CAR_H
+#endif// EVRP_CAR_H

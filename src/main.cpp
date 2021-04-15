@@ -101,13 +101,17 @@ void graph_build() {
     query.reset().add_source(source_node).add_target(target_node).run();
     unsigned distance = query.get_distance();
 
-    std::cout << "Distance from " << source_node << " to " << target_node << " = " << distance << std::endl;
+    if (distance != inf_weight) {
+        std::cout << "Distance from " << source_node << " to " << target_node << " = " << distance << std::endl;
 
-    std::vector<unsigned> nodes = query.get_node_path();
+        std::vector<unsigned> nodes = query.get_node_path();
 
-    std::cout << "Path: ";
-    for (auto node : nodes) {
-        std::cout << node << ", ";
+        std::cout << "Path: ";
+        for (auto node : nodes) {
+            std::cout << node << ", ";
+        }
+    } else {
+        std::cout << "No path from " << source_node << " to " << target_node << std::endl;
     }
 }
 

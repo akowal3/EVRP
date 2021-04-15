@@ -7,21 +7,26 @@ find_package(Threads REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(OpenMP REQUIRED)
 
-add_executable(EVRP src/main.cpp src/graph.cpp src/edge.cpp src/car.cpp)
+include_directories(include)
+include_directories(RoutingKit/include)
 
-target_include_directories(EVRP PRIVATE include)
-# Include RoutingKit library
-target_include_directories(EVRP PRIVATE RoutingKit/include)
+# Internal classes
+add_library(CAR SHARED src/car.cpp)
+add_library(GRAPH SHARED src/graph.cpp)
+add_library(EDGE SHARED src/edge.cpp)
 
-# Link external libraries to the executable
+# Main project executable
+add_executable(EVRP src/main.cpp)
+target_link_libraries(EVRP PRIVATE CAR GRAPH EDGE)
+
+# Link external libraries to the main executable
 find_library(RK_LIB libroutingkit.so PATHS RoutingKit/lib)
-target_link_libraries(EVRP PUBLIC ${RK_LIB})
-target_link_libraries(EVRP PUBLIC OpenMP::OpenMP_CXX)
-target_link_libraries(EVRP PUBLIC Threads::Threads)
-target_link_libraries(EVRP PUBLIC ZLIB::ZLIB)
+target_link_libraries(EVRP PUBLIC ${RK_LIB} OpenMP::OpenMP_CXX Threads::Threads ZLIB::ZLIB)
 
 # Catch2 unit tests
-add_executable(TESTS src/car.cpp testing/car_test.cpp testing/test.cpp)
-target_include_directories(TESTS PRIVATE testing/include)
-target_include_directories(TESTS PRIVATE include)
+add_library(Catch INTERFACE)
+target_include_directories(Catch INTERFACE testing/include)
+
+add_executable(TESTS testing/car_test.cpp testing/test.cpp)
+target_link_libraries(TESTS Catch CAR)
 

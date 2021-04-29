@@ -54,8 +54,9 @@ void graph_build() {
     //    auto head = std::vector<unsigned>{1, 2, 3, 4, 3, 4};
     //    auto distance = std::vector<unsigned>{10, 7, 5, 12, 11, 2};
     unsigned node_count = 5;
-
-    std::vector<Edge> edges = {Edge(0, 1, 10), Edge(0, 2, 7), Edge(1, 3, 5), Edge(1, 4, 12), Edge(2, 3, 11), Edge(3, 4, 2)};
+    std::vector<Edge> edges = {Edge(0, 1, 100, 80), Edge(0, 2, 70, 120),
+                               Edge(1, 3, 50, 100), Edge(1, 4, 120, 100),
+                               Edge(2, 3, 110, 60), Edge(3, 4, 20, 120)};
     Graph g = Graph(node_count, edges);
 
     for (auto h : g.head) {
@@ -80,11 +81,7 @@ void graph_build() {
     std::cout << "Give source and target nodes" << std::endl;
     std::cin >> source_node >> target_node;
 
-    unsigned t;
-    std::cout << "Give car var" << std::endl;
-    std::cin >> t;
-
-    Car c = Car(t);
+    Car c = Car();
 
     for (int i = 0; i < g.size(); ++i) {
         travel_time[i] = g.eval(i, c);

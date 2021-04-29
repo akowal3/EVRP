@@ -15,6 +15,8 @@ include_directories(RoutingKit/include)
 #add_library(EDGE SHARED src/edge.cpp)
 #add_library(GRAPH SHARED src/graph.cpp)
 
+
+
 # Main project executable
 add_executable(EVRP src/main.cpp src/car.cpp src/edge.cpp src/graph.cpp)
 #target_link_libraries(EVRP PRIVATE CAR GRAPH EDGE)
@@ -27,6 +29,6 @@ target_link_libraries(EVRP PUBLIC ${RK_LIB} OpenMP::OpenMP_CXX Threads::Threads 
 add_library(Catch2 INTERFACE)
 target_include_directories(Catch2 INTERFACE testing/include)
 
-add_executable(TESTS testing/car_test.cpp testing/test.cpp src/car.cpp src/edge.cpp)
-target_link_libraries(TESTS Catch2)
+add_executable(TESTS testing/car_test.cpp testing/test.cpp src/car.cpp src/edge.cpp src/graph.cpp testing/edge_test.cpp testing/graph_test.cpp)
+target_link_libraries(TESTS Catch2 ${RK_LIB})
 

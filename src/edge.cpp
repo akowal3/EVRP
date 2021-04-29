@@ -8,7 +8,7 @@
 Edge::Edge(unsigned _from, unsigned _to, unsigned _distance, unsigned _max_speed) : from(_from), to(_to), distance(_distance), max_speed(_max_speed) {}
 
 Time Edge::get_travel_time(double speed_modifier) const {
-    return Time(distance / (max_speed * speed_modifier));
+    return Time(3600.0 * distance / (max_speed * speed_modifier));
 }
 
 Time Edge::get_total_time(const Car &c, double speed_modifier) const {

@@ -20,12 +20,13 @@ public:
     unsigned eval(int i, const Car &c) const;
     unsigned size() const;
 
+    static std::vector<double> SPEED_STEPS;
+
 private:
     std::vector<Edge> edges;
     std::vector<std::function<Time(const Car &)>> *weights;
 
     static constexpr int CHARGER_STEPS = 4;
-    static std::vector<double> SPEED_STEPS;
 };
 
 

@@ -25,7 +25,9 @@ Graph::~Graph() {
 }
 
 unsigned Graph::eval(int i, const Car &c) const {
-    return this->weights->at(i)(c);
+    auto time_calculator = this->weights->at(i);
+    unsigned total_time = time_calculator(c);
+    return total_time;
 }
 unsigned Graph::size() const {
     assert(this->tail.size() == this->head.size());

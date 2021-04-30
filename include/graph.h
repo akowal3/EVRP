@@ -13,7 +13,7 @@
 
 class Graph {
 public:
-    Graph(unsigned node_count, const std::vector<Edge> &edges);
+    Graph(unsigned node_count, const std::vector<BuildingEdge> &edges);
     ~Graph();
     std::vector<unsigned> head;
     std::vector<unsigned> tail;
@@ -21,12 +21,17 @@ public:
     unsigned size() const;
 
     static std::vector<double> SPEED_STEPS;
+    static std::vector<double> CHARGER_STEPS;
+
+    // For testing purposes
+    const std::vector<Node> *lookup_nodes;
+    const std::vector<Edge> *lookup_edges;
+    const std::vector<std::function<Time(const Car &)>> *lookup_weights;
 
 private:
+    std::vector<Node> nodes;
     std::vector<Edge> edges;
-    std::vector<std::function<Time(const Car &)>> *weights;
-
-    static constexpr int CHARGER_STEPS = 4;
+    std::vector<std::function<Time(const Car &)>> weights;
 };
 
 

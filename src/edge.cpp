@@ -5,26 +5,33 @@
 #include "edge.h"
 #include "routingkit/constants.h"
 
-Edge::Edge(unsigned _from, unsigned _to, unsigned _distance, unsigned _max_speed) : from(_from), to(_to), distance(_distance), max_speed(_max_speed) {}
+Edge::Edge(const Node *from, const Node *to, unsigned distance, double speed) : start(from), end(to), distance(distance), speed(speed) {}
 
-Time Edge::get_travel_time(double speed_modifier) const {
-    return Time(3600.0 * distance / (max_speed * speed_modifier));
-}
-
-Time Edge::get_total_time(const Car &c, double speed_modifier) const {
-
-    if (!c.can_traverse(*this)) return Time(RoutingKit::inf_weight);
-
-    return get_travel_time(speed_modifier) + c.get_charge_time(*this);
+Time Edge::get_travel_time() const {
+    double res = 3600.0 * ((double) distance / (double) speed);
+    return Time(res);
 }
 
 unsigned Edge::tail() const {
-    return this->from;
+    return this->start->id();
 }
 
 unsigned Edge::head() const {
-    return this->to;
+    return this->end->id();
 }
 unsigned Edge::get_distance() const {
     return this->distance;
+}
+double Edge::start_soc() const {
+    return this->start->soc();
+}
+double Edge::end_soc() const {
+    return this->end->soc();
+}
+
+BuildingEdge::BuildingEdge(unsigned from, unsigned to, unsigned distance, unsigned max_speed) : from(from), to(to), distance(distance), max_speed(max_speed) {}
+
+Time BuildingEdge::get_travel_time(double speed_modifier) const {
+    double res = 3600.0 * ((double) distance / (speed_modifier * (double) max_speed));
+    return Time(res);
 }

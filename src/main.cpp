@@ -23,10 +23,10 @@ using namespace RoutingKit;
 //    auto tail = std::vector<unsigned>{0, 0, 1, 1, 2, 3};
 //    auto head = std::vector<unsigned>{1, 2, 3, 4, 3, 4};
 //    auto distance = std::vector<unsigned>{10, 7, 5, 12, 11, 2};
-//    unsigned node_count = 5;
+//    unsigned node_size = 5;
 //
 //    // Build the shortest path index
-//    auto ch = ContractionHierarchy::build(node_count, tail, head, weight);
+//    auto ch = ContractionHierarchy::build(node_size, tail, head, weight);
 //
 //    ContractionHierarchyQuery query(ch);
 //
@@ -54,11 +54,11 @@ using namespace RoutingKit;
 //    //    auto tail = std::vector<unsigned>{0, 0, 1, 1, 2, 3};
 //    //    auto head = std::vector<unsigned>{1, 2, 3, 4, 3, 4};
 //    //    auto distance = std::vector<unsigned>{10, 7, 5, 12, 11, 2};
-//    unsigned node_count = 5;
+//    unsigned node_size = 5;
 //    std::vector<Edge> edges = {Edge(0, 1, 100, 80), Edge(0, 2, 70, 120),
 //                               Edge(1, 3, 50, 100), Edge(1, 4, 120, 100),
 //                               Edge(2, 3, 110, 60), Edge(3, 4, 20, 120)};
-//    Graph g = Graph(node_count, edges);
+//    Graph g = Graph(node_size, edges);
 //
 //    for (auto h : g.head) {
 //        std::cout << h << ", ";
@@ -91,7 +91,7 @@ using namespace RoutingKit;
 //    std::cout << std::endl;
 //
 //    // Build the shortest path index
-//    auto ch = ContractionHierarchy::build(node_count, g.tail, g.head, travel_time);
+//    auto ch = ContractionHierarchy::build(node_size, g.tail, g.head, travel_time);
 //
 //    ContractionHierarchyQuery query(ch);
 //

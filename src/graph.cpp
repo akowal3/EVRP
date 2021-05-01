@@ -7,7 +7,7 @@
 #include <cassert>
 
 std::vector<double> Graph::SPEED_STEPS = std::vector<double>{ 0.7, 0.8, 0.9, 1.0, 1.1 };
-std::vector<double> Graph::CHARGER_STEPS = std::vector<double>{ 0.8, 0.9 };
+std::vector<double> Graph::CHARGER_STEPS = std::vector<double>{ 0.7, 0.8, 0.9, 1. };
 
 Graph::Graph(unsigned int charger_count, const std::vector<BuildingEdge> &edges) {
 
@@ -55,4 +55,16 @@ unsigned Graph::eval(int i, const Car &c) const {
     auto time_calculator = this->weights.at(i);
     unsigned total_time = time_calculator(c);
     return total_time;
+}
+
+unsigned Graph::node_size() const {
+    return this->nodes.size();
+}
+
+unsigned Graph::edge_size() const {
+    return this->edges.size();
+}
+
+unsigned Graph::originalID(unsigned nodeID) {
+    return nodeID / Graph::CHARGER_STEPS.size();
 }

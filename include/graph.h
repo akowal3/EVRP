@@ -27,6 +27,10 @@ public:
     const std::vector<Edge> *lookup_edges;
     const std::vector<std::function<Time(const Car &)>> *lookup_weights;
 
+    unsigned int edge_size() const;
+    unsigned int node_size() const;
+    static unsigned int originalID(unsigned int nodeID);
+
 private:
     std::vector<Node> nodes;
     std::vector<Edge> edges;

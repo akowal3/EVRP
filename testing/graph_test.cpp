@@ -10,6 +10,7 @@
 #include <catch.hpp>
 #include <fstream>//required for parse_file()
 #include <graph_cases.hpp>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <unordered_set>
@@ -52,11 +53,11 @@ TEST_CASE("Build graph", "[GRAPH]") {
                 REQUIRE(g.lookup_weights->size() == graph_edge_count);
             }
 
-            THEN("There are Graph::CHARGER_STEPS.size() * node_count nodes") {
+            THEN("There are Graph::CHARGER_STEPS.size() * node_size nodes") {
                 for (int i = 0; i < g.lookup_nodes->size(); i++) {
                     double expected_soc = Graph::CHARGER_STEPS[i % Graph::CHARGER_STEPS.size()];
                     std::ostringstream desc;
-                    desc << "Node " << i / Graph::CHARGER_STEPS.size() << ", SoC: " << 100 * expected_soc << "%";
+                    desc << "Node " << Graph::originalID(i) << ", SoC: " << 100 * expected_soc << "%";
                     WHEN(desc.str()) {
                         THEN("SoC matches the SoC levels in Graph::CHARGER_STEPS") {
                             REQUIRE(g.lookup_nodes->at(i).soc() == expected_soc);
@@ -84,6 +85,41 @@ TEST_CASE("Build graph", "[GRAPH]") {
             }
         }
     }
+}
+
+TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
+    // get complicated graph
+    unsigned node_count = TEST_node_count[5];
+    std::vector<BuildingEdge> e = TEST_edges[5];
+    Graph g = Graph(node_count, e);
+
+    std::vector<unsigned> travel_time(g.edge_size());
+
+    unsigned source_node = 3;
+    unsigned target_node = 17;
+
+    Car c = Car();
+
+    for (int i = 0; i < g.edge_size(); ++i) {
+        travel_time[i] = g.eval(i, c);
+    }
+
+    // Build the shortest path index
+    auto ch = ContractionHierarchy::build(g.node_size(), g.tail, g.head, travel_time);
+
+    ContractionHierarchyQuery query(ch);
+
+
+    query.reset().add_source(source_node).add_target(target_node).run();
+    unsigned distance = query.get_distance();
+
+    std::cout << std::setprecision(3) << "Shortest time to go from " << source_node << " to " << target_node << " = " << distance / 3600.0 << " hours" << std::endl;
+
+    std::cout << "Path goes through: ";
+    for (auto &n : query.get_node_path()) {
+        std::cout << Graph::originalID(n) << "(" << g.lookup_nodes->at(n).soc() << "), ";
+    }
+    std::cout << std::endl;
 }
 
 //TEST_CASE("Different car", "[GRAPH]") {
@@ -118,11 +154,11 @@ TEST_CASE("Build graph", "[GRAPH]") {
 //
 //TEST_CASE("Full run", "[CRP,GRAPH,EDGE,CAR]") {
 //    GIVEN("Unidirected graph") {
-//        unsigned node_count = 5 * Graph::CHARGER_STEPS.size();
+//        unsigned node_size = 5 * Graph::CHARGER_STEPS.size();
 //        std::vector<Edge> edges = {Edge(0, 1, 100, 80), Edge(0, 2, 70, 120),
 //                                   Edge(1, 3, 50, 100), Edge(1, 4, 120, 100),
 //                                   Edge(2, 3, 110, 60), Edge(3, 4, 20, 120)};
-//        Graph g = Graph(node_count, edges);
+//        Graph g = Graph(node_size, edges);
 //
 //        std::vector<unsigned> travel_time((g.size()));
 //
@@ -137,7 +173,7 @@ TEST_CASE("Build graph", "[GRAPH]") {
 //
 //
 //        // Build the shortest path index
-//        auto ch = ContractionHierarchy::build(node_count, g.tail, g.head, travel_time);
+//        auto ch = ContractionHierarchy::build(node_size, g.tail, g.head, travel_time);
 //
 //        ContractionHierarchyQuery query(ch);
 //
@@ -150,14 +186,14 @@ TEST_CASE("Build graph", "[GRAPH]") {
 //    }
 //
 //    GIVEN("Bidirectional graph") {
-//        unsigned node_count = 5;
+//        unsigned node_size = 5;
 //        std::vector<Edge> edges = {Edge(0, 1, 100, 80), Edge(0, 2, 70, 120),
 //                                   Edge(1, 3, 50, 100), Edge(1, 4, 120, 100),
 //                                   Edge(2, 3, 110, 60), Edge(3, 4, 20, 120),
 //                                   Edge(1, 0, 100, 80), Edge(2, 0, 70, 120),
 //                                   Edge(3, 1, 50, 100), Edge(4, 1, 120, 100),
 //                                   Edge(3, 2, 110, 60), Edge(4, 3, 20, 120)};
-//        Graph g = Graph(node_count, edges);
+//        Graph g = Graph(node_size, edges);
 //
 //        std::vector<unsigned> travel_time((g.size()));
 //
@@ -172,7 +208,7 @@ TEST_CASE("Build graph", "[GRAPH]") {
 //
 //
 //        // Build the shortest path index
-//        auto ch = ContractionHierarchy::build(node_count, g.tail, g.head, travel_time);
+//        auto ch = ContractionHierarchy::build(node_size, g.tail, g.head, travel_time);
 //
 //        ContractionHierarchyQuery query(ch);
 //

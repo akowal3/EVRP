@@ -5,11 +5,10 @@
 #ifndef EVRP_NODE_H
 #define EVRP_NODE_H
 
-
 class Node {
 private:
     unsigned ID;
-    double SoC;// charge car only up to soc_level % of cars battery capacity
+    double charge_level;// charge car only up to charge_level % of cars battery capacity
 public:
     unsigned id() const;
     double soc() const;

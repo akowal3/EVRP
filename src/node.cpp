@@ -7,10 +7,11 @@
 unsigned Node::id() const {
     return this->ID;
 }
-Node::Node(unsigned ID, double SoC) : ID(ID), SoC(SoC) {}
+Node::Node(unsigned ID, double SoC) : ID(ID),
+                                      charge_level(SoC) {}
 
 double Node::soc() const {
-    return this->SoC;
+    return this->charge_level;
 }
 
 Node::Node() = default;

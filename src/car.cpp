@@ -30,7 +30,7 @@ bool Car::can_traverse(const Edge &e) const {
 }
 
 Time Car::get_charge_time(const Edge &e) const {
-    // Time to recharge the battery to max SoC levels
+    // Time to recharge the battery to max charge_level levels
     //TODO: edge will have information about chargers available and speed they can charge at, so take this into account
     //TODO: model charging as piecewise linear functions instead of linear
 

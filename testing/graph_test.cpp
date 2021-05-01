@@ -57,9 +57,9 @@ TEST_CASE("Build graph", "[GRAPH]") {
                 for (int i = 0; i < g.lookup_nodes->size(); i++) {
                     double expected_soc = Graph::CHARGER_STEPS[i % Graph::CHARGER_STEPS.size()];
                     std::ostringstream desc;
-                    desc << "Node " << Graph::originalID(i) << ", SoC: " << 100 * expected_soc << "%";
+                    desc << "Node " << Graph::originalID(i) << ", charge_level: " << 100 * expected_soc << "%";
                     WHEN(desc.str()) {
-                        THEN("SoC matches the SoC levels in Graph::CHARGER_STEPS") {
+                        THEN("charge_level matches the charge_level levels in Graph::CHARGER_STEPS") {
                             REQUIRE(g.lookup_nodes->at(i).soc() == expected_soc);
                         }
                     }

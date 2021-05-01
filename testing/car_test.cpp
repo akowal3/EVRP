@@ -17,7 +17,7 @@ TEST_CASE("Charging time", "[CAR]") {
         Edge e = Edge(&n1, &n2, 120, 120);
 
         REQUIRE(c.can_traverse(e) == true);
-        REQUIRE(c.consumed_power(e) == 120 * 131.0 / 1000.0);
+        REQUIRE(c.consumed_power(e) == 1.15 * 120 * 131.0 / 1000.0);
         REQUIRE(c.get_charge_time(e) == Time(3600 * 8.72 / 85.0));
     }
 

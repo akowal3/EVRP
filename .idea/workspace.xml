@@ -14,13 +14,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Clion stuff">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="small refactoring">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/node.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/node.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/car.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/edge.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/edge.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/car.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/node.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/graph_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/graph_test.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edge.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/edge.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +167,7 @@
       <workItem from="1619701509527" duration="17999000" />
       <workItem from="1619726291864" duration="15000" />
       <workItem from="1619771308689" duration="45689000" />
-      <workItem from="1619887932397" duration="3997000" />
+      <workItem from="1619887932397" duration="7045000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -225,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619891214805</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="small refactoring">
+      <created>1619891966221</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1619891966221</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,7 +259,8 @@
     <MESSAGE value="Added &quot;realistic&quot; EV charging&#10; Based on 3 line piecewise approximation. Currently charging parameters are hard-codded, but can be made car dependent easily. Fixed traverse bug, which always returned inf weight.&#10; Fixed car tests. Removed edge tests (unnecessary)" />
     <MESSAGE value="Connected graph to RoutingKit&#10;It appears to be working on a toy example." />
     <MESSAGE value="Clion stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="Clion stuff" />
+    <MESSAGE value="small refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="small refactoring" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -25,6 +25,7 @@ private:
     double charging_power;    // in kW
     double soc_min;           // in percentage
     double range;             // in km
+    double charging_rate;     // in %/hour
 };
 
 

@@ -22,6 +22,7 @@ public:
     Edge(const Node *from, const Node *to, unsigned int distance, double speed);
     Time get_travel_time() const;
     unsigned get_distance() const;
+    double get_speed() const;
     unsigned tail() const;
     unsigned head() const;
     double start_charge_level() const;

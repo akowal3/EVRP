@@ -14,6 +14,7 @@ Car::Car(double batteryCapacity, double energyConsumption, double chargingPower,
     this->charging_power = chargingPower;
     this->soc_min = socMin;
     this->range = range;
+    this->charging_rate = charging_power / battery_capacity;
 }
 
 Car::Car() {
@@ -23,6 +24,7 @@ Car::Car() {
     this->charging_power = 85.0;              // (kW)  Supercharver v2 150kW
     this->range = 535.0;                      // (km) Combined - Mild Weather
     this->soc_min = 0.1;
+    this->charging_rate = charging_power / battery_capacity;
 }
 
 bool Car::can_traverse(const Edge &e) const {
@@ -30,26 +32,23 @@ bool Car::can_traverse(const Edge &e) const {
 }
 
 Time Car::get_charge_time(const Edge &e) const {
-    // Time to recharge the battery to max charge_level levels
     //TODO: edge will have information about chargers available and speed they can charge at, so take this into account
-    //TODO: model charging as piecewise linear functions instead of linear
 
-    double current_power = power_left(e);
-    double end_power = battery_capacity * e.end_charge_level();
+    double current_level = power_left(e) / battery_capacity;
+    double end_level = e.end_charge_level();
     double charging_time = 0.0;// in hours
 
     std::vector<double> rate_modifier = { 1.0, 0.7, 0.5 };
-    std::vector<double> soc_max = { 0.7, 0.9, 1.0 };
+    std::vector<double> cutoff_level = { 0.7, 0.9, 1.0 };
 
     for (int i = 0; i < rate_modifier.size(); i++) {
-        double additional_charge = (soc_max[i] * battery_capacity <= end_power)
-                                           ? soc_max[i] * battery_capacity - current_power
-                                           : end_power - current_power;
-        charging_time += (additional_charge / (charging_power * rate_modifier[i]));
-        current_power += additional_charge;
+        double additional_charge = (cutoff_level[i] <= end_level) ? cutoff_level[i] - current_level
+                                                                  : end_level - current_level;
+        charging_time += additional_charge / (charging_rate * rate_modifier[i]);
+        current_level += additional_charge;
 
-        if (current_power == end_power)
-            break;
+        if (current_level == end_level)
+            break;// reached desired charge. No need to charge further.
     }
 
     return Time(3600.0 * charging_time);// in seconds
@@ -61,7 +60,8 @@ inline double Car::power_left(const Edge &e) const {
 
 inline double Car::consumed_power(const Edge &e) const {//kWh
     // TODO: take into account energy consumption at different speeds
-    return this->energy_consumption * e.get_distance();
+    double consumption_modifier = (e.get_speed() > 90.0) ? 1.15 : 1.0;// assume that at speed >90km/h consumption is 15% higher. Change it!!!
+    return this->energy_consumption * e.get_distance() * consumption_modifier;
 }
 
 Time Car::traverse(const Edge &e) const {

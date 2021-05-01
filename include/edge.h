@@ -24,8 +24,8 @@ public:
     unsigned get_distance() const;
     unsigned tail() const;
     unsigned head() const;
-    double start_soc() const;
-    double end_soc() const;
+    double start_charge_level() const;
+    double end_charge_level() const;
 };
 
 // Dummy datastructure used to create simple graph by hand

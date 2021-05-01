@@ -23,7 +23,6 @@ private:
     double energy_consumption;// in Wh/km
     double charging_power;    // in kW
     double soc_min;           // in percentage
-    double soc_max;           //in percentage
     double range;             // in km
     double consumed_power(const Edge &e) const;
     double power_left(const Edge &e) const;

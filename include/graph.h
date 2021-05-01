@@ -6,10 +6,11 @@
 #define EVRP_GRAPH_H
 
 
-#include "car.h"
-#include "edge.h"
 #include <functional>
 #include <vector>
+
+#include "car.h"
+#include "edge.h"
 
 class Graph {
 public:
@@ -23,7 +24,6 @@ public:
     static std::vector<double> SPEED_STEPS;
     static std::vector<double> CHARGER_STEPS;
 
-    // For testing purposes
     const std::vector<Node> *lookup_nodes;
     const std::vector<Edge> *lookup_edges;
     const std::vector<std::function<Time(const Car &)>> *lookup_weights;

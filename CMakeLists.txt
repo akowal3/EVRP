@@ -10,24 +10,27 @@ find_package(OpenMP REQUIRED)
 include_directories(include)
 include_directories(RoutingKit/include)
 
-# Internal classes
-#add_library(CAR SHARED src/car.cpp)
-#add_library(EDGE SHARED src/edge.cpp)
-#add_library(GRAPH SHARED src/graph.cpp)
-
-
-# Main project executable
-add_executable(EVRP src/main.cpp src/car.cpp src/edge.cpp src/graph.cpp src/node.cpp)
-#target_link_libraries(EVRP PRIVATE CAR GRAPH EDGE)
+### LIBRARIES & COMMON FILES ###
+# Combine common classes into single library
+add_library(COMMON src/car.cpp src/edge.cpp src/graph.cpp src/node.cpp)
 
 # Link external libraries to the main executable
-find_library(RK_LIB libroutingkit.so PATHS RoutingKit/lib)
-target_link_libraries(EVRP PUBLIC ${RK_LIB} OpenMP::OpenMP_CXX Threads::Threads ZLIB::ZLIB)
-
-# Catch2 unit tests
-add_library(Catch2 INTERFACE)
+find_library(RK_LIB libroutingkit.so PATHS RoutingKit/lib) # RoutingKit library
+add_library(Catch2 INTERFACE) # Catch2 unit tests library
 target_include_directories(Catch2 INTERFACE testing/include)
 
-add_executable(TESTS testing/test.cpp src/car.cpp src/edge.cpp src/graph.cpp testing/graph_test.cpp src/node.cpp)
-target_link_libraries(TESTS Catch2 ${RK_LIB})
+
+### EXECUTABLES ###
+# Main project executable
+add_executable(EVRP src/main.cpp)
+target_link_libraries(EVRP PUBLIC ${RK_LIB} OpenMP::OpenMP_CXX Threads::Threads ZLIB::ZLIB COMMON)
+
+# Test executable using Catch2
+# Longer test cases get split into separate files. Include those files to run tests
+add_library(TESTCASES INTERFACE)
+target_include_directories(TESTCASES INTERFACE testing/testcases)
+
+add_executable(TESTS testing/test.cpp testing/graph_test.cpp testing/car_test.cpp)
+target_link_libraries(TESTS Catch2 ${RK_LIB} TESTCASES COMMON)
+
 

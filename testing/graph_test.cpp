@@ -3,14 +3,15 @@
 //
 
 #include <car.h>
-#include <catch.hpp>
 #include <edge.h>
-#include <fstream>//required for parse_file()
 #include <graph.h>
-#include <iostream>
 #include <routingkit/contraction_hierarchy.h>
-#include <sstream>
 
+#include <catch.hpp>
+#include <fstream>//required for parse_file()
+#include <graph_cases.hpp>
+#include <iostream>
+#include <sstream>
 #include <unordered_set>
 
 using namespace RoutingKit;
@@ -32,43 +33,6 @@ void MapPrint(const std::unordered_map<unsigned, std::unordered_map<unsigned, st
 }
 
 TEST_CASE("Build graph", "[GRAPH]") {
-
-    constexpr unsigned TestCount = 6;
-    unsigned TEST_node_count[TestCount] = {2, 2, 2, 3, 3, 5};
-    std::vector<BuildingEdge> TEST_edges[TestCount] = {
-            {BuildingEdge(0, 1, 100, 80)},
-            {BuildingEdge(0, 1, 100, 80),
-             BuildingEdge(1, 0, 100, 80)},
-            {BuildingEdge(0, 1, 100, 80),
-             BuildingEdge(0, 1, 101, 77)},
-            {
-                    BuildingEdge(0, 1, 10, 120),
-                    BuildingEdge(0, 2, 18, 18),
-                    BuildingEdge(1, 2, 22, 31),
-            },
-            {
-                    BuildingEdge(0, 1, 100, 120),
-                    BuildingEdge(0, 2, 25, 11),
-                    BuildingEdge(1, 0, 110, 140),
-                    BuildingEdge(1, 2, 44, 133),
-                    BuildingEdge(2, 1, 47, 112),
-            },
-            {BuildingEdge(0, 1, 100, 80), BuildingEdge(0, 2, 70, 120),
-             BuildingEdge(1, 3, 50, 100), BuildingEdge(1, 4, 120, 100),
-             BuildingEdge(2, 3, 110, 60), BuildingEdge(3, 4, 20, 120),
-             BuildingEdge(1, 0, 100, 80), BuildingEdge(2, 0, 70, 120),
-             BuildingEdge(3, 1, 50, 100), BuildingEdge(4, 1, 120, 100),
-             BuildingEdge(3, 2, 110, 60), BuildingEdge(4, 3, 20, 120)},
-    };
-    std::string TEST_description[TestCount] = {
-            "Graph with single edge",
-            "Graph with single bidirectional edge",
-            "Graph with 2 same edges",
-            "Graph with 3 nodes",
-            "Graph with 3 nodes (some bidirectional)",
-            "Graph with 5 nodes"};
-
-
     for (int testID = 0; testID < TestCount; testID++) {
         GIVEN(TEST_description[testID]) {
             unsigned node_count = TEST_node_count[testID];
@@ -76,10 +40,16 @@ TEST_CASE("Build graph", "[GRAPH]") {
 
             Graph g = Graph(node_count, e);
 
-            THEN("Sizes of each vector correspond to number of soc states and number of different travel speeds") {
-                REQUIRE(g.lookup_nodes->size() == node_count * Graph::CHARGER_STEPS.size());
-                REQUIRE(g.lookup_edges->size() == Graph::CHARGER_STEPS.size() * Graph::CHARGER_STEPS.size() * e.size() * Graph::SPEED_STEPS.size());
-                REQUIRE(g.lookup_weights->size() == g.lookup_edges->size());
+            unsigned graph_node_count = node_count * Graph::CHARGER_STEPS.size();
+            unsigned graph_edge_count = Graph::CHARGER_STEPS.size() * Graph::CHARGER_STEPS.size() * e.size() * Graph::SPEED_STEPS.size();
+
+            std::ostringstream size_desc;
+            size_desc << "Graph has " << graph_node_count << " nodes and " << graph_edge_count << " edges";
+
+            THEN(size_desc.str()) {
+                REQUIRE(g.lookup_nodes->size() == graph_node_count);
+                REQUIRE(g.lookup_edges->size() == graph_edge_count);
+                REQUIRE(g.lookup_weights->size() == graph_edge_count);
             }
 
             THEN("There are Graph::CHARGER_STEPS.size() * node_count nodes") {

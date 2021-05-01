@@ -10,7 +10,6 @@ Car::Car(double batteryCapacity, double energyConsumption, double chargingPower,
     this->energy_consumption = energyConsumption;
     this->charging_power = chargingPower;
     this->soc_min = socMin;
-    this->soc_max = socMax;
     this->range = range;
 }
 
@@ -21,12 +20,10 @@ Car::Car() {
     this->charging_power = 85.0;              // (kW)  Supercharver v2 150kW
     this->range = 535.0;                      // (km) Combined - Mild Weather
     this->soc_min = 0.1;
-    this->soc_max = 0.8;
 }
 
 bool Car::can_traverse(const Edge &e) const {
-    // assuming we start at soc_max
-    return power_left(e) >= soc_min;
+    return power_left(e) >= battery_capacity * soc_min;
 }
 
 Time Car::get_charge_time(const Edge &e, double charge_modifier) const {
@@ -34,11 +31,25 @@ Time Car::get_charge_time(const Edge &e, double charge_modifier) const {
     //TODO: edge will have information about chargers available and speed they can charge at, so take this into account
     //TODO: model charging as piecewise linear functions instead of linear
 
+    constexpr double rate_modifier_a = 1.0;
+    constexpr double rate_modifier_b = 0.7;
+    constexpr double rate_modifier_c = 0.5;
+
+    constexpr double rate_max_a = 0.7;
+    constexpr double rate_max_b = 0.9;
+    constexpr double rate_max_c = 1.0;
+
+    double start_level = power_left(e) / battery_capacity;
+    double end_level = e.end_charge_level();
+
+    Time res = 0;
+
+
     return Time(3600.0 * consumed_power(e) / charging_power);// in seconds
 }
 
 inline double Car::power_left(const Edge &e) const {
-    return battery_capacity * soc_max - consumed_power(e);
+    return battery_capacity * e.start_charge_level() - consumed_power(e);
 }
 
 inline double Car::consumed_power(const Edge &e) const {

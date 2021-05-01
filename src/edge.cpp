@@ -22,10 +22,10 @@ unsigned Edge::head() const {
 unsigned Edge::get_distance() const {
     return this->distance;
 }
-double Edge::start_soc() const {
+double Edge::start_charge_level() const {
     return this->start->soc();
 }
-double Edge::end_soc() const {
+double Edge::end_charge_level() const {
     return this->end->soc();
 }
 

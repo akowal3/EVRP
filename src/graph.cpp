@@ -35,8 +35,12 @@ Graph::Graph(unsigned int charger_count, const std::vector<BuildingEdge> &edges)
 
     // Create weights, which will be evaluated on runtime when a query with new car comes in
     this->weights.reserve(edges.size());
+    this->head.reserve(edges.size());// potentially unnecessary
+    this->tail.reserve(edges.size());// potentially unnecessary
     for (const Edge &e : this->edges) {
         this->weights.emplace_back([&e](const Car &c) { return c.traverse(e); });
+        this->head.emplace_back(e.head());
+        this->tail.emplace_back(e.tail());
     }
 
     // Allow to view private parts from outside of the class testing purposes
@@ -51,10 +55,4 @@ unsigned Graph::eval(int i, const Car &c) const {
     auto time_calculator = this->weights.at(i);
     unsigned total_time = time_calculator(c);
     return total_time;
-}
-
-unsigned Graph::size() const {
-    assert(this->tail.size() == this->head.size());
-    assert(this->tail.size() == this->weights.size());
-    return this->tail.size();
 }

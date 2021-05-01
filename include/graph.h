@@ -19,7 +19,6 @@ public:
     std::vector<unsigned> head;
     std::vector<unsigned> tail;
     unsigned eval(int i, const Car &c) const;
-    unsigned size() const;
 
     static std::vector<double> SPEED_STEPS;
     static std::vector<double> CHARGER_STEPS;

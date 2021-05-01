@@ -3,7 +3,10 @@
 //
 
 #include "car.h"
+
 #include <routingkit/constants.h>
+
+#include <vector>
 
 Car::Car(double batteryCapacity, double energyConsumption, double chargingPower, double socMin, double socMax, double range) {
     this->battery_capacity = batteryCapacity;
@@ -26,40 +29,44 @@ bool Car::can_traverse(const Edge &e) const {
     return power_left(e) >= battery_capacity * soc_min;
 }
 
-Time Car::get_charge_time(const Edge &e, double charge_modifier) const {
+Time Car::get_charge_time(const Edge &e) const {
     // Time to recharge the battery to max SoC levels
     //TODO: edge will have information about chargers available and speed they can charge at, so take this into account
     //TODO: model charging as piecewise linear functions instead of linear
 
-    constexpr double rate_modifier_a = 1.0;
-    constexpr double rate_modifier_b = 0.7;
-    constexpr double rate_modifier_c = 0.5;
+    double current_power = power_left(e);
+    double end_power = battery_capacity * e.end_charge_level();
+    double charging_time = 0.0;// in hours
 
-    constexpr double rate_max_a = 0.7;
-    constexpr double rate_max_b = 0.9;
-    constexpr double rate_max_c = 1.0;
+    std::vector<double> rate_modifier = { 1.0, 0.7, 0.5 };
+    std::vector<double> soc_max = { 0.7, 0.9, 1.0 };
 
-    double start_level = power_left(e) / battery_capacity;
-    double end_level = e.end_charge_level();
+    for (int i = 0; i < rate_modifier.size(); i++) {
+        double additional_charge = (soc_max[i] * battery_capacity <= end_power)
+                                           ? soc_max[i] * battery_capacity - current_power
+                                           : end_power - current_power;
+        charging_time += (additional_charge / (charging_power * rate_modifier[i]));
+        current_power += additional_charge;
 
-    Time res = 0;
+        if (current_power == end_power)
+            break;
+    }
 
-
-    return Time(3600.0 * consumed_power(e) / charging_power);// in seconds
+    return Time(3600.0 * charging_time);// in seconds
 }
 
 inline double Car::power_left(const Edge &e) const {
     return battery_capacity * e.start_charge_level() - consumed_power(e);
 }
 
-inline double Car::consumed_power(const Edge &e) const {
+inline double Car::consumed_power(const Edge &e) const {//kWh
     // TODO: take into account energy consumption at different speeds
     return this->energy_consumption * e.get_distance();
 }
 
 Time Car::traverse(const Edge &e) const {
     if (can_traverse(e)) {
-        e.get_travel_time() + get_charge_time(e);
+        return e.get_travel_time() + get_charge_time(e);
     }
 
     return Time(RoutingKit::inf_weight);

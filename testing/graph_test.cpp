@@ -86,26 +86,8 @@ TEST_CASE("Build graph", "[GRAPH]") {
     }
 }
 
-//TEST_CASE("Build graph 2", "[GRAPH]") {
-//    std::vector<Edge> e = {Edge(0, 1, 100, 100), Edge(1, 0, 50, 50)};
-//    Graph g = Graph(2, e);
-//    Car c = Car();
-//
-//    REQUIRE(g.size() == e.size() * Graph::SPEED_STEPS.size() * Graph::CHARGER_STEPS.size() * Graph::CHARGER_STEPS.size());
-//
-//    int reps = Graph::SPEED_STEPS.size();
-//    for (int i = 0; i < e.size(); i++) {
-//        for (int j = 0; j < reps; j++) {
-//            std::string desc = "i = " + std::to_string(i) + ", j = " + std::to_string(j);
-//            WHEN(desc) {
-//                REQUIRE(g.eval(i * reps + j, c) == e[i].traverse(c, Graph::SPEED_STEPS[j]));
-//            }
-//        }
-//    }
-//}
-//
 //TEST_CASE("Different car", "[GRAPH]") {
-//    std::vector<Edge> e = {Edge(0, 1, 100, 80), Edge(1, 0, 50, 12)};
+//    std::vector<Edge> e = { Edge(0, 1, 100, 80), Edge(1, 0, 50, 12) };
 //    Graph g = Graph(2, e);
 //
 //    REQUIRE(g.size() == e.size() * Graph::SPEED_STEPS.size() * Graph::CHARGER_STEPS.size() * Graph::CHARGER_STEPS.size());

@@ -14,9 +14,10 @@ public:
     Car(double batteryCapacity, double energyConsumption, double chargingPower, double socMin, double socMax, double range);
     Car();
     bool can_traverse(const Edge &e) const;
-    Time get_charge_time(const Edge &e, double charge_modifier = 1.0) const;
-
+    Time get_charge_time(const Edge &e) const;
     Time traverse(const Edge &e) const;
+    double consumed_power(const Edge &e) const;
+    double power_left(const Edge &e) const;
 
 private:
     double battery_capacity;  // in Wh
@@ -24,8 +25,6 @@ private:
     double charging_power;    // in kW
     double soc_min;           // in percentage
     double range;             // in km
-    double consumed_power(const Edge &e) const;
-    double power_left(const Edge &e) const;
 };
 
 

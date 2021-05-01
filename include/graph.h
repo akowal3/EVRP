@@ -29,7 +29,9 @@ public:
 
     unsigned int edge_size() const;
     unsigned int node_size() const;
+
     static unsigned int originalID(unsigned int nodeID);
+    static std::vector<unsigned int> ID_to_nodes(unsigned int nodeID);
 
 private:
     std::vector<Node> nodes;

@@ -96,7 +96,7 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
     std::vector<unsigned> travel_time(g.edge_size());
 
     unsigned source_node = 3;
-    unsigned target_node = 17;
+    unsigned target_node = 4;
 
     Car c = Car();
 
@@ -109,17 +109,35 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
 
     ContractionHierarchyQuery query(ch);
 
+    std::vector<unsigned> targets = Graph::ID_to_nodes(target_node);
 
-    query.reset().add_source(source_node).add_target(target_node).run();
+    query.reset().add_source(source_node);
+
+    for (auto &t : Graph::ID_to_nodes(target_node)) {
+        query.add_target(t);
+    }
+
+    query.run();
+
     unsigned distance = query.get_distance();
 
-    std::cout << std::setprecision(3) << "Shortest time to go from " << source_node << " to " << target_node << " = " << distance / 3600.0 << " hours" << std::endl;
+    std::cout << std::setprecision(3) << "Shortest time to go from " << Graph::originalID(source_node)
+              << " to " << target_node << " = " << distance / 3600.0 << " hours" << std::endl;
 
-    std::cout << "Path goes through: ";
-    for (auto &n : query.get_node_path()) {
-        std::cout << Graph::originalID(n) << "(" << g.lookup_nodes->at(n).soc() << "), ";
+    auto arc_path = query.get_arc_path();
+
+    std::cout << "Path goes through: " << std::endl;
+    for (auto it = arc_path.begin(); it != arc_path.end(); ++it) {
+        auto edge = g.lookup_edges->at(*it);
+        unsigned tailID = edge.tail();
+
+        std::cout << Graph::originalID(tailID) << "(" << g.lookup_nodes->at(tailID).soc() * 100 << "%) --@" << edge.get_speed() << "km/h--> ";
+
+        if (it == arc_path.end() - 1) {
+            unsigned headID = edge.head();
+            std::cout << Graph::originalID(headID) << "(" << g.lookup_nodes->at(headID).soc() * 100 << "%)" << std::endl;
+        }
     }
-    std::cout << std::endl;
 }
 
 //TEST_CASE("Different car", "[GRAPH]") {

@@ -66,5 +66,17 @@ unsigned Graph::edge_size() const {
 }
 
 unsigned Graph::originalID(unsigned nodeID) {
-    return nodeID / Graph::CHARGER_STEPS.size();
+    return nodeID / CHARGER_STEPS.size();
+}
+
+std::vector<unsigned> Graph::ID_to_nodes(unsigned nodeID) {
+    std::vector<unsigned> ret;
+
+    ret.reserve(CHARGER_STEPS.size());
+
+    for (int i = 0; i < CHARGER_STEPS.size(); i++) {
+        ret.emplace_back(nodeID * CHARGER_STEPS.size() + i);
+    }
+
+    return ret;
 }

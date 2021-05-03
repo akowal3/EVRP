@@ -42,17 +42,9 @@ void PathPrint(const Graph &g, const std::vector<unsigned> &arc_path) {
         auto edge = g.lookup_edges->at(*it);
         unsigned tailID = edge.tail();
 
-        unsigned edge_travel_time = edge.get_travel_time();
-        unsigned edge_total_time = c.traverse(edge);
-
-        REQUIRE(edge_total_time > edge_travel_time);
-
-        only_travel += edge_travel_time;
-        total_time += edge_total_time;
+        only_travel += edge.get_travel_time();
 
         std::cout << Graph::originalID(tailID) << "(" << g.lookup_nodes->at(tailID).soc() * 100 << "%) --@" << edge.get_speed() << "km/h--> ";
-
-        REQUIRE(c.traverse(edge) != RoutingKit::inf_weight);
 
         if (it == arc_path.end() - 1) {
             unsigned headID = edge.head();
@@ -60,9 +52,6 @@ void PathPrint(const Graph &g, const std::vector<unsigned> &arc_path) {
         }
     }
     std::cout << "Travel time (no charging) was " << only_travel / 3600.0 << " hours" << std::endl;
-
-    REQUIRE(total_time >= only_travel);
-    CHECK(total_time > only_travel);
 }
 
 TEST_CASE("Build graph", "[GRAPH]") {
@@ -131,7 +120,6 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
     unsigned target_node = 4;
 
     Car c = Car();
-    Car c1 = Car(70.0, 0.1, 885.0, 0.1, 1.0, 1000.0);
 
     for (int i = 0; i < g.edge_size(); ++i) {
         travel_time[i] = g.eval(i, c);
@@ -152,23 +140,26 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
 
     query.run();
 
-    unsigned distance = query.get_distance();
+    unsigned total_time = query.get_distance();
+
+    REQUIRE(total_time != RoutingKit::inf_weight);
 
     auto arc_path = query.get_arc_path();
 
-    unsigned edge_time = 0;
-
+    unsigned total_time_from_edges = 0;
     for (auto &it : arc_path) {
         auto edge = g.lookup_edges->at(it);
-        edge_time += c.traverse(edge);
+        auto edge_time = c.traverse(edge);
+        REQUIRE(edge_time != RoutingKit::inf_weight);
+        total_time_from_edges += edge_time;
     }
 
-    REQUIRE(edge_time == distance);
+    REQUIRE(total_time_from_edges == total_time);
 
     std::cout << std::setprecision(3) << "Shortest time to go from " << Graph::originalID(source_node)
-              << " to " << target_node << " = " << distance / 3600.0 << " hours" << std::endl;
+              << " to " << target_node << " = " << total_time / 3600.0 << " hours" << std::endl;
 
-    PathPrint(g, query.get_arc_path());
+    PathPrint(g, arc_path);
 }
 
 //TEST_CASE("Different car", "[GRAPH]") {

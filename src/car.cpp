@@ -9,15 +9,6 @@
 #include <cmath>
 #include <vector>
 
-Car::Car(double batteryCapacity, double energyConsumption, double chargingPower, double socMin, double socMax, double range) {
-    this->battery_capacity = batteryCapacity;
-    this->energy_consumption = energyConsumption;
-    this->charging_power = chargingPower;
-    this->soc_min = socMin;
-    this->range = range;
-    this->charging_rate = charging_power / battery_capacity;
-}
-
 Car::Car() {
     // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
     this->battery_capacity = 70.0;            // (kWh) battery usable

@@ -11,7 +11,6 @@ class Edge;
 class Car {
 
 public:
-    Car(double batteryCapacity, double energyConsumption, double chargingPower, double socMin, double socMax, double range);
     Car();
     bool can_traverse(const Edge &e) const;
     Time get_charge_time(const Edge &e) const;

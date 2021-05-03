@@ -14,14 +14,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Added better path printing coming from RoutingKit">
-      <change afterPath="$PROJECT_DIR$/testing/include/custom_macros.hpp" afterDir="false" />
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Added speed dependent energy consumption model.&#10;Model is rather simple, based on physics. Needs further verification, but is reasonable (according to some websites).&#10;Rewrote/added some tests.&#10;Added custom macros for catch2 (now it fails with message)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/car.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/car.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/graph_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/graph_test.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,7 +188,7 @@
       <workItem from="1619726291864" duration="15000" />
       <workItem from="1619771308689" duration="45689000" />
       <workItem from="1619887932397" duration="10346000" />
-      <workItem from="1619949087828" duration="27931000" />
+      <workItem from="1619949087828" duration="28553000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -270,7 +267,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619899756837</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added speed dependent energy consumption model.&#10;Model is rather simple, based on physics. Needs further verification, but is reasonable (according to some websites).&#10;Rewrote/added some tests.&#10;Added custom macros for catch2 (now it fails with message)">
+      <created>1620049711653</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1620049711653</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -300,7 +304,8 @@
     <MESSAGE value="small refactoring" />
     <MESSAGE value="[CAR tests broken] Added energy consumption modifier. &#10;It's a very simple linear modifier with respect to speed the car travels. Should be changed for more sophisticated one!&#10;Tests are broken because they were calculated based on the assumption that energy consumption is constant at every speed.&#10;Refactored car.get_charge_time to operate with battery percentage instead of battery capacity." />
     <MESSAGE value="Added better path printing coming from RoutingKit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added better path printing coming from RoutingKit" />
+    <MESSAGE value="Added speed dependent energy consumption model.&#10;Model is rather simple, based on physics. Needs further verification, but is reasonable (according to some websites).&#10;Rewrote/added some tests.&#10;Added custom macros for catch2 (now it fails with message)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added speed dependent energy consumption model.&#10;Model is rather simple, based on physics. Needs further verification, but is reasonable (according to some websites).&#10;Rewrote/added some tests.&#10;Added custom macros for catch2 (now it fails with message)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -311,17 +316,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/car.cpp</url>
-          <line>47</line>
+          <line>38</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/car.cpp</url>
-          <line>55</line>
+          <line>46</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/car.cpp</url>
-          <line>60</line>
+          <line>51</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>

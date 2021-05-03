@@ -7,50 +7,52 @@
 #include <routingkit/constants.h>
 
 #include <catch.hpp>
+#include <custom_macros.hpp>
+#include <iostream>
+#include <sstream>
 
-TEST_CASE("Charging time", "[CAR]") {
-    Car c = Car();
-    Node n1 = Node(0, 0.8);
-
-    WHEN("Charging to 70%") {
-        Node n2 = Node(1, 0.7);
-        Edge e = Edge(&n1, &n2, 120, 120);
-
-        REQUIRE(c.can_traverse(e) == true);
-        REQUIRE(c.consumed_power(e) == 1.15 * 120 * 131.0 / 1000.0);
-        REQUIRE(c.get_charge_time(e) == Time(3600 * 8.72 / 85.0));
-    }
-
-    WHEN("Charging to 74% (not cutoff)") {
-        Node n2 = Node(1, 0.74);
-        Edge e = Edge(&n1, &n2, 120, 120);
-
-        REQUIRE(c.can_traverse(e) == true);
-        REQUIRE(c.consumed_power(e) == 120 * 131.0 / 1000.0);
-        REQUIRE(c.get_charge_time(e) == Time(3600 * (8.72 / 85.0 + 2.8 / (85.0 * 0.7))));
-    }
-}
 
 TEST_CASE("Edge traversal", "[CAR]") {
-    Car c = Car();
+    WHEN("Tesla Model 3 is a car") {
+        Car c = Car();
+        THEN("Can drive 50 km at any reasonable speed") {
+            Node start = Node(0, 0.8);
+            Node end = Node(1, 0.7);
+            unsigned distance = 50;
 
-    Node n1 = Node(0, 0.8);
-    Node n2 = Node(1, 0.7);
-    Edge e1 = Edge(&n1, &n2, 120, 120);
-    Edge e2 = Edge(&n1, &n2, 10000, 120);
+            WHEN("Will not need charge") {
 
-    WHEN("Distance is small") {
-        THEN("Default car can traverse the edge") {
-            REQUIRE(c.can_traverse(e1) == true);
-            REQUIRE(c.traverse(e1) == Time(3600 * 8.72 / 85.0 + 3600));
-            REQUIRE(c.traverse(e1) == c.get_charge_time(e1) + e1.get_travel_time());
+                for (auto speed = 20; speed < 93; speed++) {
+                    Edge e = Edge(&start, &end, distance, speed);
+                    REQUIRE(c.can_traverse(e) == true);
+                    REQUIRE(c.traverse(e) != RoutingKit::inf_weight);
+                    REQUIRE(c.will_charge(e) == false);
+                    REQUIRE(c.traverse(e) == e.get_travel_time());
+                }
+            }
+
+            WHEN("Will need to charge at the edge") {
+                for (auto speed = 93; speed < 200; speed++) {
+                    Edge e = Edge(&start, &end, distance, speed);
+                    REQUIRE(c.can_traverse(e) == true);
+                    REQUIRE(c.traverse(e) != RoutingKit::inf_weight);
+                    REQUIRE(c.will_charge(e) == true);
+                    REQUIRE(c.traverse(e) == e.get_travel_time() + c.get_charge_time(e));
+                }
+            }
         }
-    }
 
-    WHEN("Distance is large") {
-        THEN("Default car can't traverse the edge") {
-            REQUIRE(c.can_traverse(e2) == false);
-            REQUIRE(c.traverse(e2) == RoutingKit::inf_weight);
+        THEN("Will always have to charge if SoC at the end == 1") {
+            Node start = Node(0, 0.8);
+            Node end = Node(1, 1);
+            unsigned distance = 100;
+            for (auto speed = 50; speed < 200; speed++) {
+                Edge e = Edge(&start, &end, distance, speed);
+                REQUIRE(c.can_traverse(e) == true);
+                REQUIRE(c.traverse(e) != RoutingKit::inf_weight);
+                REQUIRE(c.will_charge(e) == true);
+                REQUIRE(c.traverse(e) == e.get_travel_time() + c.get_charge_time(e));
+            }
         }
     }
 }

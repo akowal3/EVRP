@@ -14,11 +14,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="[CAR tests broken] Added energy consumption modifier. &#10;It's a very simple linear modifier with respect to speed the car travels. Should be changed for more sophisticated one!&#10;Tests are broken because they were calculated based on the assumption that energy consumption is constant at every speed.&#10;Refactored car.get_charge_time to operate with battery percentage instead of battery capacity.">
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Added better path printing coming from RoutingKit">
+      <change afterPath="$PROJECT_DIR$/testing/include/custom_macros.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/graph.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/graph.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graph.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/car.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/car.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/graph_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/graph_test.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,8 +60,9 @@
     <property name="cmake.loaded.for.project" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/testing/testcases" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -66,17 +70,16 @@
       <recent name="$PROJECT_DIR$/include" />
     </key>
   </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="TESTS" />
+      <command value="Edge traversal" />
+    </option>
+  </component>
   <component name="RunManager" selected="Catch.TESTS">
-    <configuration name="Build graph" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH]" TEST_METHOD="Build graph" TEST_MODE="SUITE_TEST">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Car can traverse" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR]" TEST_METHOD="Car can traverse" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
     <configuration name="Charging time" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR]" TEST_METHOD="Charging time" TEST_MODE="SUITE_TEST">
@@ -103,6 +106,12 @@
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TMP" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_METHOD="TMP" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="COMMON" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="COMMON" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -113,33 +122,49 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EVRP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Catch.TESTS" />
-      <item itemvalue="Catch.Build graph" />
-      <item itemvalue="Catch.Car can traverse" />
       <item itemvalue="Catch.Charging time" />
       <item itemvalue="Catch.Edge traversal" />
       <item itemvalue="Catch.Connect to RoutingKit" />
+      <item itemvalue="Catch.TMP" />
       <item itemvalue="CMake Application.COMMON" />
       <item itemvalue="CMake Application.EVRP" />
+      <item itemvalue="Python.scratch" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Catch.Build graph" />
-        <item itemvalue="Catch.Connect to RoutingKit" />
         <item itemvalue="Catch.Edge traversal" />
+        <item itemvalue="Catch.TMP" />
         <item itemvalue="Catch.Charging time" />
-        <item itemvalue="Catch.Car can traverse" />
+        <item itemvalue="Python.scratch" />
+        <item itemvalue="Catch.Connect to RoutingKit" />
       </list>
     </recent_temporary>
   </component>
@@ -165,7 +190,8 @@
       <workItem from="1619701509527" duration="17999000" />
       <workItem from="1619726291864" duration="15000" />
       <workItem from="1619771308689" duration="45689000" />
-      <workItem from="1619887932397" duration="10090000" />
+      <workItem from="1619887932397" duration="10346000" />
+      <workItem from="1619949087828" duration="27931000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -237,7 +263,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619895178550</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Added better path printing coming from RoutingKit">
+      <created>1619899756837</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1619899756837</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -266,7 +299,8 @@
     <MESSAGE value="Clion stuff" />
     <MESSAGE value="small refactoring" />
     <MESSAGE value="[CAR tests broken] Added energy consumption modifier. &#10;It's a very simple linear modifier with respect to speed the car travels. Should be changed for more sophisticated one!&#10;Tests are broken because they were calculated based on the assumption that energy consumption is constant at every speed.&#10;Refactored car.get_charge_time to operate with battery percentage instead of battery capacity." />
-    <option name="LAST_COMMIT_MESSAGE" value="[CAR tests broken] Added energy consumption modifier. &#10;It's a very simple linear modifier with respect to speed the car travels. Should be changed for more sophisticated one!&#10;Tests are broken because they were calculated based on the assumption that energy consumption is constant at every speed.&#10;Refactored car.get_charge_time to operate with battery percentage instead of battery capacity." />
+    <MESSAGE value="Added better path printing coming from RoutingKit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added better path printing coming from RoutingKit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -274,6 +308,21 @@
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/car.cpp</url>
+          <line>47</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/car.cpp</url>
+          <line>55</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/car.cpp</url>
+          <line>60</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -2,7 +2,7 @@
 // Created by Andrzej Kowalewski on 14/04/2021.
 //
 
-#include "graph.h"
+#include <graph.h>
 
 #include <cassert>
 

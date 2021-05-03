@@ -2,8 +2,7 @@
 // Created by Andrzej Kowalewski on 14/04/2021.
 //
 
-#include "car.h"
-
+#include <car.h>
 #include <routingkit/constants.h>
 
 #include <cmath>
@@ -26,7 +25,7 @@ Car::Car() {
 }
 
 bool Car::can_traverse(const Edge &e) const {
-    return power_left(e) >= battery_capacity * soc_min;
+    return power_left(e) >= min_charge_level();
 }
 
 bool Car::will_charge(const Edge &e) const {
@@ -56,11 +55,11 @@ Time Car::get_charge_time(const Edge &e) const {
     return Time(3600.0 * charging_time);// in seconds
 }
 
-inline double Car::power_left(const Edge &e) const {
+double Car::power_left(const Edge &e) const {
     return battery_capacity * e.start_charge_level() - consumed_power(e);
 }
 
-inline double Car::consumed_power(const Edge &e) const {//kWh
+double Car::consumed_power(const Edge &e) const {//kWh
     double consumption_rate = this->calculate_consumption_rate(e.get_speed());
     return consumption_rate * e.get_distance() / 1000;//kWh
 }
@@ -91,4 +90,8 @@ Time Car::traverse(const Edge &e) const {
                                       : RoutingKit::inf_weight;
 
     return total_time;
+}
+
+double Car::min_charge_level() const {
+    return battery_capacity * soc_min;
 }

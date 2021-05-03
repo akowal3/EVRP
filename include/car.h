@@ -19,6 +19,7 @@ public:
     double power_left(const Edge &e) const;
     bool will_charge(const Edge &e) const;
     double calculate_consumption_rate(double v_kmh) const;
+    double min_charge_level() const;
 
 private:
     double battery_capacity;  // in Wh

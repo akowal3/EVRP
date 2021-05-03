@@ -54,5 +54,28 @@ TEST_CASE("Edge traversal", "[CAR]") {
                 REQUIRE(c.traverse(e) == e.get_travel_time() + c.get_charge_time(e));
             }
         }
+
+        THEN("Can drive 300 km only at slower speeds") {
+            Node start = Node(0, 1);
+            Node end = Node(1, 1);
+            unsigned distance = 300;
+            for (auto speed = 30; speed < 126; speed++) {
+                Edge e = Edge(&start, &end, distance, speed);
+                REQUIRE_FAILMSG(c.can_traverse(e) == true, "@ " << speed << " km/h");
+                REQUIRE(c.traverse(e) != RoutingKit::inf_weight);
+                REQUIRE(c.will_charge(e) == true);
+                REQUIRE(c.power_left(e) >= c.min_charge_level());
+                REQUIRE(c.traverse(e) == e.get_travel_time() + c.get_charge_time(e));
+            }
+
+            for (auto speed = 126; speed < 200; speed++) {
+                Edge e = Edge(&start, &end, distance, speed);
+                REQUIRE(c.can_traverse(e) == false);
+                REQUIRE(c.traverse(e) == RoutingKit::inf_weight);
+                REQUIRE(c.will_charge(e) == true);// power_left is negative?
+                REQUIRE(c.power_left(e) <= c.min_charge_level());
+                //                REQUIRE(c.traverse(e) == e.get_travel_time() + c.get_charge_time(e));
+            }
+        }
     }
 }

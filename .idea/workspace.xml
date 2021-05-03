@@ -14,13 +14,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Temporarily removed additional Car constructor.&#10;Removed checks from printing in graph_test.">
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Minor refactoring&#10;Added further car tests.&#10;Refactored code a bit (include &lt;.h&gt; instead of &quot;.h&quot;)">
+      <change afterPath="$PROJECT_DIR$/testing/include/testcase.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/car.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/car.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/edge.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/edge.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/graph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graph.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/node.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/graph_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/graph_test.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +66,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/testing/include" />
       <recent name="$PROJECT_DIR$/testing/testcases" />
       <recent name="$PROJECT_DIR$/include" />
     </key>
@@ -75,19 +77,19 @@
       <command value="Edge traversal" />
     </option>
   </component>
-  <component name="RunManager" selected="Catch.Edge traversal">
+  <component name="RunManager" selected="Catch.TESTS">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Charging time" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR]" TEST_METHOD="Charging time" TEST_MODE="SUITE_TEST">
+    <configuration name="Build graph" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH]" TEST_METHOD="Build graph" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Connect to RoutingKit" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH, RK]" TEST_METHOD="Connect to RoutingKit" TEST_MODE="SUITE_TEST">
+    <configuration name="Charging time" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR]" TEST_METHOD="Charging time" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -151,19 +153,19 @@
       <item itemvalue="Catch.TESTS" />
       <item itemvalue="Catch.Charging time" />
       <item itemvalue="Catch.Edge traversal" />
-      <item itemvalue="Catch.Connect to RoutingKit" />
       <item itemvalue="Catch.TMP" />
+      <item itemvalue="Catch.Build graph" />
       <item itemvalue="CMake Application.COMMON" />
       <item itemvalue="CMake Application.EVRP" />
       <item itemvalue="Python.scratch" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Catch.Build graph" />
         <item itemvalue="Catch.Edge traversal" />
         <item itemvalue="Catch.TMP" />
         <item itemvalue="Catch.Charging time" />
         <item itemvalue="Python.scratch" />
-        <item itemvalue="Catch.Connect to RoutingKit" />
       </list>
     </recent_temporary>
   </component>
@@ -190,7 +192,7 @@
       <workItem from="1619726291864" duration="15000" />
       <workItem from="1619771308689" duration="45689000" />
       <workItem from="1619887932397" duration="10346000" />
-      <workItem from="1619949087828" duration="30145000" />
+      <workItem from="1619949087828" duration="38476000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -283,7 +285,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620050360622</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Minor refactoring&#10;Added further car tests.&#10;Refactored code a bit (include &lt;.h&gt; instead of &quot;.h&quot;)">
+      <created>1620051946004</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1620051946004</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -315,7 +324,8 @@
     <MESSAGE value="Added better path printing coming from RoutingKit" />
     <MESSAGE value="Added speed dependent energy consumption model.&#10;Model is rather simple, based on physics. Needs further verification, but is reasonable (according to some websites).&#10;Rewrote/added some tests.&#10;Added custom macros for catch2 (now it fails with message)" />
     <MESSAGE value="Temporarily removed additional Car constructor.&#10;Removed checks from printing in graph_test." />
-    <option name="LAST_COMMIT_MESSAGE" value="Temporarily removed additional Car constructor.&#10;Removed checks from printing in graph_test." />
+    <MESSAGE value="Minor refactoring&#10;Added further car tests.&#10;Refactored code a bit (include &lt;.h&gt; instead of &quot;.h&quot;)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor refactoring&#10;Added further car tests.&#10;Refactored code a bit (include &lt;.h&gt; instead of &quot;.h&quot;)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

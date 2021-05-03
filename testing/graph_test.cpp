@@ -8,14 +8,14 @@
 #include <routingkit/contraction_hierarchy.h>
 
 #include <catch.hpp>
-#include <fstream>//required for parse_file()
 #include <graph_cases.hpp>
 #include <iomanip>
 #include <iostream>
-#include <sstream>
+#include <testcase.hpp>
 #include <unordered_set>
 
 using namespace RoutingKit;
+
 
 void MapPrint(const std::unordered_map<unsigned, std::unordered_map<unsigned, std::unordered_map<unsigned, unsigned>>> &NodeMap) {
     std::cout << "{" << std::endl;
@@ -55,20 +55,19 @@ void PathPrint(const Graph &g, const std::vector<unsigned> &arc_path) {
 }
 
 TEST_CASE("Build graph", "[GRAPH]") {
-    for (int testID = 0; testID < TestCount; testID++) {
-        GIVEN(TEST_description[testID]) {
-            unsigned node_count = TEST_node_count[testID];
-            std::vector<BuildingEdge> e = TEST_edges[testID];
+
+    for (auto &testcase : GraphCases) {
+        GIVEN(testcase.description) {
+            unsigned node_count = testcase.node_count;
+            std::vector<BuildingEdge> e = testcase.graph;
 
             Graph g = Graph(node_count, e);
 
             unsigned graph_node_count = node_count * Graph::CHARGER_STEPS.size();
             unsigned graph_edge_count = Graph::CHARGER_STEPS.size() * Graph::CHARGER_STEPS.size() * e.size() * Graph::SPEED_STEPS.size();
 
-            std::ostringstream size_desc;
-            size_desc << "Graph has " << graph_node_count << " nodes and " << graph_edge_count << " edges";
 
-            THEN(size_desc.str()) {
+            THEN("Graph has " << graph_node_count << " nodes and " << graph_edge_count << " edges") {
                 REQUIRE(g.lookup_nodes->size() == graph_node_count);
                 REQUIRE(g.lookup_edges->size() == graph_edge_count);
                 REQUIRE(g.lookup_weights->size() == graph_edge_count);
@@ -77,9 +76,7 @@ TEST_CASE("Build graph", "[GRAPH]") {
             THEN("There are Graph::CHARGER_STEPS.size() * node_size nodes") {
                 for (int i = 0; i < g.lookup_nodes->size(); i++) {
                     double expected_soc = Graph::CHARGER_STEPS[i % Graph::CHARGER_STEPS.size()];
-                    std::ostringstream desc;
-                    desc << "Node " << Graph::originalID(i) << ", charge_level: " << 100 * expected_soc << "%";
-                    WHEN(desc.str()) {
+                    WHEN("Node " << Graph::originalID(i) << ", charge_level: " << 100 * expected_soc << "%") {
                         THEN("charge_level matches the charge_level levels in Graph::CHARGER_STEPS") {
                             REQUIRE(g.lookup_nodes->at(i).soc() == expected_soc);
                         }
@@ -108,59 +105,60 @@ TEST_CASE("Build graph", "[GRAPH]") {
     }
 }
 
-TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
-    // get complicated graph
-    unsigned node_count = TEST_node_count[5];
-    std::vector<BuildingEdge> e = TEST_edges[5];
-    Graph g = Graph(node_count, e);
-
-    std::vector<unsigned> travel_time(g.edge_size());
-
-    unsigned source_node = 3;
-    unsigned target_node = 4;
-
-    Car c = Car();
-
-    for (int i = 0; i < g.edge_size(); ++i) {
-        travel_time[i] = g.eval(i, c);
-    }
-
-    // Build the shortest path index
-    auto ch = ContractionHierarchy::build(g.node_size(), g.tail, g.head, travel_time);
-
-    ContractionHierarchyQuery query(ch);
-
-    std::vector<unsigned> targets = Graph::ID_to_nodes(target_node);
-
-    query.reset().add_source(source_node);
-
-    for (auto &t : Graph::ID_to_nodes(target_node)) {
-        query.add_target(t);
-    }
-
-    query.run();
-
-    unsigned total_time = query.get_distance();
-
-    REQUIRE(total_time != RoutingKit::inf_weight);
-
-    auto arc_path = query.get_arc_path();
-
-    unsigned total_time_from_edges = 0;
-    for (auto &it : arc_path) {
-        auto edge = g.lookup_edges->at(it);
-        auto edge_time = c.traverse(edge);
-        REQUIRE(edge_time != RoutingKit::inf_weight);
-        total_time_from_edges += edge_time;
-    }
-
-    REQUIRE(total_time_from_edges == total_time);
-
-    std::cout << std::setprecision(3) << "Shortest time to go from " << Graph::originalID(source_node)
-              << " to " << target_node << " = " << total_time / 3600.0 << " hours" << std::endl;
-
-    PathPrint(g, arc_path);
-}
+//TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
+//    // get complicated graph
+//    unsigned graph_number = 6;
+//    unsigned node_count = TEST_node_count[graph_number];
+//    std::vector<BuildingEdge> e = TEST_edges[graph_number];
+//    Graph g = Graph(node_count, e);
+//
+//    std::vector<unsigned> travel_time(g.edge_size());
+//
+//    unsigned source_node = 4;
+//    unsigned target_node = 2;
+//
+//    Car c = Car();
+//
+//    for (int i = 0; i < g.edge_size(); ++i) {
+//        travel_time[i] = g.eval(i, c);
+//    }
+//
+//    // Build the shortest path index
+//    auto ch = ContractionHierarchy::build(g.node_size(), g.tail, g.head, travel_time);
+//
+//    ContractionHierarchyQuery query(ch);
+//
+//    std::vector<unsigned> targets = Graph::ID_to_nodes(target_node);
+//
+//    query.reset().add_source(source_node);
+//
+//    for (auto &t : Graph::ID_to_nodes(target_node)) {
+//        query.add_target(t);
+//    }
+//
+//    query.run();
+//
+//    unsigned total_time = query.get_distance();
+//
+//    REQUIRE(total_time != RoutingKit::inf_weight);
+//
+//    auto arc_path = query.get_arc_path();
+//
+//    unsigned total_time_from_edges = 0;
+//    for (auto &it : arc_path) {
+//        auto edge = g.lookup_edges->at(it);
+//        auto edge_time = c.traverse(edge);
+//        REQUIRE(edge_time != RoutingKit::inf_weight);
+//        total_time_from_edges += edge_time;
+//    }
+//
+//    REQUIRE(total_time_from_edges == total_time);
+//
+//    std::cout << std::setprecision(3) << "Shortest time to go from " << Graph::originalID(source_node)
+//              << " to " << target_node << " = " << total_time / 3600.0 << " hours" << std::endl;
+//
+//    PathPrint(g, arc_path);
+//}
 
 //TEST_CASE("Different car", "[GRAPH]") {
 //    std::vector<Edge> e = { Edge(0, 1, 100, 80), Edge(1, 0, 50, 12) };

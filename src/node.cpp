@@ -4,11 +4,12 @@
 
 #include <node.h>
 
+Node::Node(unsigned ID, double SoC) : ID(ID),
+                                      charge_level(SoC) {}
+
 unsigned Node::id() const {
     return this->ID;
 }
-Node::Node(unsigned ID, double SoC) : ID(ID),
-                                      charge_level(SoC) {}
 
 double Node::soc() const {
     return this->charge_level;

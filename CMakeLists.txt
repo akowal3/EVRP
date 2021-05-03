@@ -28,9 +28,11 @@ target_link_libraries(EVRP PUBLIC ${RK_LIB} OpenMP::OpenMP_CXX Threads::Threads 
 # Test executable using Catch2
 # Longer test cases get split into separate files. Include those files to run tests
 add_library(TESTCASES INTERFACE)
+#target_link_libraries(TESTCASES Catch2)
 target_include_directories(TESTCASES INTERFACE testing/testcases)
 
+
 add_executable(TESTS testing/test.cpp testing/graph_test.cpp testing/car_test.cpp)
-target_link_libraries(TESTS Catch2 ${RK_LIB} TESTCASES COMMON)
+target_link_libraries(TESTS Catch2 ${RK_LIB} COMMON TESTCASES)
 
 

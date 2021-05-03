@@ -6,8 +6,8 @@
 
 #include <cassert>
 
-std::vector<double> Graph::SPEED_STEPS = std::vector<double>{ 0.7, 0.8, 0.9, 1.0, 1.1 };
-std::vector<double> Graph::CHARGER_STEPS = std::vector<double>{ 0.7, 0.8, 0.9, 1. };
+std::vector<double> Graph::SPEED_STEPS = std::vector<double>{ 0.7, 0.8, 0.9, 1.0 };
+std::vector<double> Graph::CHARGER_STEPS = std::vector<double>{ 0.0, 0.7, 0.8, 0.9, 1. };// 0 is needed as it will be the destination to the final charger
 
 Graph::Graph(unsigned int charger_count, const std::vector<BuildingEdge> &edges) {
 

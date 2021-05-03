@@ -14,12 +14,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Minor refactoring&#10;Added further car tests.&#10;Refactored code a bit (include &lt;.h&gt; instead of &quot;.h&quot;)">
-      <change afterPath="$PROJECT_DIR$/testing/include/testcase.hpp" afterDir="false" />
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="[BROKEN] Refactored testcases for graph building.&#10;Connect to RoutingKit test is commented out">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graph.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/node.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/graph_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/graph_test.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" afterDir="false" />
     </list>
@@ -192,7 +188,7 @@
       <workItem from="1619726291864" duration="15000" />
       <workItem from="1619771308689" duration="45689000" />
       <workItem from="1619887932397" duration="10346000" />
-      <workItem from="1619949087828" duration="38476000" />
+      <workItem from="1619949087828" duration="38818000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -292,7 +288,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620051946004</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="[BROKEN] Refactored testcases for graph building.&#10;Connect to RoutingKit test is commented out">
+      <created>1620065544676</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1620065544676</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -325,7 +328,8 @@
     <MESSAGE value="Added speed dependent energy consumption model.&#10;Model is rather simple, based on physics. Needs further verification, but is reasonable (according to some websites).&#10;Rewrote/added some tests.&#10;Added custom macros for catch2 (now it fails with message)" />
     <MESSAGE value="Temporarily removed additional Car constructor.&#10;Removed checks from printing in graph_test." />
     <MESSAGE value="Minor refactoring&#10;Added further car tests.&#10;Refactored code a bit (include &lt;.h&gt; instead of &quot;.h&quot;)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor refactoring&#10;Added further car tests.&#10;Refactored code a bit (include &lt;.h&gt; instead of &quot;.h&quot;)" />
+    <MESSAGE value="[BROKEN] Refactored testcases for graph building.&#10;Connect to RoutingKit test is commented out" />
+    <option name="LAST_COMMIT_MESSAGE" value="[BROKEN] Refactored testcases for graph building.&#10;Connect to RoutingKit test is commented out" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

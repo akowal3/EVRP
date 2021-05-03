@@ -65,8 +65,8 @@ std::vector<Testcase> GraphCases = {
     Testcase("Graph with 3 nodes to check charging",
              {
                      BuildingEdge(0, 2, 500, 100),
-                     BuildingEdge(0, 1, 300, 100),
-                     BuildingEdge(1, 2, 300, 100),
+                     BuildingEdge(0, 1, 200, 100),
+                     BuildingEdge(1, 2, 350, 100),
                      BuildingEdge(2, 0, 450, 100),
                      BuildingEdge(1, 0, 250, 100),
                      BuildingEdge(2, 1, 200, 100),
@@ -74,19 +74,6 @@ std::vector<Testcase> GraphCases = {
              3)
 };
 
-std::vector<Testcase> RKCases = {
-    Testcase("Graph with 3 nodes",
-             {
-                     BuildingEdge(0, 2, 500, 100),
-                     BuildingEdge(0, 1, 300, 100),
-                     BuildingEdge(1, 2, 300, 100),
-                     BuildingEdge(2, 0, 450, 100),
-                     BuildingEdge(1, 0, 250, 100),
-                     BuildingEdge(2, 1, 200, 100),
-             },
-             3,
-             { 0, 1, 2 }),
-};
 
 #endif//EVRP_GRAPH_CASES_HPP
 

@@ -19,6 +19,8 @@ public:
     std::vector<unsigned> head;
     std::vector<unsigned> tail;
     unsigned eval(int i, const Car &c) const;
+    std::vector<unsigned int> evaluate_with(const Car &c) const;
+
 
     static std::vector<double> SPEED_STEPS;
     static std::vector<double> CHARGER_STEPS;
@@ -31,6 +33,9 @@ public:
     unsigned int node_size() const;
 
     static unsigned int originalID(unsigned int nodeID);
+    static unsigned int chargerOffset(unsigned int nodeID);
+    static double chargeAt(unsigned int nodeID);
+
     static std::vector<unsigned int> ID_to_nodes(unsigned int nodeID);
 
 private:

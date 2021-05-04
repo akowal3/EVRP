@@ -57,6 +57,15 @@ unsigned Graph::eval(int i, const Car &c) const {
     return total_time;
 }
 
+std::vector<unsigned> Graph::evaluate_with(const Car &c) const {
+    std::vector<unsigned> evaluated_weights;
+    evaluated_weights.reserve(edge_size());
+    for (int i = 0; i < edge_size(); i++) {
+        evaluated_weights.emplace_back(eval(i, c));
+    }
+    return evaluated_weights;
+}
+
 unsigned Graph::node_size() const {
     return this->nodes.size();
 }
@@ -67,6 +76,14 @@ unsigned Graph::edge_size() const {
 
 unsigned Graph::originalID(unsigned nodeID) {
     return nodeID / CHARGER_STEPS.size();
+}
+
+unsigned Graph::chargerOffset(unsigned nodeID) {
+    return nodeID % CHARGER_STEPS.size();
+}
+
+double Graph::chargeAt(unsigned nodeID) {
+    return Graph::CHARGER_STEPS[chargerOffset(nodeID)];
 }
 
 std::vector<unsigned> Graph::ID_to_nodes(unsigned nodeID) {

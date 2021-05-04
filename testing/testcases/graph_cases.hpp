@@ -12,7 +12,7 @@
 #include <testcase.hpp>
 #include <vector>
 
-std::vector<Testcase> GraphCases = {
+std::vector<Testcase> BuildGraphCases = {
     Testcase("Graph with single edge",
              {
                      BuildingEdge(0, 1, 100, 80),
@@ -72,6 +72,26 @@ std::vector<Testcase> GraphCases = {
                      BuildingEdge(2, 1, 200, 100),
              },
              3)
+};
+
+
+std::vector<Testcase> RKCases = {
+    Testcase("Graph with 3 nodes to check charging",
+             {
+                     BuildingEdge(0, 2, 500, 100),
+                     BuildingEdge(0, 1, 200, 100),
+                     BuildingEdge(1, 2, 350, 100),
+                     BuildingEdge(2, 0, 450, 100),
+                     BuildingEdge(1, 0, 250, 100),
+                     BuildingEdge(2, 1, 200, 100),
+             },
+             3,
+             Path({
+                          { 0, 0.9 },
+                          { 1, 0.9 },
+                          { 2, 0 },
+                  },
+                  { 100, 100 })),
 };
 
 

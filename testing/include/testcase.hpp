@@ -6,9 +6,61 @@
 #define EVRP_TESTCASE_HPP
 
 #include <edge.h>
+#include <graph.h>
 
 #include <utility>
 #include <vector>
+
+class Path {
+public:
+    std::vector<unsigned> nodes;
+    std::vector<double> charge_levels;
+    std::vector<unsigned> speeds;
+    Path(const std::vector<std::pair<unsigned, double>>& path, std::vector<unsigned> speeds) : speeds(std::move(speeds)) {
+        nodes.reserve(path.size());
+        charge_levels.reserve(path.size());
+        for (auto& node : path) {
+            nodes.emplace_back(node.first);
+            charge_levels.emplace_back(node.second);
+        }
+    }
+    Path() = default;
+
+    unsigned source() const {
+
+        unsigned start_node = nodes.front();
+
+        auto charge_step = std::find(Graph::CHARGER_STEPS.begin(), Graph::CHARGER_STEPS.end(), charge_levels.front());
+
+        assert(charge_step != Graph::CHARGER_STEPS.end());
+
+        unsigned charge_offset = charge_step - Graph::CHARGER_STEPS.begin();
+
+        return start_node + charge_offset;
+    }
+
+    unsigned target() const {
+        return nodes.back();
+    }
+
+    std::vector<unsigned> get_node_path() const {
+        std::vector<unsigned> node_path;
+        node_path.reserve(nodes.size());
+
+        for (int i = 0; i < nodes.size(); i++) {
+            auto charge_step = std::find(Graph::CHARGER_STEPS.begin(), Graph::CHARGER_STEPS.end(), charge_levels[i]);
+
+            assert(charge_step != Graph::CHARGER_STEPS.end());
+
+            unsigned charge_offset = charge_step - Graph::CHARGER_STEPS.begin();
+
+            node_path.emplace_back(nodes[i] * Graph::CHARGER_STEPS.size() + charge_offset);
+        }
+
+
+        return node_path;
+    }
+};
 
 
 class Testcase {
@@ -16,13 +68,18 @@ public:
     std::string description;
     std::vector<BuildingEdge> graph;
     int node_count;
-    std::vector<unsigned> expected_path;
+    Path path;
 
-    Testcase(std::string description, std::vector<BuildingEdge> graph, int node_count, std::vector<unsigned> expected_path = {})
+    //    Testcase(std::string description, std::vector<BuildingEdge> graph, int node_count)
+    //        : graph(std::move(graph)),
+    //          description(std::move(description)),
+    //          node_count(node_count){};
+
+    Testcase(std::string description, std::vector<BuildingEdge> graph, int node_count, Path path = Path())
         : graph(std::move(graph)),
           description(std::move(description)),
           node_count(node_count),
-          expected_path(std::move(expected_path)){};
+          path(std::move(path)){};
 };
 
 

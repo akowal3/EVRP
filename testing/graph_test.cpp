@@ -56,7 +56,7 @@ void PathPrint(const Graph &g, const std::vector<unsigned> &arc_path) {
 
 TEST_CASE("Build graph", "[GRAPH]") {
 
-    for (auto &testcase : GraphCases) {
+    for (auto &testcase : BuildGraphCases) {
         GIVEN(testcase.description) {
             unsigned node_count = testcase.node_count;
             std::vector<BuildingEdge> e = testcase.graph;
@@ -75,7 +75,7 @@ TEST_CASE("Build graph", "[GRAPH]") {
 
             THEN("There are Graph::CHARGER_STEPS.size() * node_size nodes") {
                 for (int i = 0; i < g.lookup_nodes->size(); i++) {
-                    double expected_soc = Graph::CHARGER_STEPS[i % Graph::CHARGER_STEPS.size()];
+                    double expected_soc = Graph::chargeAt(i);
                     WHEN("Node " << Graph::originalID(i) << ", charge_level: " << 100 * expected_soc << "%") {
                         THEN("charge_level matches the charge_level levels in Graph::CHARGER_STEPS") {
                             REQUIRE(g.lookup_nodes->at(i).soc() == expected_soc);
@@ -106,58 +106,76 @@ TEST_CASE("Build graph", "[GRAPH]") {
 }
 
 TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
-    // get complicated graph
-    unsigned graph_number = 6;
-    unsigned node_count = GraphCases[graph_number].node_count;
-    std::vector<BuildingEdge> e = GraphCases[graph_number].graph;
-    Graph g = Graph(node_count, e);
+    for (auto &testcase : RKCases) {
+        WHEN(testcase.description) {
+            unsigned node_count = testcase.node_count;
+            std::vector<BuildingEdge> e = testcase.graph;
+            Graph g = Graph(node_count, e);
 
-    std::vector<unsigned> travel_time(g.edge_size());
+            unsigned source_node = testcase.path.source();
+            unsigned target_node = testcase.path.target();
 
-    unsigned source_node = 4;
-    unsigned target_node = 2;
+            Car c = Car();
 
-    Car c = Car();
+            // RoutingKit
+            auto ch = ContractionHierarchy::build(g.node_size(), g.tail, g.head, g.evaluate_with(c));
 
-    for (int i = 0; i < g.edge_size(); ++i) {
-        travel_time[i] = g.eval(i, c);
+            ContractionHierarchyQuery query(ch);
+
+            query.reset().add_source(source_node);
+
+            for (auto &t : Graph::ID_to_nodes(target_node)) {
+                query.add_target(t);
+            }
+
+            query.run();
+
+            // Verify correctness
+            auto node_path = query.get_node_path();
+            auto arc_path = query.get_arc_path();
+            auto expected_node_path = testcase.path.get_node_path();
+
+            THEN("Calculated path goes through the correct nodes") {
+                REQUIRE(node_path.size() == testcase.path.nodes.size());
+                for (int i = 0; i < node_path.size(); i++) {
+                    WHEN("Node " << testcase.path.nodes[i]) {
+                        REQUIRE(Graph::originalID(node_path[i]) == testcase.path.nodes[i]);
+                    }
+                }
+            }
+
+            THEN("Calculated path goes through correct nodes with correct SoC levels") {
+                REQUIRE(node_path.size() == expected_node_path.size());
+                for (int i = 0; i < node_path.size(); i++) {
+                    WHEN("Node " << testcase.path.nodes[i] << " (" << testcase.path.charge_levels[i] * 100 << "%)") {
+                        REQUIRE(Graph::chargeAt(node_path[i]) == testcase.path.charge_levels[i]);
+                        REQUIRE(Graph::chargeAt(expected_node_path[i]) == testcase.path.charge_levels[i]);
+                    }
+                }
+                REQUIRE(node_path == expected_node_path);
+            }
+
+
+            THEN("Calculated path takes edges with expected speeds") {
+                REQUIRE(arc_path.size() == testcase.path.speeds.size());
+                for (int i = 0; i < arc_path.size(); i++) {
+                    auto edge = g.lookup_edges->at(arc_path[i]);
+                    auto tailID = Graph::originalID(edge.tail());
+                    auto headID = Graph::originalID(edge.head());
+                    WHEN("Edge " << tailID << "->" << headID << " @ " << edge.get_speed() << " km/h") {
+                        REQUIRE(edge.get_speed() == testcase.path.speeds[i]);
+                        REQUIRE(tailID == testcase.path.nodes[i]);
+                        REQUIRE(edge.tail() == expected_node_path[i]);
+                        if (i == arc_path.size() - 1) {
+                            // for last edge verify the head to match last charger
+                            REQUIRE(headID == testcase.path.nodes.back());
+                            REQUIRE(edge.head() == expected_node_path.back());
+                        }
+                    }
+                }
+            }
+        }
     }
-
-    // Build the shortest path index
-    auto ch = ContractionHierarchy::build(g.node_size(), g.tail, g.head, travel_time);
-
-    ContractionHierarchyQuery query(ch);
-
-    std::vector<unsigned> targets = Graph::ID_to_nodes(target_node);
-
-    query.reset().add_source(source_node);
-
-    for (auto &t : Graph::ID_to_nodes(target_node)) {
-        query.add_target(t);
-    }
-
-    query.run();
-
-    unsigned total_time = query.get_distance();
-
-    REQUIRE(total_time != RoutingKit::inf_weight);
-
-    auto arc_path = query.get_arc_path();
-
-    unsigned total_time_from_edges = 0;
-    for (auto &it : arc_path) {
-        auto edge = g.lookup_edges->at(it);
-        auto edge_time = c.traverse(edge);
-        REQUIRE(edge_time != RoutingKit::inf_weight);
-        total_time_from_edges += edge_time;
-    }
-
-    REQUIRE(total_time_from_edges == total_time);
-
-    std::cout << std::setprecision(3) << "Shortest time to go from " << Graph::originalID(source_node)
-              << " to " << target_node << " = " << total_time / 3600.0 << " hours" << std::endl;
-
-    PathPrint(g, arc_path);
 }
 
 //TEST_CASE("Different car", "[GRAPH]") {

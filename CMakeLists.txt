@@ -25,16 +25,18 @@ target_include_directories(Catch2 INTERFACE testing/include)
 ### EXECUTABLES ###
 # Main project executable
 add_executable(EVRP src/main.cpp)
-target_link_libraries(EVRP PUBLIC ${RK_LIB} OpenMP::OpenMP_CXX Threads::Threads ZLIB::ZLIB COMMON)
+target_link_libraries(EVRP PUBLIC ${RK_LIB} OpenMP::OpenMP_CXX Threads::Threads ZLIB::ZLIB COMMON ROUTER)
 
 # Test executable using Catch2
 # Longer test cases get split into separate files. Include those files to run tests
-add_library(TESTCASES INTERFACE)
+add_library(TESTCASES testing/testcases/graph_cases.cpp)
 #target_link_libraries(TESTCASES Catch2)
-target_include_directories(TESTCASES INTERFACE testing/testcases)
+target_include_directories(TESTCASES PUBLIC testing/include)
+target_include_directories(TESTCASES PUBLIC testing/testcases)
 
 
-add_executable(TESTS testing/test.cpp testing/graph_test.cpp testing/car_test.cpp)
-target_link_libraries(TESTS Catch2 ${RK_LIB} COMMON TESTCASES)
+add_executable(TESTS testing/test.cpp testing/graph_test.cpp testing/car_test.cpp testing/router_test.cpp)
+target_link_libraries(TESTS Catch2 ${RK_LIB} TESTCASES COMMON ROUTER)
+#target_include_directories(TESTS PUBLIC testing/testcases)
 
 

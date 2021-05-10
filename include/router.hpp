@@ -16,11 +16,12 @@
 
 class Router {
 private:
-    Router(int charger_count, const std::vector<BuildingEdge> &edges);
     std::vector<Node> nodes;                              // NodeID, node
     std::unordered_map<unsigned, std::vector<Edge>> edges;// NodeID, edge list (adjacency list)
 public:
-    void route(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
+    std::unordered_map<unsigned int, Label> route(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
+    Router(int charger_count, const std::vector<BuildingEdge> &edges);
+    static void printSPT(const std::unordered_map<unsigned int, Label> &spt, unsigned int sourceID, unsigned int destinationID);
 };
 
 

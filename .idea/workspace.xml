@@ -4,6 +4,7 @@
     <generated>
       <config projectName="EVRP" targetName="EVRP" />
       <config projectName="EVRP" targetName="TESTS" />
+      <config projectName="EVRP" targetName="TESTCASES" />
       <config projectName="EVRP" targetName="ROUTER" />
       <config projectName="EVRP" targetName="COMMON" />
     </generated>
@@ -15,31 +16,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Improved RoutingKit tests">
-      <change afterPath="$PROJECT_DIR$/include/label.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/router.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/label.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/router.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.clang-format" beforeDir="false" afterPath="$PROJECT_DIR$/.clang-format" afterDir="false" />
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Started working on router class">
+      <change afterPath="$PROJECT_DIR$/testing/router_test.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testing/testcases/graph_cases.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RoutingKit/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/RoutingKit/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RoutingKit/doc/ContractionHierarchy.md" beforeDir="false" afterPath="$PROJECT_DIR$/RoutingKit/doc/ContractionHierarchy.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RoutingKit/doc/CustomizableContractionHierarchy.md" beforeDir="false" afterPath="$PROJECT_DIR$/RoutingKit/doc/CustomizableContractionHierarchy.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RoutingKit/doc/OpenStreetMap.md" beforeDir="false" afterPath="$PROJECT_DIR$/RoutingKit/doc/OpenStreetMap.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RoutingKit/doc/SupportFunctions.md" beforeDir="false" afterPath="$PROJECT_DIR$/RoutingKit/doc/SupportFunctions.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RoutingKit/include/routingkit/contraction_hierarchy.h" beforeDir="false" afterPath="$PROJECT_DIR$/RoutingKit/include/routingkit/contraction_hierarchy.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/car.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/edge.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/edge.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/graph.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/graph.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/node.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/node.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/car.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/edge.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/edge.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graph.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/node.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/graph_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/graph_test.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/label.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/label.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/router.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/router.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/label.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/label.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/router.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/include/testcase.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/include/testcase.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" afterDir="false" />
     </list>
@@ -50,6 +36,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
+    <option name="RECENT_COMMON_BRANCH" value="master" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitSEFilterConfiguration">
@@ -98,6 +85,11 @@
     </option>
   </component>
   <component name="RunManager" selected="Catch.TESTS">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Build graph" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH]" TEST_METHOD="Build graph" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -116,13 +108,13 @@
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TESTS" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_MODE="SUITE_TEST">
+    <configuration name="Simple router" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Simple router" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TMP" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_METHOD="TMP" TEST_MODE="SUITE_TEST">
+    <configuration name="TESTS" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -139,6 +131,11 @@
       </method>
     </configuration>
     <configuration name="ROUTER" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="ROUTER" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TESTCASES" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTCASES" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTCASES">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -172,21 +169,22 @@
     <list>
       <item itemvalue="Catch.TESTS" />
       <item itemvalue="Catch.Edge traversal" />
-      <item itemvalue="Catch.TMP" />
       <item itemvalue="Catch.Build graph" />
       <item itemvalue="Catch.Connect to RoutingKit" />
+      <item itemvalue="Catch.Simple router" />
       <item itemvalue="CMake Application.COMMON" />
       <item itemvalue="CMake Application.EVRP" />
       <item itemvalue="CMake Application.ROUTER" />
+      <item itemvalue="CMake Application.TESTCASES" />
       <item itemvalue="Python.scratch_1" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Catch.Simple router" />
         <item itemvalue="Python.scratch_1" />
         <item itemvalue="Catch.Connect to RoutingKit" />
         <item itemvalue="Catch.Build graph" />
         <item itemvalue="Catch.Edge traversal" />
-        <item itemvalue="Catch.TMP" />
       </list>
     </recent_temporary>
   </component>
@@ -221,7 +219,7 @@
       <workItem from="1620295181369" duration="742000" />
       <workItem from="1620328467294" duration="11873000" />
       <workItem from="1620645726557" duration="5190000" />
-      <workItem from="1620659200613" duration="2460000" />
+      <workItem from="1620659200613" duration="15752000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -342,7 +340,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620141718663</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Started working on router class">
+      <created>1620661970494</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1620661970494</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -353,7 +358,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="Router" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -378,14 +395,55 @@
     <MESSAGE value="[BROKEN] Refactored testcases for graph building.&#10;Connect to RoutingKit test is commented out" />
     <MESSAGE value="Commented Connect to RoutingKit testcase back in" />
     <MESSAGE value="Improved RoutingKit tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improved RoutingKit tests" />
+    <MESSAGE value="Started working on router class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Started working on router class" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/src/main.cpp</url>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <line>108</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <line>134</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <line>48</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <line>46</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/testing/router_test.cpp</url>
+          <line>23</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <line>114</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/testing/router_test.cpp</url>
+          <line>21</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <line>160</line>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

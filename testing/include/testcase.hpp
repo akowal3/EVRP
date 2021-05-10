@@ -8,6 +8,8 @@
 #include <edge.h>
 #include <graph.h>
 
+#include <cassert>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -16,10 +18,11 @@ public:
     std::vector<unsigned> nodes;
     std::vector<double> charge_levels;
     std::vector<double> speeds;
-    Path(const std::vector<std::pair<unsigned, double>>& path, std::vector<double> speeds) : speeds(std::move(speeds)) {
+    Path(const std::vector<std::pair<unsigned, double>> &path, std::vector<double> speeds) :
+        speeds(std::move(speeds)) {
         nodes.reserve(path.size());
         charge_levels.reserve(path.size());
-        for (auto& node : path) {
+        for (auto &node : path) {
             nodes.emplace_back(node.first);
             charge_levels.emplace_back(node.second);
         }
@@ -70,11 +73,11 @@ public:
     int node_count;
     Path path;
 
-    Testcase(std::string description, std::vector<BuildingEdge> graph, int node_count, Path path = Path())
-        : graph(std::move(graph)),
-          description(std::move(description)),
-          node_count(node_count),
-          path(std::move(path)){};
+    Testcase(std::string description, std::vector<BuildingEdge> graph, int node_count, Path path = Path()) :
+        graph(std::move(graph)),
+        description(std::move(description)),
+        node_count(node_count),
+        path(std::move(path)){};
 };
 
 

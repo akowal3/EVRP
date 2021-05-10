@@ -76,22 +76,37 @@ std::vector<Testcase> BuildGraphCases = {
 
 
 std::vector<Testcase> RKCases = {
-    Testcase("Graph with 3 nodes to check charging",
+    Testcase("Triangle graph choose to charge",
              {
                      BuildingEdge(0, 2, 500, 100),
                      BuildingEdge(0, 1, 200, 100),
                      BuildingEdge(1, 2, 350, 100),
-                     BuildingEdge(2, 0, 450, 100),
-                     BuildingEdge(1, 0, 250, 100),
-                     BuildingEdge(2, 1, 200, 100),
              },
              3,
+
              Path({
                           { 0, 0.9 },
                           { 1, 0.9 },
-                          { 2, 0 },
+                          { 2, 0.7 },
                   },
-                  { 100, 100 })),
+                  { 100.0, 100.0 })),
+
+
+    Testcase("Triangle graph choo",
+
+             {
+                     BuildingEdge(0, 2, 500, 100),
+                     BuildingEdge(0, 1, 200, 100),
+                     BuildingEdge(1, 2, 300, 100),
+             },
+             3,
+
+             Path({
+                          { 0, 1 },
+                          { 2, 0.7 },
+                  },
+                  { 81.0 })),
+
 };
 
 

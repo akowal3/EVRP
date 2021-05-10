@@ -32,6 +32,8 @@ public:
     unsigned int edge_size() const;
     unsigned int node_size() const;
 
+    void route(unsigned sourceID, unsigned destinationID) const;
+
     static unsigned int originalID(unsigned int nodeID);
     static unsigned int chargerOffset(unsigned int nodeID);
     static double chargeAt(unsigned int nodeID);

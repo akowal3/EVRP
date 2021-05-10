@@ -42,7 +42,7 @@ TEST_CASE("Edge traversal", "[CAR]") {
             }
         }
 
-        THEN("Will always have to charge if SoC at the end == 1") {
+        THEN("Will always have to charge if soc_left at the end == 1") {
             Node start = Node(0, 0.8);
             Node end = Node(1, 1);
             unsigned distance = 100;

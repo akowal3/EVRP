@@ -13,6 +13,8 @@ include_directories(RoutingKit/include)
 ### LIBRARIES & COMMON FILES ###
 # Combine common classes into single library
 add_library(COMMON src/car.cpp src/edge.cpp src/graph.cpp src/node.cpp)
+add_library(ROUTER src/router.cpp src/label.cpp)
+target_link_libraries(ROUTER PUBLIC COMMON)
 
 # Link external libraries to the main executable
 find_library(RK_LIB libroutingkit.so PATHS RoutingKit/lib) # RoutingKit library

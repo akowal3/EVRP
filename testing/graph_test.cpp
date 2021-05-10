@@ -40,14 +40,14 @@ void PathPrint(const Graph &g, const std::vector<unsigned> &arc_path) {
     Car c = Car();
     for (auto it = arc_path.begin(); it != arc_path.end(); ++it) {
         auto edge = g.lookup_edges->at(*it);
-        unsigned tailID = edge.tail();
+        unsigned tailID = edge.tailID();
 
         only_travel += edge.get_travel_time();
 
         std::cout << Graph::originalID(tailID) << "(" << g.lookup_nodes->at(tailID).soc() * 100 << "%) --@" << edge.get_speed() << "km/h--> ";
 
         if (it == arc_path.end() - 1) {
-            unsigned headID = edge.head();
+            unsigned headID = edge.headID();
             std::cout << Graph::originalID(headID) << "(" << g.lookup_nodes->at(headID).soc() * 100 << "%)" << std::endl;
         }
     }
@@ -85,7 +85,7 @@ TEST_CASE("Build graph", "[GRAPH]") {
             }
 
             THEN("Edges are connecting same nodes and are growing with speeds and charge steps") {
-                std::unordered_map<unsigned, std::unordered_map<unsigned, std::unordered_map<unsigned, unsigned>>> ExpectedGraphNodeMap;// from: {to: {travel_time: soc_count}}
+                std::unordered_map<unsigned, std::unordered_map<unsigned, std::unordered_map<unsigned, unsigned>>> ExpectedGraphNodeMap;// from: {to: {total_time: soc_count}}
 
                 for (auto edge : e) {
                     for (auto speed_modifier : Graph::SPEED_STEPS) {
@@ -94,9 +94,9 @@ TEST_CASE("Build graph", "[GRAPH]") {
                     }
                 }
 
-                std::unordered_map<unsigned, std::unordered_map<unsigned, std::unordered_map<unsigned, unsigned>>> GraphNodeMap;// from: {to: {travel_time: soc_count}}
+                std::unordered_map<unsigned, std::unordered_map<unsigned, std::unordered_map<unsigned, unsigned>>> GraphNodeMap;// from: {to: {total_time: soc_count}}
                 for (auto ge : *g.lookup_edges) {
-                    ++GraphNodeMap[ge.tail() / Graph::CHARGER_STEPS.size()][ge.head() / Graph::CHARGER_STEPS.size()][ge.get_travel_time()];
+                    ++GraphNodeMap[ge.tailID() / Graph::CHARGER_STEPS.size()][ge.headID() / Graph::CHARGER_STEPS.size()][ge.get_travel_time()];
                 }
 
                 REQUIRE(ExpectedGraphNodeMap == GraphNodeMap);
@@ -107,7 +107,7 @@ TEST_CASE("Build graph", "[GRAPH]") {
 
 TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
     for (auto &testcase : RKCases) {
-        WHEN(testcase.description) {
+        GIVEN(testcase.description) {
             unsigned node_count = testcase.node_count;
             std::vector<BuildingEdge> e = testcase.graph;
             Graph g = Graph(node_count, e);
@@ -144,7 +144,7 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
                 }
             }
 
-            THEN("Calculated path goes through correct nodes with correct SoC levels") {
+            THEN("Calculated path goes through correct nodes with correct soc_left levels") {
                 REQUIRE(node_path.size() == expected_node_path.size());
                 for (int i = 0; i < node_path.size(); i++) {
                     WHEN("Node " << testcase.path.nodes[i] << " (" << testcase.path.charge_levels[i] * 100 << "%)") {
@@ -160,16 +160,16 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
                 REQUIRE(arc_path.size() == testcase.path.speeds.size());
                 for (int i = 0; i < arc_path.size(); i++) {
                     auto edge = g.lookup_edges->at(arc_path[i]);
-                    auto tailID = Graph::originalID(edge.tail());
-                    auto headID = Graph::originalID(edge.head());
-                    WHEN("Edge " << tailID << "->" << headID << " @ " << edge.get_speed() << " km/h") {
+                    auto tailID = Graph::originalID(edge.tailID());
+                    auto headID = Graph::originalID(edge.headID());
+                    WHEN(tailID << " -> " << headID << " @ " << edge.get_speed() << " km/h") {
                         REQUIRE(edge.get_speed() == testcase.path.speeds[i]);
                         REQUIRE(tailID == testcase.path.nodes[i]);
-                        REQUIRE(edge.tail() == expected_node_path[i]);
+                        REQUIRE(edge.tailID() == expected_node_path[i]);
                         if (i == arc_path.size() - 1) {
-                            // for last edge verify the head to match last charger
+                            // for last edge verify the head to match last destinationCharger
                             REQUIRE(headID == testcase.path.nodes.back());
-                            REQUIRE(edge.head() == expected_node_path.back());
+                            REQUIRE(edge.headID() == expected_node_path.back());
                         }
                     }
                 }
@@ -199,9 +199,9 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
 //        Car ideal = Car(70.0, 0, 85.0, 0.0, 1.0, 1000.0);
 //        for (int i = 0; i < e.size(); i++) {
 //            for (int j = 0; j < reps; j++) {
-//                auto travel_time = g.eval(i * reps + j, ideal);
-//                REQUIRE(travel_time == e[i].traverse(ideal, Graph::SPEED_STEPS[j]));
-//                REQUIRE(travel_time == e[i].get_travel_time(Graph::SPEED_STEPS[j]));
+//                auto total_time = g.eval(i * reps + j, ideal);
+//                REQUIRE(total_time == e[i].traverse(ideal, Graph::SPEED_STEPS[j]));
+//                REQUIRE(total_time == e[i].get_travel_time(Graph::SPEED_STEPS[j]));
 //            }
 //        }
 //    }
@@ -216,7 +216,7 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
 //                                   Edge(2, 3, 110, 60), Edge(3, 4, 20, 120)};
 //        Graph g = Graph(node_size, edges);
 //
-//        std::vector<unsigned> travel_time((g.size()));
+//        std::vector<unsigned> total_time((g.size()));
 //
 //        unsigned source_node = 0;
 //        unsigned target_node = 4;
@@ -224,12 +224,12 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
 //        Car c = Car();
 //
 //        for (int i = 0; i < g.size(); ++i) {
-//            travel_time[i] = g.eval(i, c);
+//            total_time[i] = g.eval(i, c);
 //        }
 //
 //
 //        // Build the shortest path index
-//        auto ch = ContractionHierarchy::build(node_size, g.tail, g.head, travel_time);
+//        auto ch = ContractionHierarchy::build(node_size, g.tailID, g.head, total_time);
 //
 //        ContractionHierarchyQuery query(ch);
 //
@@ -251,7 +251,7 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
 //                                   Edge(3, 2, 110, 60), Edge(4, 3, 20, 120)};
 //        Graph g = Graph(node_size, edges);
 //
-//        std::vector<unsigned> travel_time((g.size()));
+//        std::vector<unsigned> total_time((g.size()));
 //
 //        unsigned source_node = 0;
 //        unsigned target_node = 4;
@@ -259,12 +259,12 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
 //        Car c = Car();
 //
 //        for (int i = 0; i < g.size(); ++i) {
-//            travel_time[i] = g.eval(i, c);
+//            total_time[i] = g.eval(i, c);
 //        }
 //
 //
 //        // Build the shortest path index
-//        auto ch = ContractionHierarchy::build(node_size, g.tail, g.head, travel_time);
+//        auto ch = ContractionHierarchy::build(node_size, g.tailID, g.head, total_time);
 //
 //        ContractionHierarchyQuery query(ch);
 //

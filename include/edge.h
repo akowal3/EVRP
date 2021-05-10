@@ -23,10 +23,12 @@ public:
     Time get_travel_time() const;
     unsigned get_distance() const;
     double get_speed() const;
-    unsigned tail() const;
-    unsigned head() const;
+    unsigned tailID() const;
+    unsigned headID() const;
     double start_charge_level() const;
     double end_charge_level() const;
+    const Node *destinationCharger() const;
+    const Node *sourceCharger() const;
 };
 
 // Dummy datastructure used to create simple graph by hand

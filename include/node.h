@@ -14,6 +14,7 @@ public:
     double soc() const;
     Node(unsigned ID, double SoC);
     Node();
+    Node(unsigned int ID);
 };
 
 

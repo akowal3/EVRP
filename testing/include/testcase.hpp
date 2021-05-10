@@ -15,8 +15,8 @@ class Path {
 public:
     std::vector<unsigned> nodes;
     std::vector<double> charge_levels;
-    std::vector<unsigned> speeds;
-    Path(const std::vector<std::pair<unsigned, double>>& path, std::vector<unsigned> speeds) : speeds(std::move(speeds)) {
+    std::vector<double> speeds;
+    Path(const std::vector<std::pair<unsigned, double>>& path, std::vector<double> speeds) : speeds(std::move(speeds)) {
         nodes.reserve(path.size());
         charge_levels.reserve(path.size());
         for (auto& node : path) {
@@ -69,11 +69,6 @@ public:
     std::vector<BuildingEdge> graph;
     int node_count;
     Path path;
-
-    //    Testcase(std::string description, std::vector<BuildingEdge> graph, int node_count)
-    //        : graph(std::move(graph)),
-    //          description(std::move(description)),
-    //          node_count(node_count){};
 
     Testcase(std::string description, std::vector<BuildingEdge> graph, int node_count, Path path = Path())
         : graph(std::move(graph)),

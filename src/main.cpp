@@ -17,16 +17,16 @@ using namespace RoutingKit;
 //    // Load a car routing graph from OpenStreetMap-based data
 //    //    auto graph = simple_load_osm_car_routing_graph_from_pbf(
 //    //            "../OSM/opolskie-latest.osm.pbf");
-//    //    auto tail = invert_inverse_vector(graph.first_out);
+//    //    auto tailID = invert_inverse_vector(graph.first_out);
 //
 //
-//    auto tail = std::vector<unsigned>{0, 0, 1, 1, 2, 3};
+//    auto tailID = std::vector<unsigned>{0, 0, 1, 1, 2, 3};
 //    auto head = std::vector<unsigned>{1, 2, 3, 4, 3, 4};
 //    auto distance = std::vector<unsigned>{10, 7, 5, 12, 11, 2};
 //    unsigned node_size = 5;
 //
 //    // Build the shortest path index
-//    auto ch = ContractionHierarchy::build(node_size, tail, head, weight);
+//    auto ch = ContractionHierarchy::build(node_size, tailID, head, weight);
 //
 //    ContractionHierarchyQuery query(ch);
 //
@@ -51,7 +51,7 @@ using namespace RoutingKit;
 //}
 
 //void graph_build() {
-//    //    auto tail = std::vector<unsigned>{0, 0, 1, 1, 2, 3};
+//    //    auto tailID = std::vector<unsigned>{0, 0, 1, 1, 2, 3};
 //    //    auto head = std::vector<unsigned>{1, 2, 3, 4, 3, 4};
 //    //    auto distance = std::vector<unsigned>{10, 7, 5, 12, 11, 2};
 //    unsigned node_size = 5;
@@ -65,14 +65,14 @@ using namespace RoutingKit;
 //    }
 //    std::cout << std::endl;
 //
-//    for (auto t : g.tail) {
+//    for (auto t : g.tailID) {
 //        std::cout << t << ", ";
 //    }
 //    std::cout << std::endl;
 //
-//    std::vector<unsigned> travel_time((g.size()));
+//    std::vector<unsigned> total_time((g.size()));
 //    //    for (auto w : *g.weights) {
-//    //        travel_time.push_back(w(c));// can be an array of const size
+//    //        total_time.push_back(w(c));// can be an array of const size
 //    //        std::cout << w(c) << ", ";
 //    //    }
 //
@@ -85,13 +85,13 @@ using namespace RoutingKit;
 //    Car c = Car();
 //
 //    for (int i = 0; i < g.size(); ++i) {
-//        travel_time[i] = g.eval(i, c);
-//        std::cout << travel_time[i] << ", ";
+//        total_time[i] = g.eval(i, c);
+//        std::cout << total_time[i] << ", ";
 //    }
 //    std::cout << std::endl;
 //
 //    // Build the shortest path index
-//    auto ch = ContractionHierarchy::build(node_size, g.tail, g.head, travel_time);
+//    auto ch = ContractionHierarchy::build(node_size, g.tailID, g.head, total_time);
 //
 //    ContractionHierarchyQuery query(ch);
 //

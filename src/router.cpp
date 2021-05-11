@@ -2,12 +2,35 @@
 // Created by akowal3 on 07/05/2021.
 //
 
+#include <algorithm>
 #include <cassert>
+#include <graph.h>
 #include <iostream>
 #include <router.hpp>
 
 using MinHeapPriorityQueue =
         std::priority_queue<Label, std::vector<Label>, std::greater<std::vector<Label>::value_type>>;
+
+inline std::ostream &operator<<(std::ostream &os, const label_type &type) {
+    switch (type) {
+        case label_type::INITIAL_DUMMY:
+            os << "INITIAL_DUMMY";
+            break;
+        case label_type::NO_CHARGE:
+            os << "NO_CHARGE";
+            break;
+        case label_type::CHARGE_MAXIMUM:
+            os << "CHARGE_MAXIMUM";
+            break;
+        case label_type::CHARGE_MINIMUM:
+            os << "CHARGE_MINIMUM";
+            break;
+        case label_type::CHARGE_70:
+            os << "CHARGE_70";
+            break;
+    }
+    return os;
+}
 
 Router::Router(int charger_count, const std::vector<BuildingEdge> &edges) {
     //    this->nodes = std::vector<Node>{};
@@ -17,11 +40,14 @@ Router::Router(int charger_count, const std::vector<BuildingEdge> &edges) {
     }
 
     for (const BuildingEdge &e : edges) {
-        this->edges[e.from].emplace_back(Edge(&nodes[e.from], &nodes[e.to], e.distance, e.max_speed));
+        for (auto speed_modifier : Graph::SPEED_STEPS) {
+            this->edges[e.from].emplace_back(Edge(&nodes[e.from], &nodes[e.to], e.distance, e.max_speed * speed_modifier));
+        }
+        //        this->edges[e.from].emplace_back(Edge(&nodes[e.from], &nodes[e.to], e.distance, e.max_speed));
     }
 }
 
-std::unordered_map<unsigned int, Label> Router::route(unsigned int sourceID, unsigned int destinationID, const Car &c) const {
+RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, const Car &c) const {
     // All labels in the vector are non-dominating in respect to total_time and soc_left.
     // That is, all labels for a node are Pareto optimal!
     std::unordered_map<unsigned, std::vector<Label>> label_map;
@@ -33,7 +59,7 @@ std::unordered_map<unsigned int, Label> Router::route(unsigned int sourceID, uns
     // lazy deletes as std::priority_queue doesn't allow for arbitrary deletes
     std::unordered_set<unsigned> deleted;
 
-    label_queue.emplace(Label(sourceID, c.max_soc()));// soc_left = c.initialSoC() coming from the query
+    label_queue.emplace(Label(sourceID, c.initial_soc()));// soc_left = c.initialSoC() coming from the query
 
     while (!label_queue.empty()) {
         Label current = label_queue.top();
@@ -74,35 +100,34 @@ std::unordered_map<unsigned int, Label> Router::route(unsigned int sourceID, uns
             std::vector<Label> labels;
             // 1. Go to neighbor without any charging, if possible.
             if (c.can_traverse(edge, current.soc())) {
-                labels.emplace_back(Label(connectionID, currentID, current.get_total_time() + travel_time,
-                                          0, c.soc_left(edge, current.soc())));
+                labels.emplace_back(Label(label_type::NO_CHARGE, connectionID, currentID, current.get_total_time() + travel_time,
+                                          0, c.soc_left(edge, current.soc()), &edge));
             }
             // 2. Do a full recharge, if needed.
             if (current.soc() < c.max_soc() && c.can_traverse_with_max_soc(edge)) {
                 Time full_charge_time = c.get_charge_time_to_max(edge, current.soc());
-                labels.emplace_back(Label(connectionID, currentID,
+                labels.emplace_back(Label(label_type::CHARGE_MAXIMUM, connectionID, currentID,
                                           current.get_total_time() + travel_time + full_charge_time,
-                                          full_charge_time, c.soc_left_from_max_soc(edge)));
+                                          full_charge_time, c.soc_left_from_max_soc(edge), &edge));
             }
 
 
-            // 3. Only charge enough to get to neighbor. Only for non-final connections
+            // 3. Only charge enough to get to neighbor.
             if (current.soc() < c.max_soc() &&
                 !c.can_traverse(edge, current.soc()) &&
-                connectionID != destinationID) {
-
+                c.can_traverse_with_max_soc(edge)) {
                 Time partial_charge_time = c.get_charge_time_to_traverse(edge, current.soc());
-                labels.emplace_back(Label(connectionID, currentID,
+                labels.emplace_back(Label(label_type::CHARGE_MINIMUM, connectionID, currentID,
                                           current.get_total_time() + travel_time + partial_charge_time,
-                                          partial_charge_time, c.min_soc()));
+                                          partial_charge_time, c.min_soc(), &edge));
             }
 
             // 4. Charge to 70%
             if (current.soc() < 0.7 && c.can_traverse(edge, 0.7)) {
                 Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.7);
-                labels.emplace_back(Label(connectionID, currentID,
+                labels.emplace_back(Label(label_type::CHARGE_70, connectionID, currentID,
                                           current.get_total_time() + travel_time + partial_charge_time,
-                                          partial_charge_time, 0.7));
+                                          partial_charge_time, 0.7, &edge));
             }
 
             // Update this nodes label bag. This is similar to "relaxing" edges in standard Dijkstra's.
@@ -138,27 +163,60 @@ std::unordered_map<unsigned int, Label> Router::route(unsigned int sourceID, uns
         }
     }
 
-    return shortest_path_tree;
+    return build_result(shortest_path_tree, c, sourceID, destinationID);
 }
 
-void Router::printSPT(const std::unordered_map<unsigned int, Label> &spt, unsigned sourceID, unsigned destinationID) {
+void Router::printSPT(const RouterResult &res) {
+
+    for (int i = 0; i < res.nodes.size(); i++) {
+        // print node
+        if (i == 0) {
+            std::cout << res.nodes[i]->id() << ": " << res.socs_out[i] << std::endl;
+        } else if (i == res.nodes.size() - 1) {
+            std::cout << res.nodes[i]->id() << ": " << res.socs_in[i - 1] << std::endl;
+        } else {
+            std::cout << res.nodes[i]->id() << ": " << res.socs_in[i - 1] << " -> " << res.socs_out[i] << " in " << res.charge_times[i] / 3600.0 << " hours (" << res.charges[i] << ")" << std::endl;
+        }
+
+        // print path
+        if (i != res.nodes.size() - 1) {
+            auto edge = res.arcs[i];
+            std::cout << "| " << edge->get_distance() << " km @ " << edge->get_speed() << " km/h in " << edge->get_travel_time() / 3600.0 << " hours." << std::endl;
+        }
+    }
+
+    std::cout << "Total journey time: " << res.total_time / 3600.0 << " hours, including " << res.charge_time / 3600.0 << " hours of charging" << std::endl;
+}
+
+RouterResult Router::build_result(const std::unordered_map<unsigned int, Label> &spt, const Car &c, unsigned sourceID, unsigned destinationID) {
+    // possibly could be made more efficiently without vectors
+    RouterResult res = RouterResult();
     Label current = spt.at(destinationID);
-    std::vector<double> socs = {};
-    std::vector<double> charge_times = {};
-    std::vector<unsigned> nodeIDs = {};
+    res.total_time = current.get_total_time();
+
 
     while (current.get_nodeID() != sourceID) {
-        socs.push_back(current.soc());
-        charge_times.push_back(current.get_charge_time() / 3600.0);
-        nodeIDs.push_back(current.get_nodeID());
+        res.socs_in.push_back(current.soc());
+        res.socs_out.push_back(current.soc() + c.consumed_soc(*current.edge));
+        res.charge_times.push_back(current.get_charge_time());
+        res.arcs.push_back(current.edge);
+        res.nodes.push_back(current.edge->destinationCharger());
+        res.charges.push_back(current.type);
         current = spt.at(current.get_parentID());
     }
 
-    socs.push_back(current.soc());
-    charge_times.push_back(current.get_charge_time() / 3600.0);
-    nodeIDs.push_back(current.get_nodeID());
+    res.nodes.push_back(res.arcs.back()->sourceCharger());
 
-    for (int i = socs.size() - 1; i >= 0; i--) {
-        std::cout << "Node " << nodeIDs[i] << " (" << socs[i] * 100 << "%)" << std::endl;
+    for (auto t : res.charge_times) {
+        res.charge_time += t;
     }
+
+    std::reverse(res.socs_out.begin(), res.socs_out.end());
+    std::reverse(res.socs_in.begin(), res.socs_in.end());
+    std::reverse(res.charge_times.begin(), res.charge_times.end());
+    std::reverse(res.arcs.begin(), res.arcs.end());
+    std::reverse(res.nodes.begin(), res.nodes.end());
+    std::reverse(res.charges.begin(), res.charges.end());
+
+    return res;
 }

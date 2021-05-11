@@ -29,6 +29,10 @@ public:
     }
     Path() = default;
 
+    unsigned source_original() const {
+        return nodes.front();
+    }
+
     unsigned source() const {
 
         unsigned start_node = nodes.front();

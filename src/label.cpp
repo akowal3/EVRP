@@ -6,13 +6,13 @@
 
 unsigned Label::labelCounter = 0;
 
-Label::Label(unsigned int nodeID, unsigned int parentID, Time total_time, Time charge_time, double remaining_soc, double consumed_energy) :
+Label::Label(label_type type, unsigned int nodeID, unsigned int parentID, Time total_time, Time charge_time, double remaining_soc, const Edge *edge) :
     nodeID(nodeID), parentID(parentID), total_time(total_time), charge_time(charge_time),
-    remaining_soc(remaining_soc), consumed_energy(consumed_energy), labelID(labelCounter++) {}
+    remaining_soc(remaining_soc), edge(edge), labelID(labelCounter++), type(type) {}
 
 Label::Label(unsigned int nodeID, double SoC) :
     nodeID(nodeID), parentID(nodeID), total_time(0), charge_time(0),
-    remaining_soc(SoC), consumed_energy(0), labelID(labelCounter++) {}
+    remaining_soc(SoC), edge(nullptr), labelID(labelCounter++), type(label_type::INITIAL_DUMMY) {}
 
 bool Label::operator<(const Label &other) const {
     return total_time < other.total_time;

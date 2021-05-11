@@ -13,7 +13,7 @@ class Node;
 class Car {
 
 public:
-    Car();
+    Car(double soc_initial = 1.0);// start with full battery by default
     bool can_traverse(const Edge &e) const;
     bool can_traverse(const Edge &e, double initialSoC) const;
     bool can_traverse_with_max_soc(const Edge &e) const;
@@ -22,6 +22,7 @@ public:
 
     Time traverse(const Edge &e) const;
     double consumed_power(const Edge &e) const;
+    double consumed_soc(const Edge &e) const;
     double power_left(const Edge &e, double initialSoC) const;
     double power_left(const Edge &e) const;
     double calculate_consumption_rate(double v_kmh) const;
@@ -37,13 +38,15 @@ public:
 
     double max_soc() const;
     double min_soc() const;
+    double initial_soc() const;
 
 private:
     double battery_capacity;  // in Wh
     double energy_consumption;// in Wh/km
     double charging_power;    // in kW
-    double soc_min;           // in percentage
-    double soc_max;           // in percentage
+    double soc_min;           // in percentage (0,1)
+    double soc_max;           // in percentage (0,1)
+    double soc_initial;       // in percentage (0,1). Initial SoC given by the user
     double range;             // in km
     double charging_rate;     // in %/hour
     double CrossSectionalArea;// in m2

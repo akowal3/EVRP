@@ -174,6 +174,7 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
                     }
                 }
             }
+            AND_THEN("Route takes " << query.get_distance() / 3600.0 << " hours (" << query.get_distance() << " seconds)"){};
         }
     }
 }

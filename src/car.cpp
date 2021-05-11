@@ -8,14 +8,15 @@
 #include <cmath>
 #include <vector>
 
-Car::Car() {
+Car::Car(double soc_initial) :
+    soc_initial(soc_initial) {
     // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
     this->battery_capacity = 70.0;            // (kWh) battery usable
     this->energy_consumption = 131.0 / 1000.0;// (Wh/km) Combined - Mild Weather
     this->charging_power = 85.0;              // (kW)  Supercharver v2 150kW
     this->range = 535.0;                      // (km) Combined - Mild Weather
     this->soc_min = 0.1;
-    this->soc_max = 1.0;
+    this->soc_max = 0.95;
     this->charging_rate = charging_power / battery_capacity;
     this->CrossSectionalArea = 2.2;// cross sectional area in m2
     this->RollingResistanceCoeff = 0.007;
@@ -80,6 +81,7 @@ Time Car::get_charge_time(const Node *charger, double initialSoC, double endSoC)
 
 // This function calculates the time necessary to charge a car in order to traverse the edge
 Time Car::get_charge_time_to_traverse(const Edge &e, double initialSoC) const {
+    //FIXME: it returns SoC > 1!
     double requiredSoC = consumed_power(e) / battery_capacity + soc_min;
     return get_charge_time(e.sourceCharger(), initialSoC, requiredSoC);
 }
@@ -95,6 +97,10 @@ double Car::power_left(const Edge &e, double initialSoC) const {
 double Car::consumed_power(const Edge &e) const {//kWh
     double consumption_rate = this->calculate_consumption_rate(e.get_speed());
     return consumption_rate * e.get_distance() / 1000;//kWh
+}
+
+double Car::consumed_soc(const Edge &e) const {
+    return consumed_power(e) / battery_capacity;
 }
 
 double Car::calculate_consumption_rate(double v_kmh) const {
@@ -142,4 +148,8 @@ double Car::max_soc() const {
 }
 double Car::min_soc() const {
     return this->soc_min;
+}
+
+double Car::initial_soc() const {
+    return this->soc_initial;
 }

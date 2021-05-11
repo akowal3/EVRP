@@ -14,14 +14,30 @@
 #include <unordered_set>
 #include <vector>
 
+typedef struct {
+    std::vector<const Node *> nodes;
+    std::vector<const Edge *> arcs;
+    std::vector<double> socs_in;
+    std::vector<double> socs_out;
+    std::vector<label_type> charges;
+    std::vector<Time> charge_times;
+    Time total_time;
+    Time charge_time;
+} RouterResult;
+
+extern inline std::ostream &operator<<(std::ostream &os, const label_type &type);
+
+
 class Router {
 private:
     std::vector<Node> nodes;                              // NodeID, node
     std::unordered_map<unsigned, std::vector<Edge>> edges;// NodeID, edge list (adjacency list)
+    static RouterResult build_result(const std::unordered_map<unsigned int, Label> &spt, const Car &c, unsigned int sourceID, unsigned int destinationID);
+
 public:
-    std::unordered_map<unsigned int, Label> route(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
+    RouterResult route(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
     Router(int charger_count, const std::vector<BuildingEdge> &edges);
-    static void printSPT(const std::unordered_map<unsigned int, Label> &spt, unsigned int sourceID, unsigned int destinationID);
+    static void printSPT(const RouterResult &res);
 };
 
 

@@ -8,6 +8,14 @@
 #include <cmath>
 #include <vector>
 
+// returns left >= right asuming the inputs correspond to SoC values and the SoC value is only correct to 1 decimal place ie. XX.X
+inline bool soc_greater_or_equal(double left, double right) {
+    const static double epsilon = 0.001;
+    bool equal = std::abs(left - right) < epsilon;
+    bool greater = left - right >= epsilon;
+    return greater || equal;
+}
+
 Car::Car(double soc_initial) :
     soc_initial(soc_initial) {
     // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
@@ -27,11 +35,11 @@ Car::Car(double soc_initial) :
 }
 
 bool Car::can_traverse(const Edge &e) const {
-    return power_left(e) >= min_charge_level();
+    return soc_greater_or_equal(power_left(e), min_charge_level());
 }
 
 bool Car::can_traverse(const Edge &e, double initialSoC) const {
-    return power_left(e, initialSoC) >= min_charge_level();
+    return soc_greater_or_equal(power_left(e, initialSoC), min_charge_level());
 }
 
 bool Car::can_traverse_with_max_soc(const Edge &e) const {
@@ -60,20 +68,21 @@ Time Car::get_charge_time_to_max(const Edge &e, double initialSoC) const {
 Time Car::get_charge_time(const Node *charger, double initialSoC, double endSoC) const {
     double charging_time = 0.0;// in hours
 
-    //TODO: for now the edge doesn't hold information about the different chargers.
-    // Those fixed modifiers and cutoff levels should be part of the Node located at the head of the edge
+    if (soc_greater_or_equal(endSoC, initialSoC)) {// if charging is required
+        //TODO: for now the edge doesn't hold information about the different chargers.
+        // Those fixed modifiers and cutoff levels should be part of the Node located at the head of the edge
+        std::vector<double> rate_modifier = { 1.0, 0.7, 0.5 };
+        std::vector<double> cutoff_level = { 0.7, 0.9, 1.0 };
 
-    std::vector<double> rate_modifier = { 1.0, 0.7, 0.5 };
-    std::vector<double> cutoff_level = { 0.7, 0.9, 1.0 };
+        for (int i = 0; i < rate_modifier.size(); i++) {
+            double additional_charge = (cutoff_level[i] <= endSoC) ? cutoff_level[i] - initialSoC
+                                                                   : endSoC - initialSoC;
+            charging_time += additional_charge / (charging_rate * rate_modifier[i]);
+            initialSoC += additional_charge;
 
-    for (int i = 0; i < rate_modifier.size(); i++) {
-        double additional_charge = (cutoff_level[i] <= endSoC) ? cutoff_level[i] - initialSoC
-                                                               : endSoC - initialSoC;
-        charging_time += additional_charge / (charging_rate * rate_modifier[i]);
-        initialSoC += additional_charge;
-
-        if (initialSoC == endSoC)
-            break;// reached desired charge. No need to charge further.
+            if (initialSoC == endSoC)
+                break;// reached desired charge. No need to charge further.
+        }
     }
 
     return Time(3600.0 * charging_time);// in seconds
@@ -81,8 +90,10 @@ Time Car::get_charge_time(const Node *charger, double initialSoC, double endSoC)
 
 // This function calculates the time necessary to charge a car in order to traverse the edge
 Time Car::get_charge_time_to_traverse(const Edge &e, double initialSoC) const {
-    //FIXME: it returns SoC > 1!
     double requiredSoC = consumed_power(e) / battery_capacity + soc_min;
+
+    if (requiredSoC > 1.0) throw "SoC required to traverse this edge is greater than battery capacity";
+
     return get_charge_time(e.sourceCharger(), initialSoC, requiredSoC);
 }
 
@@ -94,9 +105,9 @@ double Car::power_left(const Edge &e, double initialSoC) const {
     return battery_capacity * initialSoC - consumed_power(e);
 }
 
-double Car::consumed_power(const Edge &e) const {//kWh
-    double consumption_rate = this->calculate_consumption_rate(e.get_speed());
-    return consumption_rate * e.get_distance() / 1000;//kWh
+double Car::consumed_power(const Edge &e) const {                             //kWh
+    double consumption_rate = this->calculate_consumption_rate(e.get_speed());//Wh/km
+    return consumption_rate * e.get_distance() / 1000;                        //kWh
 }
 
 double Car::consumed_soc(const Edge &e) const {

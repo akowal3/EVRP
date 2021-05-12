@@ -7,9 +7,8 @@
 
 #include <edge.h>
 #include <ostream>
-// Label is one particular way of getting from parentID to nodeID.
-// It can have different charges, travel speeds etc.
 
+// Specifies the possible choices made by the algorithm at each charger.
 enum class label_type {
     INITIAL_DUMMY,
     NO_CHARGE,
@@ -18,7 +17,8 @@ enum class label_type {
     CHARGE_70,
 };
 
-
+// Label is one particular way of getting from parentID to nodeID.
+// It can have different charges, travel speeds etc.
 class Label {
     friend class Router;
 

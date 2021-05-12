@@ -10,6 +10,8 @@ class Node;
 #include <edge.h>
 #include <node.h>
 
+inline bool soc_greater_or_equal(double left, double right);
+
 class Car {
 
 public:

@@ -10,31 +10,6 @@
 #include <router.hpp>
 #include <sstream>
 
-
-//TEST_CASE("Simple router", "[ROUTER]") {
-//
-//    Car c = Car(0.9);
-//    //    auto tc = BuildGraphCases[5];
-//    auto tc = RKCases[0];
-//
-//    Router router = Router(tc.node_count, tc.graph);
-//
-//    unsigned sourceID = tc.path.source_original();
-//    unsigned destinationID = tc.path.target();
-//
-//    std::cout << "From " << sourceID << " to " << destinationID << std::endl;
-//
-//    auto ret = router.route(sourceID, destinationID, c);
-//
-//    auto total_time = ret.at(destinationID).get_total_time();
-//
-//    THEN("Route takes " << total_time / 3600.0 << " hours (" << total_time << " seconds)") {}
-//
-//    Router::printSPT(ret, sourceID, destinationID);
-//
-//    std::cout << "Done" << std::endl;
-//}
-
 TEST_CASE("Simple router verifier", "[ROUTER]") {
     for (auto &tc : RKCases) {
         GIVEN(tc.description) {
@@ -86,8 +61,6 @@ TEST_CASE("Simple router verifier", "[ROUTER]") {
                 }
             }
             AND_THEN("Route takes " << ret.total_time / 3600.0 << " hours (" << ret.total_time << " seconds). Including " << ret.charge_time / 3600.0 << " hours of charging"){};
-
-            //            Router::printSPT(ret);
         }
     }
 }

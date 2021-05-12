@@ -3,6 +3,7 @@
 //
 
 #include <label.hpp>
+#include <router.hpp>
 
 unsigned Label::labelCounter = 0;
 
@@ -25,7 +26,7 @@ bool Label::operator>(const Label &other) const {
 // this Label dominates other label when travel time is lower and soc_left is higher
 // Potentially these conditions should be relaxed.
 bool Label::dominates(const Label &other) const {
-    return (this->total_time < other.total_time) && (this->remaining_soc >= other.remaining_soc);
+    return (this->total_time < other.total_time) && soc_greater_or_equal(remaining_soc, other.remaining_soc);
 }
 
 unsigned Label::get_nodeID() const { return nodeID; }

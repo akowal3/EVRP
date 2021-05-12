@@ -104,7 +104,9 @@ RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, co
                                           0, c.soc_left(edge, current.soc()), &edge));
             }
             // 2. Do a full recharge, if needed.
-            if (current.soc() < c.max_soc() && c.can_traverse_with_max_soc(edge)) {
+            if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
+                c.can_traverse_with_max_soc(edge)) {
+
                 Time full_charge_time = c.get_charge_time_to_max(edge, current.soc());
                 labels.emplace_back(Label(label_type::CHARGE_MAXIMUM, connectionID, currentID,
                                           current.get_total_time() + travel_time + full_charge_time,
@@ -113,7 +115,7 @@ RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, co
 
 
             // 3. Only charge enough to get to neighbor.
-            if (current.soc() < c.max_soc() &&
+            if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
                 !c.can_traverse(edge, current.soc()) &&
                 c.can_traverse_with_max_soc(edge)) {
                 Time partial_charge_time = c.get_charge_time_to_traverse(edge, current.soc());
@@ -123,7 +125,8 @@ RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, co
             }
 
             // 4. Charge to 70%
-            if (current.soc() < 0.7 && c.can_traverse(edge, 0.7)) {
+            if (soc_cmp(current.soc(), OP::SMALLER, 0.7) &&
+                c.can_traverse(edge, 0.7)) {
                 Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.7);
                 labels.emplace_back(Label(label_type::CHARGE_70, connectionID, currentID,
                                           current.get_total_time() + travel_time + partial_charge_time,

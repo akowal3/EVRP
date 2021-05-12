@@ -19,6 +19,8 @@ enum class OP {
     NOT_EQUAL,
 };
 bool soc_cmp(double left, OP operand, double right);
+bool time_cmp(Time left, OP operand, Time right);
+
 
 class Car {
 

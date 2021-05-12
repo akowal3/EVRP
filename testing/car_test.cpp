@@ -221,7 +221,7 @@ TEST_CASE("Charge time calculations", "[CAR, ROUTER]") {
                     }
                     THEN("Time to charge to max is lower than the predecessors") {
                         auto time_to_max = c.get_charge_time_to_max(e, soc);
-                        REQUIRE(previous_charge_time_to_max >= time_to_max);
+                        REQUIRE(previous_charge_time_to_max > time_to_max);
                         previous_charge_time_to_max = time_to_max;
                     }
                 }
@@ -232,6 +232,33 @@ TEST_CASE("Charge time calculations", "[CAR, ROUTER]") {
                     REQUIRE(c.get_charge_time_to_traverse(e, c.max_soc()) == 0);
                 }
             }
+            WHEN("Initial SoC > SoC MAX") {
+                THEN("Time to charge to max = 0") {
+                    REQUIRE(c.get_charge_time_to_max(e, 1.0) == 0);
+                    REQUIRE(c.get_charge_time_to_traverse(e, 1.0) == 0);
+                }
+            }
+        }
+        GIVEN("Edge which can't be traversed") {
+            Edge e = Edge(&start, &end, 5000, 120);
+            THEN("Charge time throws exception") {
+                REQUIRE(c.can_traverse_with_max_soc(e) == false);
+                REQUIRE(c.can_traverse(e, c.max_soc()) == false);
+                REQUIRE(c.can_traverse(e, 0.7) == false);
+                REQUIRE(c.consumed_soc(e) > 1.0);
+                REQUIRE(c.consumed_power(e) > 70.0);
+                REQUIRE_THROWS(c.get_charge_time_to_traverse(e, c.max_soc()));
+            }
+        }
+        THEN("Charge times are additive") {
+            Edge e = Edge(&start, &end, 100, 120);
+            auto charger = e.sourceCharger();
+            auto time_40_to_70 = c.get_charge_time(charger, 0.4, 0.7);
+            auto time_70_to_90 = c.get_charge_time(charger, 0.701, 0.9);
+            auto time_90_to_100 = c.get_charge_time(charger, 0.901, 1.0);
+
+            REQUIRE(time_cmp(time_40_to_70 + time_70_to_90, OP::EQUAL, c.get_charge_time(charger, 0.4, 0.9)));
+            REQUIRE(time_cmp(time_40_to_70 + time_70_to_90 + time_90_to_100, OP::EQUAL, c.get_charge_time(charger, 0.4, 1.0)));
         }
     }
 }

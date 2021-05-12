@@ -10,7 +10,7 @@
 
 // assumes t inputs correspond to SoC values and the SoC value is only correct to 1 decimal place ie. XX.X
 bool soc_cmp(double left, OP operand, double right) {
-    const static double epsilon = 0.001;
+    constexpr static double epsilon = 0.001;
     bool equal = std::abs(left - right) < epsilon;
     bool greater = left - right >= epsilon;
     switch (operand) {
@@ -23,7 +23,27 @@ bool soc_cmp(double left, OP operand, double right) {
         case OP::SMALLER:
             return !greater && !equal;
         case OP::SMALLER_EQUAL:
-            return !greater || equal;
+            return !greater;
+        case OP::NOT_EQUAL:
+            return !equal;
+    }
+}
+
+bool time_cmp(Time left, OP operand, Time right) {
+    constexpr static long epsilon = 60;// treat 1 minute difference as no difference
+    bool equal = std::labs((long) left - (long) right) < epsilon;
+    bool greater = (long) left - (long) right >= epsilon;
+    switch (operand) {
+        case OP::GREATER:
+            return greater;
+        case OP::GREATER_EQUAL:
+            return greater || equal;
+        case OP::EQUAL:
+            return equal;
+        case OP::SMALLER:
+            return !greater && !equal;
+        case OP::SMALLER_EQUAL:
+            return !greater;
         case OP::NOT_EQUAL:
             return !equal;
     }
@@ -80,24 +100,28 @@ Time Car::get_charge_time_to_max(const Edge &e, double initialSoC) const {
 // The most general implementation, when information about destinationCharger is given in edge and initial and required SoCs are given as input parameters
 Time Car::get_charge_time(const Node *charger, double initialSoC, double endSoC) const {
     double charging_time = 0.0;// in hours
+    double currentSoC = initialSoC;
 
-    if (soc_cmp(initialSoC, OP::SMALLER, endSoC)) {// if charging is required
-        //TODO: for now the edge doesn't hold information about the different chargers.
-        // Those fixed modifiers and cutoff levels should be part of the Node located at the head of the edge
-        std::vector<double> rate_modifier = { 1.0, 0.7, 0.5 };
-        std::vector<double> cutoff_level = { 0.7, 0.9, 1.0 };
+    //TODO: for now the edge doesn't hold information about the different chargers.
+    // Those fixed modifiers and cutoff levels should be part of the Node located at the head of the edge
+    std::vector<double> rate_modifier = { 1.0, 0.7, 0.5 };
+    std::vector<double> cutoff_level = { 0.7, 0.9, 1.0 };
 
-        for (int i = 0; i < rate_modifier.size(); i++) {
-            double additional_charge = (soc_cmp(cutoff_level[i], OP::SMALLER_EQUAL, endSoC)
-                                                ? cutoff_level[i] - initialSoC
-                                                : endSoC - initialSoC);
-            charging_time += additional_charge / (charging_rate * rate_modifier[i]);
-            initialSoC += additional_charge;
+    for (int i = 0; i < rate_modifier.size(); i++) {
+        if (soc_cmp(currentSoC, OP::GREATER_EQUAL, endSoC))
+            break;// reached desired charge. No need to charge further.
 
-            if (soc_cmp(initialSoC, OP::EQUAL, endSoC))
-                break;// reached desired charge. No need to charge further.
-        }
+        if (soc_cmp(cutoff_level[i], OP::SMALLER_EQUAL, currentSoC))
+            continue;// skip to the correct charging rate
+
+        double additional_charge = soc_cmp(cutoff_level[i], OP::SMALLER, endSoC)
+                                           ? cutoff_level[i] - currentSoC
+                                           : endSoC - currentSoC;
+
+        charging_time += additional_charge / (charging_rate * rate_modifier[i]);
+        currentSoC += additional_charge;
     }
+
 
     return Time(3600.0 * charging_time);// in seconds
 }

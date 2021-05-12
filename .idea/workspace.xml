@@ -16,14 +16,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Added tests for Router.&#10;Fixed bug when router was unable to route to the end. Added RouterReturn struct to easily get meaningful results from router (similar to the results from RoutingKit)">
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Testing car and router">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/car.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/label.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/label.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/car.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/label.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/label.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/router_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/router_test.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,7 +210,7 @@
       <workItem from="1620645726557" duration="5190000" />
       <workItem from="1620659200613" duration="16000000" />
       <workItem from="1620732677774" duration="18683000" />
-      <workItem from="1620809378558" duration="11865000" />
+      <workItem from="1620809378558" duration="14815000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -354,7 +352,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620760131939</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Testing car and router">
+      <created>1620822935915</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1620822935915</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -405,7 +410,8 @@
     <MESSAGE value="Started working on router class" />
     <MESSAGE value="Fixed router implementation. &#10;Added ability to charge to 70%, along the bare minimum to travel, charge to soc_max and don't charge. Ensured that the final charger will be reached with &gt; min_soc. Added simple printing function for the shortest path." />
     <MESSAGE value="Added tests for Router.&#10;Fixed bug when router was unable to route to the end. Added RouterReturn struct to easily get meaningful results from router (similar to the results from RoutingKit)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added tests for Router.&#10;Fixed bug when router was unable to route to the end. Added RouterReturn struct to easily get meaningful results from router (similar to the results from RoutingKit)" />
+    <MESSAGE value="Testing car and router" />
+    <option name="LAST_COMMIT_MESSAGE" value="Testing car and router" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

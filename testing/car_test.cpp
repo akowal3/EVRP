@@ -93,7 +93,7 @@ TEST_CASE("SoC greater or equal", "[CAR]") {
         auto r = right[i];
         bool res = result[i];
         THEN(l << " >= " << r << " is " << (res ? "true" : "false")) {
-            REQUIRE(soc_greater_or_equal(l, r) == res);
+            REQUIRE(soc_cmp(l, OP::GREATER_EQUAL, r) == res);
         }
     }
 }
@@ -121,26 +121,26 @@ TEST_CASE("Can traverse for Router", "[CAR, ROUTER]") {
             Edge e = Edge(&start, &end, 300, 120);
             THEN("Can traverse with max (" << c.max_soc() * 100.0 << "%)") {
                 REQUIRE(c.can_traverse_with_max_soc(e));
-                REQUIRE(soc_greater_or_equal(c.max_soc(), c.consumed_soc(e)));
-                REQUIRE(soc_greater_or_equal(c.max_soc() - c.consumed_soc(e), c.min_soc()));
+                REQUIRE(soc_cmp(c.max_soc(), OP::GREATER_EQUAL, c.consumed_soc(e)));
+                REQUIRE(soc_cmp(c.max_soc() - c.consumed_soc(e), OP::GREATER_EQUAL, c.min_soc()));
             }
             THEN("Can't traverse with SoC == consumed_energy") {
                 auto minimumSoC = c.consumed_soc(e);
                 REQUIRE(c.can_traverse(e, minimumSoC) == false);
-                REQUIRE(!soc_greater_or_equal(minimumSoC - c.consumed_soc(e), c.min_soc()));
+                REQUIRE(soc_cmp(minimumSoC - c.consumed_soc(e), OP::SMALLER, c.min_soc()));
             }
             THEN("Can traverse with SoC = consumed_energy + min_soc") {
                 auto minimumSoC = c.consumed_soc(e) + c.min_soc();
                 REQUIRE(c.can_traverse(e, minimumSoC) == true);
-                REQUIRE(soc_greater_or_equal(minimumSoC - c.consumed_soc(e), c.min_soc()));
+                REQUIRE(soc_cmp(minimumSoC - c.consumed_soc(e), OP::GREATER_EQUAL, c.min_soc()));
             }
             std::vector<double> socs = { 0.4, 0.44, 0.51, 0.567, 0.64, 0.76, 0.80, 0.81 };
             for (auto &soc : socs) {
                 WHEN("SoC = " << soc * 100.0 << "%") {
                     THEN("Can't traverse the edge") {
                         REQUIRE(c.can_traverse(e, soc) == false);
-                        REQUIRE(soc_greater_or_equal(c.consumed_soc(e), soc));
-                        REQUIRE(!soc_greater_or_equal(soc - c.consumed_soc(e), c.min_soc()));
+                        REQUIRE(soc_cmp(c.consumed_soc(e), OP::GREATER_EQUAL, soc));
+                        REQUIRE(soc_cmp(soc - c.consumed_soc(e), OP::SMALLER, c.min_soc()));
                     }
                 }
             }
@@ -150,7 +150,7 @@ TEST_CASE("Can traverse for Router", "[CAR, ROUTER]") {
             Edge e = Edge(&start, &end, 1000, 200);
             THEN("Can't traverse with max (" << c.max_soc() * 100.0 << "%)") {
                 REQUIRE(!c.can_traverse_with_max_soc(e));
-                REQUIRE(soc_greater_or_equal(c.consumed_soc(e), c.max_soc()));
+                REQUIRE(soc_cmp(c.consumed_soc(e), OP::GREATER_EQUAL, c.max_soc()));
             }
         }
 
@@ -158,21 +158,21 @@ TEST_CASE("Can traverse for Router", "[CAR, ROUTER]") {
             Edge e = Edge(&start, &end, 96, 71);
             THEN("Can traverse with max (" << c.max_soc() * 100.0 << "%)") {
                 REQUIRE(c.can_traverse_with_max_soc(e));
-                REQUIRE(soc_greater_or_equal(c.max_soc(), c.consumed_soc(e)));
-                REQUIRE(soc_greater_or_equal(c.max_soc() - c.consumed_soc(e), c.min_soc()));
+                REQUIRE(soc_cmp(c.max_soc(), OP::GREATER, c.consumed_soc(e)));
+                REQUIRE(soc_cmp(c.max_soc() - c.consumed_soc(e), OP::GREATER_EQUAL, c.min_soc()));
             }
             THEN("Can't traverse with SoC == consumed_energy") {
                 auto minimumSoC = c.consumed_soc(e);
                 REQUIRE(c.can_traverse(e, minimumSoC) == false);
-                REQUIRE(!soc_greater_or_equal(minimumSoC - c.consumed_soc(e), c.min_soc()));
+                REQUIRE(soc_cmp(minimumSoC - c.consumed_soc(e), OP::SMALLER, c.min_soc()));
             }
             std::vector<double> can_socs = { 0.25, 0.2577, 0.266, 0.299, 0.31, 0.3231, 0.455, 0.564, 0.796, 0.95, 1.0 };
             for (auto &soc : can_socs) {
                 WHEN("SoC = " << soc * 100.0 << "%") {
                     THEN("Can traverse the edge") {
                         REQUIRE(c.can_traverse(e, soc) == true);
-                        REQUIRE(soc_greater_or_equal(soc, c.consumed_soc(e)));
-                        REQUIRE(soc_greater_or_equal(soc - c.consumed_soc(e), c.min_soc()));
+                        REQUIRE(soc_cmp(soc, OP::GREATER_EQUAL, c.consumed_soc(e)));
+                        REQUIRE(soc_cmp(soc - c.consumed_soc(e), OP::GREATER_EQUAL, c.min_soc()));
                     }
                 }
             }
@@ -182,8 +182,8 @@ TEST_CASE("Can traverse for Router", "[CAR, ROUTER]") {
                 WHEN("SoC = " << soc * 100.0 << "%") {
                     THEN("Can't traverse the edge") {
                         REQUIRE(c.can_traverse(e, soc) == false);
-                        REQUIRE(!soc_greater_or_equal(soc, c.consumed_soc(e)));
-                        REQUIRE(!soc_greater_or_equal(soc - c.consumed_soc(e), c.min_soc()));
+                        REQUIRE(soc_cmp(soc, OP::SMALLER, c.consumed_soc(e)));
+                        REQUIRE(soc_cmp(soc - c.consumed_soc(e), OP::SMALLER, c.min_soc()));
                     }
                 }
             }
@@ -193,8 +193,8 @@ TEST_CASE("Can traverse for Router", "[CAR, ROUTER]") {
                 WHEN("SoC = " << soc * 100.0 << "%") {
                     THEN("Can't traverse the edge") {
                         REQUIRE(c.can_traverse(e, soc) == false);
-                        REQUIRE(soc_greater_or_equal(soc, c.consumed_soc(e)));
-                        REQUIRE(!soc_greater_or_equal(soc - c.consumed_soc(e), c.min_soc()));
+                        REQUIRE(soc_cmp(soc, OP::GREATER_EQUAL, c.consumed_soc(e)));
+                        REQUIRE(soc_cmp(soc - c.consumed_soc(e), OP::SMALLER, c.min_soc()));
                     }
                 }
             }
@@ -209,11 +209,28 @@ TEST_CASE("Charge time calculations", "[CAR, ROUTER]") {
         Node end = Node(77);
         GIVEN("Edge which can be traversed with given SoC") {
             Edge e = Edge(&start, &end, 50, 120);
-            std::vector<double> initial_socs = { 0.6 };
-
+            std::vector<double> initial_socs = { 0.445, 0.6, 0.6512, 0.5521, 0.787, 0.8562, 0.84123 };
+            std::sort(initial_socs.begin(), initial_socs.end());
+            Time previous_charge_time_to_max = UINT32_MAX;
             for (auto &soc : initial_socs) {
-                REQUIRE(c.can_traverse(e, soc) == true);
-                REQUIRE(c.get_charge_time_to_traverse(e, soc) == 0);
+                WHEN("Initial SoC = " << soc * 100.0 << "%") {
+                    THEN("Charge time = 0") {
+                        REQUIRE(c.can_traverse(e, soc) == true);
+                        REQUIRE(c.can_traverse_with_max_soc(e) == true);
+                        REQUIRE(c.get_charge_time_to_traverse(e, soc) == 0);
+                    }
+                    THEN("Time to charge to max is lower than the predecessors") {
+                        auto time_to_max = c.get_charge_time_to_max(e, soc);
+                        REQUIRE(previous_charge_time_to_max >= time_to_max);
+                        previous_charge_time_to_max = time_to_max;
+                    }
+                }
+            }
+            WHEN("Initial SoC = SoC MAX") {
+                THEN("Time to charge to max = 0") {
+                    REQUIRE(c.get_charge_time_to_max(e, c.max_soc()) == 0);
+                    REQUIRE(c.get_charge_time_to_traverse(e, c.max_soc()) == 0);
+                }
             }
         }
     }

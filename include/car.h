@@ -10,7 +10,15 @@ class Node;
 #include <edge.h>
 #include <node.h>
 
-inline bool soc_greater_or_equal(double left, double right);
+enum class OP {
+    GREATER,
+    GREATER_EQUAL,
+    EQUAL,
+    SMALLER,
+    SMALLER_EQUAL,
+    NOT_EQUAL,
+};
+bool soc_cmp(double left, OP operand, double right);
 
 class Car {
 

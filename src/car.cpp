@@ -8,12 +8,25 @@
 #include <cmath>
 #include <vector>
 
-// returns left >= right asuming the inputs correspond to SoC values and the SoC value is only correct to 1 decimal place ie. XX.X
-inline bool soc_greater_or_equal(double left, double right) {
+// assumes t inputs correspond to SoC values and the SoC value is only correct to 1 decimal place ie. XX.X
+bool soc_cmp(double left, OP operand, double right) {
     const static double epsilon = 0.001;
     bool equal = std::abs(left - right) < epsilon;
     bool greater = left - right >= epsilon;
-    return greater || equal;
+    switch (operand) {
+        case OP::GREATER:
+            return greater;
+        case OP::GREATER_EQUAL:
+            return greater || equal;
+        case OP::EQUAL:
+            return equal;
+        case OP::SMALLER:
+            return !greater && !equal;
+        case OP::SMALLER_EQUAL:
+            return !greater || equal;
+        case OP::NOT_EQUAL:
+            return !equal;
+    }
 }
 
 Car::Car(double soc_initial) :
@@ -35,11 +48,11 @@ Car::Car(double soc_initial) :
 }
 
 bool Car::can_traverse(const Edge &e) const {
-    return soc_greater_or_equal(power_left(e), min_charge_level());
+    return soc_cmp(power_left(e), OP::GREATER_EQUAL, min_charge_level());
 }
 
 bool Car::can_traverse(const Edge &e, double initialSoC) const {
-    return soc_greater_or_equal(power_left(e, initialSoC), min_charge_level());
+    return soc_cmp(power_left(e, initialSoC), OP::GREATER_EQUAL, min_charge_level());
 }
 
 bool Car::can_traverse_with_max_soc(const Edge &e) const {
@@ -47,11 +60,11 @@ bool Car::can_traverse_with_max_soc(const Edge &e) const {
 }
 
 bool Car::will_charge(const Edge &e) const {
-    return power_left(e) / battery_capacity < e.end_charge_level();
+    return soc_cmp(power_left(e) / battery_capacity, OP::SMALLER, e.end_charge_level());
 }
 
 bool Car::will_charge(const Edge &e, double initialSoC, double endSoC) const {
-    return power_left(e, initialSoC) / battery_capacity < endSoC;
+    return soc_cmp(power_left(e, initialSoC) / battery_capacity, OP::SMALLER, endSoC);
 }
 
 // Used for Graph traversal when edge contains all the information about the SoC at a given point
@@ -68,19 +81,20 @@ Time Car::get_charge_time_to_max(const Edge &e, double initialSoC) const {
 Time Car::get_charge_time(const Node *charger, double initialSoC, double endSoC) const {
     double charging_time = 0.0;// in hours
 
-    if (soc_greater_or_equal(endSoC, initialSoC)) {// if charging is required
+    if (soc_cmp(initialSoC, OP::SMALLER, endSoC)) {// if charging is required
         //TODO: for now the edge doesn't hold information about the different chargers.
         // Those fixed modifiers and cutoff levels should be part of the Node located at the head of the edge
         std::vector<double> rate_modifier = { 1.0, 0.7, 0.5 };
         std::vector<double> cutoff_level = { 0.7, 0.9, 1.0 };
 
         for (int i = 0; i < rate_modifier.size(); i++) {
-            double additional_charge = (cutoff_level[i] <= endSoC) ? cutoff_level[i] - initialSoC
-                                                                   : endSoC - initialSoC;
+            double additional_charge = (soc_cmp(cutoff_level[i], OP::SMALLER_EQUAL, endSoC)
+                                                ? cutoff_level[i] - initialSoC
+                                                : endSoC - initialSoC);
             charging_time += additional_charge / (charging_rate * rate_modifier[i]);
             initialSoC += additional_charge;
 
-            if (initialSoC == endSoC)
+            if (soc_cmp(initialSoC, OP::EQUAL, endSoC))
                 break;// reached desired charge. No need to charge further.
         }
     }

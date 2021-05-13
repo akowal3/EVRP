@@ -4,33 +4,13 @@
 
 #include <algorithm>
 #include <cassert>
-#include <graph.h>
+#include <graph.hpp>
 #include <iostream>
 #include <router.hpp>
 
 using MinHeapPriorityQueue =
         std::priority_queue<Label, std::vector<Label>, std::greater<std::vector<Label>::value_type>>;
 
-inline std::ostream &operator<<(std::ostream &os, const label_type &type) {
-    switch (type) {
-        case label_type::INITIAL_DUMMY:
-            os << "INITIAL_DUMMY";
-            break;
-        case label_type::NO_CHARGE:
-            os << "NO_CHARGE";
-            break;
-        case label_type::CHARGE_MAXIMUM:
-            os << "CHARGE_MAXIMUM";
-            break;
-        case label_type::CHARGE_MINIMUM:
-            os << "CHARGE_MINIMUM";
-            break;
-        case label_type::CHARGE_70:
-            os << "CHARGE_70";
-            break;
-    }
-    return os;
-}
 
 Router::Router(int charger_count, const std::vector<BuildingEdge> &edges) {
     //    this->nodes = std::vector<Node>{};

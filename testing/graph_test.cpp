@@ -2,9 +2,9 @@
 // Created by akowal3 on 29/04/2021.
 //
 
-#include <car.h>
-#include <edge.h>
-#include <graph.h>
+#include <car.hpp>
+#include <edge.hpp>
+#include <graph.hpp>
 #include <routingkit/contraction_hierarchy.h>
 
 #include <catch.hpp>

@@ -7,6 +7,7 @@
       <config projectName="EVRP" targetName="TESTCASES" />
       <config projectName="EVRP" targetName="ROUTER" />
       <config projectName="EVRP" targetName="COMMON" />
+      <config projectName="EVRP" targetName="UTILS" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -16,13 +17,30 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Added comparison function for SoCs.&#10;This enables to perform epsilon comparison. In other words, we treat SoC as XX.X number, and the remaining digits are irrelevant. We perform epsilon = 0.1 comparison between the SoC levels ie. 69.9 == 69.88, 42.0 &gt;= 42.09 etc.">
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Refactored code a bit. Added utils.cpp where all common types and functions are located">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/car.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/car.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/label.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/label.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/router.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/car.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/edge.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/edge.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/graph.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/graph.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/label.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/label.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/node.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/node.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/router.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/router.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/utils.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/car.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edge.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/edge.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/graph/graph.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/label.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/label.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/node.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/router.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/graph_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/graph_test.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/include/testcase.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/include/testcase.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/router_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/router_test.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/testcases/graph_cases.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/testcases/graph_cases.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/testcases/graph_cases.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,9 +86,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/common" />
+      <recent name="$PROJECT_DIR$/src/graph" />
+      <recent name="$PROJECT_DIR$/src/router" />
       <recent name="$PROJECT_DIR$/include" />
       <recent name="$PROJECT_DIR$/testing/include" />
-      <recent name="$PROJECT_DIR$/testing/testcases" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -80,19 +100,24 @@
     </option>
   </component>
   <component name="RunManager" selected="Catch.TESTS">
-    <configuration name="Can traverse for Router" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR, ROUTER]" TEST_METHOD="Can traverse for Router" TEST_MODE="SUITE_TEST">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Can traverse for Router" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR, ROUTER]" TEST_METHOD="Can traverse for Router" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Consumed SoC" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR, EDGE]" TEST_METHOD="Consumed SoC" TEST_MODE="SUITE_TEST">
+    <configuration name="Consumed SoC" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR, EDGE]" TEST_METHOD="Consumed SoC" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Simple router verifier" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Simple router verifier" TEST_MODE="SUITE_TEST">
+    <configuration name="Simple router verifier" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Simple router verifier" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -130,9 +155,14 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="UTILS" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="UTILS" CONFIG_NAME="Debug">
       <method v="2">
-        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="scratch_1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -160,13 +190,14 @@
       <item itemvalue="Catch.TESTS" />
       <item itemvalue="Catch.Simple router" />
       <item itemvalue="Catch.Simple router verifier" />
+      <item itemvalue="Catch.Can traverse for Router" />
+      <item itemvalue="Catch.Consumed SoC" />
+      <item itemvalue="CMake Application.UTILS" />
       <item itemvalue="CMake Application.COMMON" />
       <item itemvalue="CMake Application.EVRP" />
       <item itemvalue="CMake Application.ROUTER" />
       <item itemvalue="CMake Application.TESTCASES" />
       <item itemvalue="Python.scratch_1" />
-      <item itemvalue="Catch.Can traverse for Router" />
-      <item itemvalue="Catch.Consumed SoC" />
     </list>
     <recent_temporary>
       <list>
@@ -211,7 +242,8 @@
       <workItem from="1620645726557" duration="5190000" />
       <workItem from="1620659200613" duration="16000000" />
       <workItem from="1620732677774" duration="18683000" />
-      <workItem from="1620809378558" duration="20100000" />
+      <workItem from="1620809378558" duration="21669000" />
+      <workItem from="1620896102064" duration="1903000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -367,7 +399,21 @@
       <option name="project" value="LOCAL" />
       <updated>1620826043785</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Added more tests. Added time comparison function">
+      <created>1620834668722</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1620834668722</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Refactored code a bit. Added utils.cpp where all common types and functions are located">
+      <created>1620897535316</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1620897535316</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -420,7 +466,9 @@
     <MESSAGE value="Added tests for Router.&#10;Fixed bug when router was unable to route to the end. Added RouterReturn struct to easily get meaningful results from router (similar to the results from RoutingKit)" />
     <MESSAGE value="Testing car and router" />
     <MESSAGE value="Added comparison function for SoCs.&#10;This enables to perform epsilon comparison. In other words, we treat SoC as XX.X number, and the remaining digits are irrelevant. We perform epsilon = 0.1 comparison between the SoC levels ie. 69.9 == 69.88, 42.0 &gt;= 42.09 etc." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added comparison function for SoCs.&#10;This enables to perform epsilon comparison. In other words, we treat SoC as XX.X number, and the remaining digits are irrelevant. We perform epsilon = 0.1 comparison between the SoC levels ie. 69.9 == 69.88, 42.0 &gt;= 42.09 etc." />
+    <MESSAGE value="Added more tests. Added time comparison function" />
+    <MESSAGE value="Refactored code a bit. Added utils.cpp where all common types and functions are located" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored code a bit. Added utils.cpp where all common types and functions are located" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -430,27 +478,27 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <url>file://$PROJECT_DIR$/src/router/router.cpp</url>
           <line>136</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <url>file://$PROJECT_DIR$/src/router/router.cpp</url>
           <line>162</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <url>file://$PROJECT_DIR$/src/router/router.cpp</url>
           <line>74</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <url>file://$PROJECT_DIR$/src/router/router.cpp</url>
           <line>72</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/router.cpp</url>
+          <url>file://$PROJECT_DIR$/src/router/router.cpp</url>
           <line>142</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>

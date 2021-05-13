@@ -2,7 +2,7 @@
 // Created by akowal3 on 29/04/2021.
 //
 
-#include <node.h>
+#include <node.hpp>
 
 Node::Node(unsigned ID, double SoC) :
     ID(ID), charge_level(SoC) {}

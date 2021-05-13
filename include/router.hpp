@@ -5,9 +5,10 @@
 #ifndef EVRP_ROUTER_HPP
 #define EVRP_ROUTER_HPP
 
-#include <car.h>
+#include <car.hpp>
 #include <label.hpp>
-#include <node.h>
+#include <node.hpp>
+#include <utils.hpp>
 
 #include <queue>
 #include <unordered_map>
@@ -24,8 +25,6 @@ typedef struct {
     Time total_time;
     Time charge_time;
 } RouterResult;
-
-extern inline std::ostream &operator<<(std::ostream &os, const label_type &type);
 
 
 class Router {

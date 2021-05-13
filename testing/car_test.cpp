@@ -2,8 +2,10 @@
 // Created by Andrzej Kowalewski on 15/04/2021.
 //
 
-#include <car.h>
-#include <edge.h>
+#include <car.hpp>
+#include <edge.hpp>
+#include <utils.hpp>
+
 #include <routingkit/constants.h>
 
 #include <catch.hpp>
@@ -250,12 +252,12 @@ TEST_CASE("Charge time calculations", "[CAR, ROUTER]") {
                 REQUIRE_THROWS(c.get_charge_time_to_traverse(e, c.max_soc()));
             }
         }
-        THEN("Charge times are additive") {
+        THEN("Charge times are (almost) additive") {
             Edge e = Edge(&start, &end, 100, 120);
             auto charger = e.sourceCharger();
             auto time_40_to_70 = c.get_charge_time(charger, 0.4, 0.7);
-            auto time_70_to_90 = c.get_charge_time(charger, 0.701, 0.9);
-            auto time_90_to_100 = c.get_charge_time(charger, 0.901, 1.0);
+            auto time_70_to_90 = c.get_charge_time(charger, 0.7, 0.9);
+            auto time_90_to_100 = c.get_charge_time(charger, 0.9, 1.0);
 
             REQUIRE(time_cmp(time_40_to_70 + time_70_to_90, OP::EQUAL, c.get_charge_time(charger, 0.4, 0.9)));
             REQUIRE(time_cmp(time_40_to_70 + time_70_to_90 + time_90_to_100, OP::EQUAL, c.get_charge_time(charger, 0.4, 1.0)));

@@ -9,6 +9,7 @@
 #include <iostream>
 #include <router.hpp>
 #include <sstream>
+#include <utils.hpp>
 
 TEST_CASE("Simple router verifier", "[ROUTER]") {
     for (auto &tc : RKCases) {

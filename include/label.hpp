@@ -5,17 +5,10 @@
 #ifndef EVRP_LABEL_HPP
 #define EVRP_LABEL_HPP
 
-#include <edge.h>
-#include <ostream>
+#include <edge.hpp>
+#include <utils.hpp>
 
-// Specifies the possible choices made by the algorithm at each charger.
-enum class label_type {
-    INITIAL_DUMMY,
-    NO_CHARGE,
-    CHARGE_MAXIMUM,
-    CHARGE_MINIMUM,
-    CHARGE_70,
-};
+#include <ostream>
 
 // Label is one particular way of getting from parentID to nodeID.
 // It can have different charges, travel speeds etc.

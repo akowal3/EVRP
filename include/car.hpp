@@ -2,24 +2,14 @@
 // Created by Andrzej Kowalewski on 14/04/2021.
 //
 
-#ifndef EVRP_CAR_H
-#define EVRP_CAR_H
+#ifndef EVRP_CAR_HPP
+#define EVRP_CAR_HPP
 
 class Edge;
 class Node;
-#include <edge.h>
-#include <node.h>
-
-enum class OP {
-    GREATER,
-    GREATER_EQUAL,
-    EQUAL,
-    SMALLER,
-    SMALLER_EQUAL,
-    NOT_EQUAL,
-};
-bool soc_cmp(double left, OP operand, double right);
-bool time_cmp(Time left, OP operand, Time right);
+#include <edge.hpp>
+#include <node.hpp>
+#include <utils.hpp>
 
 
 class Car {
@@ -70,4 +60,4 @@ private:
 };
 
 
-#endif// EVRP_CAR_H
+#endif// EVRP_CAR_HPP

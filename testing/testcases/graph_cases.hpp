@@ -5,7 +5,7 @@
 // Created by akowal3 on 01/05/2021.
 //
 
-#include <edge.h>
+#include <edge.hpp>
 #include <testcase.hpp>
 #include <vector>
 

@@ -3,7 +3,7 @@
 //
 
 #include <cassert>
-#include <graph.h>
+#include <graph.hpp>
 #include <label.hpp>
 #include <queue>
 #include <unordered_set>

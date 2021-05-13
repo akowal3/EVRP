@@ -2,7 +2,7 @@
 // Created by Andrzej Kowalewski on 14/04/2021.
 //
 
-#include <edge.h>
+#include <edge.hpp>
 
 #include "routingkit/constants.h"
 

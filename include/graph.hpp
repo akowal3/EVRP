@@ -2,15 +2,15 @@
 // Created by Andrzej Kowalewski on 14/04/2021.
 //
 
-#ifndef EVRP_GRAPH_H
-#define EVRP_GRAPH_H
+#ifndef EVRP_GRAPH_HPP
+#define EVRP_GRAPH_HPP
 
 
 #include <functional>
 #include <vector>
 
-#include "car.h"
-#include "edge.h"
+#include "car.hpp"
+#include "edge.hpp"
 
 class Graph {
 public:
@@ -45,4 +45,4 @@ private:
 };
 
 
-#endif//EVRP_GRAPH_H
+#endif//EVRP_GRAPH_HPP

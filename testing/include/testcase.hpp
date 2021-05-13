@@ -5,8 +5,8 @@
 #ifndef EVRP_TESTCASE_HPP
 #define EVRP_TESTCASE_HPP
 
-#include <edge.h>
-#include <graph.h>
+#include <edge.hpp>
+#include <graph.hpp>
 
 #include <cassert>
 #include <string>

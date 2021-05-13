@@ -46,3 +46,24 @@ bool time_cmp(Time left, OP operand, Time right) {
             return !equal;
     }
 }
+
+std::ostream &operator<<(std::ostream &os, const label_type &type) {
+    switch (type) {
+        case label_type::INITIAL_DUMMY:
+            os << "INITIAL_DUMMY";
+            break;
+        case label_type::NO_CHARGE:
+            os << "NO_CHARGE";
+            break;
+        case label_type::CHARGE_MAXIMUM:
+            os << "CHARGE_MAXIMUM";
+            break;
+        case label_type::CHARGE_MINIMUM:
+            os << "CHARGE_MINIMUM";
+            break;
+        case label_type::CHARGE_70:
+            os << "CHARGE_70";
+            break;
+    }
+    return os;
+}

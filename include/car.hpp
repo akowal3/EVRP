@@ -7,8 +7,8 @@
 
 class Edge;
 class Node;
-#include <edge.h>
-#include <node.h>
+#include <edge.hpp>
+#include <node.hpp>
 #include <utils.hpp>
 
 

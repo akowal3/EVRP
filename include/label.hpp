@@ -5,10 +5,8 @@
 #ifndef EVRP_LABEL_HPP
 #define EVRP_LABEL_HPP
 
-#include <edge.h>
+#include <edge.hpp>
 #include <utils.hpp>
-
-#include <ostream>
 
 // Label is one particular way of getting from parentID to nodeID.
 // It can have different charges, travel speeds etc.

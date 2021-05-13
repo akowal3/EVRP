@@ -6,8 +6,8 @@
 #define EVRP_EDGE_H
 
 class Car;
-#include <car.h>
-#include <node.h>
+#include <car.hpp>
+#include <node.hpp>
 #include <utils.hpp>
 
 class Edge {

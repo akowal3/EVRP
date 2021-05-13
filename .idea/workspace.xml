@@ -8,6 +8,7 @@
       <config projectName="EVRP" targetName="ROUTER" />
       <config projectName="EVRP" targetName="COMMON" />
       <config projectName="EVRP" targetName="UTILS" />
+      <config projectName="EVRP" targetName="GRAPH" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -18,15 +19,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Added more tests. Added time comparison function">
-      <change afterPath="$PROJECT_DIR$/include/utils.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/utils.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/car.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/edge.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/edge.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/car.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/edge.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/edge.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/label.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/label.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/router.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/router.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/car.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/utils.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/car.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -130,6 +131,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="GRAPH" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="GRAPH" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ROUTER" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="ROUTER" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -180,6 +186,7 @@
       <item itemvalue="CMake Application.UTILS" />
       <item itemvalue="CMake Application.COMMON" />
       <item itemvalue="CMake Application.EVRP" />
+      <item itemvalue="CMake Application.GRAPH" />
       <item itemvalue="CMake Application.ROUTER" />
       <item itemvalue="CMake Application.TESTCASES" />
       <item itemvalue="Python.scratch_1" />

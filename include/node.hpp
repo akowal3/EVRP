@@ -2,8 +2,8 @@
 // Created by akowal3 on 29/04/2021.
 //
 
-#ifndef EVRP_NODE_H
-#define EVRP_NODE_H
+#ifndef EVRP_NODE_HPP
+#define EVRP_NODE_HPP
 
 class Node {
 private:
@@ -14,7 +14,8 @@ public:
     double soc() const;
     Node(unsigned ID, double SoC);
     Node();
+    Node(unsigned int ID);
 };
 
 
-#endif//EVRP_NODE_H
+#endif//EVRP_NODE_HPP

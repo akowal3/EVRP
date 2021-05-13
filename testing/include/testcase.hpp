@@ -5,9 +5,11 @@
 #ifndef EVRP_TESTCASE_HPP
 #define EVRP_TESTCASE_HPP
 
-#include <edge.h>
-#include <graph.h>
+#include <edge.hpp>
+#include <graph.hpp>
 
+#include <cassert>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -15,16 +17,21 @@ class Path {
 public:
     std::vector<unsigned> nodes;
     std::vector<double> charge_levels;
-    std::vector<unsigned> speeds;
-    Path(const std::vector<std::pair<unsigned, double>>& path, std::vector<unsigned> speeds) : speeds(std::move(speeds)) {
+    std::vector<double> speeds;
+    Path(const std::vector<std::pair<unsigned, double>> &path, std::vector<double> speeds) :
+        speeds(std::move(speeds)) {
         nodes.reserve(path.size());
         charge_levels.reserve(path.size());
-        for (auto& node : path) {
+        for (auto &node : path) {
             nodes.emplace_back(node.first);
             charge_levels.emplace_back(node.second);
         }
     }
     Path() = default;
+
+    unsigned source_original() const {
+        return nodes.front();
+    }
 
     unsigned source() const {
 
@@ -70,16 +77,11 @@ public:
     int node_count;
     Path path;
 
-    //    Testcase(std::string description, std::vector<BuildingEdge> graph, int node_count)
-    //        : graph(std::move(graph)),
-    //          description(std::move(description)),
-    //          node_count(node_count){};
-
-    Testcase(std::string description, std::vector<BuildingEdge> graph, int node_count, Path path = Path())
-        : graph(std::move(graph)),
-          description(std::move(description)),
-          node_count(node_count),
-          path(std::move(path)){};
+    Testcase(std::string description, std::vector<BuildingEdge> graph, int node_count, Path path = Path()) :
+        graph(std::move(graph)),
+        description(std::move(description)),
+        node_count(node_count),
+        path(std::move(path)){};
 };
 
 

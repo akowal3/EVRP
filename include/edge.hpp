@@ -5,11 +5,10 @@
 #ifndef EVRP_EDGE_H
 #define EVRP_EDGE_H
 
-typedef unsigned Time;// (s)
-
 class Car;
-#include <car.h>
-#include <node.h>
+#include <car.hpp>
+#include <node.hpp>
+#include <utils.hpp>
 
 class Edge {
 private:
@@ -23,10 +22,12 @@ public:
     Time get_travel_time() const;
     unsigned get_distance() const;
     double get_speed() const;
-    unsigned tail() const;
-    unsigned head() const;
+    unsigned tailID() const;
+    unsigned headID() const;
     double start_charge_level() const;
     double end_charge_level() const;
+    const Node *destinationCharger() const;
+    const Node *sourceCharger() const;
 };
 
 // Dummy datastructure used to create simple graph by hand

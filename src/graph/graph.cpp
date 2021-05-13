@@ -2,19 +2,21 @@
 // Created by Andrzej Kowalewski on 14/04/2021.
 //
 
-#include <graph.h>
-
 #include <cassert>
+#include <graph.hpp>
+#include <label.hpp>
+#include <queue>
+#include <unordered_set>
 
 std::vector<double> Graph::SPEED_STEPS = std::vector<double>{ 0.7, 0.8, 0.9, 1.0 };
-std::vector<double> Graph::CHARGER_STEPS = std::vector<double>{ 0.0, 0.7, 0.8, 0.9, 1. };// 0 is needed as it will be the destination to the final charger
+std::vector<double> Graph::CHARGER_STEPS = std::vector<double>{ 0.7, 0.8, 0.9, 1. };// 0 is needed as it will be the destination to the final destinationCharger
 
 Graph::Graph(unsigned int charger_count, const std::vector<BuildingEdge> &edges) {
 
-    // Create nodes which correspond to the State of Charge after charging at a given charger
+    // Create nodes which correspond to the State of Charge after charging at a given destinationCharger
     this->nodes.reserve(charger_count * CHARGER_STEPS.size());
     for (int id = 0; id < charger_count * CHARGER_STEPS.size(); id++) {
-        this->nodes.emplace_back(Node(id, CHARGER_STEPS[id % CHARGER_STEPS.size()]));
+        this->nodes.emplace_back(Node(id, chargeAt(id)));
     }
 
     // Crete edges corresponding to different speeds of traveling between the chargers
@@ -39,8 +41,8 @@ Graph::Graph(unsigned int charger_count, const std::vector<BuildingEdge> &edges)
     this->tail.reserve(edges.size());// potentially unnecessary
     for (const Edge &e : this->edges) {
         this->weights.emplace_back([&e](const Car &c) { return c.traverse(e); });
-        this->head.emplace_back(e.head());
-        this->tail.emplace_back(e.tail());
+        this->head.emplace_back(e.headID());
+        this->tail.emplace_back(e.tailID());
     }
 
     // Allow to view private parts from outside of the class testing purposes
@@ -87,13 +89,10 @@ double Graph::chargeAt(unsigned nodeID) {
 }
 
 std::vector<unsigned> Graph::ID_to_nodes(unsigned nodeID) {
-    std::vector<unsigned> ret;
-
-    ret.reserve(CHARGER_STEPS.size());
-
+    std::vector<unsigned> all_nodes;
+    all_nodes.reserve(CHARGER_STEPS.size());
     for (int i = 0; i < CHARGER_STEPS.size(); i++) {
-        ret.emplace_back(nodeID * CHARGER_STEPS.size() + i);
+        all_nodes.emplace_back(nodeID * CHARGER_STEPS.size() + i);
     }
-
-    return ret;
+    return all_nodes;
 }

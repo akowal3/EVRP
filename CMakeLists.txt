@@ -12,7 +12,11 @@ include_directories(RoutingKit/include)
 
 ### LIBRARIES & COMMON FILES ###
 # Combine common classes into single library
+add_library(UTILS src/utils/utils.cpp)
+
 add_library(COMMON src/car.cpp src/edge.cpp src/graph.cpp src/node.cpp)
+target_link_libraries(COMMON PUBLIC UTILS)
+
 add_library(ROUTER src/router.cpp src/label.cpp)
 target_link_libraries(ROUTER PUBLIC COMMON)
 
@@ -20,7 +24,6 @@ target_link_libraries(ROUTER PUBLIC COMMON)
 find_library(RK_LIB libroutingkit.so PATHS RoutingKit/lib) # RoutingKit library
 add_library(Catch2 INTERFACE) # Catch2 unit tests library
 target_include_directories(Catch2 INTERFACE testing/include)
-
 
 ### EXECUTABLES ###
 # Main project executable

@@ -5,11 +5,10 @@
 #ifndef EVRP_EDGE_H
 #define EVRP_EDGE_H
 
-typedef unsigned Time;// (s)
-
 class Car;
 #include <car.h>
 #include <node.h>
+#include <utils.hpp>
 
 class Edge {
 private:

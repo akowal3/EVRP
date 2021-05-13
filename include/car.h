@@ -9,17 +9,7 @@ class Edge;
 class Node;
 #include <edge.h>
 #include <node.h>
-
-enum class OP {
-    GREATER,
-    GREATER_EQUAL,
-    EQUAL,
-    SMALLER,
-    SMALLER_EQUAL,
-    NOT_EQUAL,
-};
-bool soc_cmp(double left, OP operand, double right);
-bool time_cmp(Time left, OP operand, Time right);
+#include <utils.hpp>
 
 
 class Car {

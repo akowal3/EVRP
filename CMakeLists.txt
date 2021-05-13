@@ -14,10 +14,10 @@ include_directories(RoutingKit/include)
 # Combine common classes into single library
 add_library(UTILS src/utils/utils.cpp)
 
-add_library(COMMON src/common/car.cpp src/common/edge.cpp src/graph/graph.cpp src/common/node.cpp)
+add_library(COMMON src/car.cpp src/edge.cpp src/graph.cpp src/node.cpp)
 target_link_libraries(COMMON PUBLIC UTILS)
 
-add_library(ROUTER src/router/router.cpp src/router/label.cpp)
+add_library(ROUTER src/router.cpp src/label.cpp)
 target_link_libraries(ROUTER PUBLIC COMMON)
 
 # Link external libraries to the main executable

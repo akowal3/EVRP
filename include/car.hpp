@@ -2,13 +2,13 @@
 // Created by Andrzej Kowalewski on 14/04/2021.
 //
 
-#ifndef EVRP_CAR_HPP
-#define EVRP_CAR_HPP
+#ifndef EVRP_CAR_H
+#define EVRP_CAR_H
 
 class Edge;
 class Node;
-#include <edge.hpp>
-#include <node.hpp>
+#include <edge.h>
+#include <node.h>
 #include <utils.hpp>
 
 
@@ -60,4 +60,4 @@ private:
 };
 
 
-#endif// EVRP_CAR_HPP
+#endif// EVRP_CAR_H

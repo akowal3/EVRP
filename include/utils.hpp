@@ -5,8 +5,6 @@
 #ifndef EVRP_UTILS_HPP
 #define EVRP_UTILS_HPP
 
-#include <ostream>
-
 typedef unsigned Time;// (s)
 
 // Specifies the possible choices made by the algorithm at each charger.
@@ -29,7 +27,6 @@ enum class OP {
 
 bool soc_cmp(double left, OP operand, double right);
 bool time_cmp(Time left, OP operand, Time right);
-std::ostream &operator<<(std::ostream &os, const label_type &type);
 
 
 #endif//EVRP_UTILS_HPP

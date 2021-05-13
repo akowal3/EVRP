@@ -2,8 +2,8 @@
 // Created by Andrzej Kowalewski on 15/04/2021.
 //
 
-#include <car.hpp>
-#include <edge.hpp>
+#include <car.h>
+#include <edge.h>
 #include <utils.hpp>
 
 #include <routingkit/constants.h>

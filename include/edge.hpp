@@ -2,12 +2,12 @@
 // Created by Andrzej Kowalewski on 14/04/2021.
 //
 
-#ifndef EVRP_EDGE_HPP
-#define EVRP_EDGE_HPP
+#ifndef EVRP_EDGE_H
+#define EVRP_EDGE_H
 
 class Car;
-#include <car.hpp>
-#include <node.hpp>
+#include <car.h>
+#include <node.h>
 #include <utils.hpp>
 
 class Edge {
@@ -41,4 +41,4 @@ public:
     Time get_travel_time(double speed_modifier) const;
 };
 
-#endif//EVRP_EDGE_HPP
+#endif//EVRP_EDGE_H

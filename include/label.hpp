@@ -5,7 +5,7 @@
 #ifndef EVRP_LABEL_HPP
 #define EVRP_LABEL_HPP
 
-#include <edge.hpp>
+#include <edge.h>
 #include <utils.hpp>
 
 #include <ostream>

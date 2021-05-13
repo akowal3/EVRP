@@ -3,14 +3,11 @@
 //
 
 #include <algorithm>
-#include <cassert>
 #include <graph.hpp>
 #include <iostream>
 #include <router.hpp>
 
-using MinHeapPriorityQueue =
-        std::priority_queue<Label, std::vector<Label>, std::greater<std::vector<Label>::value_type>>;
-
+using PriorityQueue = std::priority_queue<Label, std::vector<Label>, std::greater<>>;
 
 Router::Router(int charger_count, const std::vector<BuildingEdge> &edges) {
     //    this->nodes = std::vector<Node>{};
@@ -28,13 +25,14 @@ Router::Router(int charger_count, const std::vector<BuildingEdge> &edges) {
 }
 
 RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, const Car &c) const {
+    // adapted from https://github.com/keyan/ev_routing_engine
     // All labels in the vector are non-dominating in respect to total_time and soc_left.
     // That is, all labels for a node are Pareto optimal!
     std::unordered_map<unsigned, std::vector<Label>> label_map;
     // Once a NodeID is added to the spt, we know the best Label to use to get to it.
     std::unordered_map<unsigned, Label> shortest_path_tree;
 
-    MinHeapPriorityQueue label_queue;
+    PriorityQueue label_queue;
 
     // lazy deletes as std::priority_queue doesn't allow for arbitrary deletes
     std::unordered_set<unsigned> deleted;
@@ -47,9 +45,6 @@ RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, co
 
         unsigned currentID = current.get_nodeID();
 
-        // std::priority_queue has no decrease-weight operation, instead do a "lazy
-        // deletion" by keeping the old node in the pq and just ignoring it when it
-        // is eventually popped.
         if (deleted.count(current.get_labelID()) == 1 ||
             shortest_path_tree.count(currentID) == 1) {
             continue;
@@ -62,12 +57,11 @@ RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, co
             break;
         }
 
-        // Update weights for all neighbors not in the spt.
-        // This is the main departure from standard dijkstra's. Instead of relaxing edges between
-        // neighbors, we construct "labels" up to 3 per neighbor, and try to merge them into the
-        // LabelMap. Any non-dominated labels are also added to the priority queue.
+        //         Update weights for all neighbors not in the spt.
+        //         This is the main departure from standard dijkstra's. Instead of relaxing edges between
+        //         neighbors, we construct "labels" up to 3 per neighbor, and try to merge them into the
+        //         LabelMap. Any non-dominated labels are also added to the priority queue.
         for (auto &edge : edges.at(currentID)) {
-            assert(currentID == edge.tailID());
 
             unsigned connectionID = edge.headID();
             Time travel_time = edge.get_travel_time();
@@ -76,7 +70,6 @@ RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, co
                 continue;
             }
 
-            // Three possible label cases.
             std::vector<Label> labels;
             // 1. Go to neighbor without any charging, if possible.
             if (c.can_traverse(edge, current.soc())) {
@@ -149,28 +142,6 @@ RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, co
     return build_result(shortest_path_tree, c, sourceID, destinationID);
 }
 
-void Router::printSPT(const RouterResult &res) {
-
-    for (int i = 0; i < res.nodes.size(); i++) {
-        // print node
-        if (i == 0) {
-            std::cout << res.nodes[i]->id() << ": " << res.socs_out[i] << std::endl;
-        } else if (i == res.nodes.size() - 1) {
-            std::cout << res.nodes[i]->id() << ": " << res.socs_in[i - 1] << std::endl;
-        } else {
-            std::cout << res.nodes[i]->id() << ": " << res.socs_in[i - 1] << " -> " << res.socs_out[i] << " in " << res.charge_times[i] / 3600.0 << " hours (" << res.charges[i] << ")" << std::endl;
-        }
-
-        // print path
-        if (i != res.nodes.size() - 1) {
-            auto edge = res.arcs[i];
-            std::cout << "| " << edge->get_distance() << " km @ " << edge->get_speed() << " km/h in " << edge->get_travel_time() / 3600.0 << " hours." << std::endl;
-        }
-    }
-
-    std::cout << "Total journey time: " << res.total_time / 3600.0 << " hours, including " << res.charge_time / 3600.0 << " hours of charging" << std::endl;
-}
-
 RouterResult Router::build_result(const std::unordered_map<unsigned int, Label> &spt, const Car &c, unsigned sourceID, unsigned destinationID) {
     // possibly could be made more efficiently without vectors
     RouterResult res = RouterResult();
@@ -202,4 +173,26 @@ RouterResult Router::build_result(const std::unordered_map<unsigned int, Label> 
     std::reverse(res.charges.begin(), res.charges.end());
 
     return res;
+}
+
+std::ostream &operator<<(std::ostream &os, const RouterResult &res) {
+    for (int i = 0; i < res.nodes.size(); i++) {
+        // print node
+        if (i == 0) {
+            os << res.nodes[i]->id() << ": " << res.socs_out[i] << std::endl;
+        } else if (i == res.nodes.size() - 1) {
+            os << res.nodes[i]->id() << ": " << res.socs_in[i - 1] << std::endl;
+        } else {
+            os << res.nodes[i]->id() << ": " << res.socs_in[i - 1] << " -> " << res.socs_out[i] << " in " << res.charge_times[i] / 3600.0 << " hours (" << res.charges[i] << ")" << std::endl;
+        }
+
+        // print path
+        if (i != res.nodes.size() - 1) {
+            auto edge = res.arcs[i];
+            os << "| " << edge->get_distance() << " km @ " << edge->get_speed() << " km/h in " << edge->get_travel_time() / 3600.0 << " hours." << std::endl;
+        }
+    }
+
+    os << "Total journey time: " << res.total_time / 3600.0 << " hours, including " << res.charge_time / 3600.0 << " hours of charging" << std::endl;
+    return os;
 }

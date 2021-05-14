@@ -26,6 +26,14 @@ Car::Car(double soc_initial) :
     this->Mass = 2000;// kg
     this->IdleConsumption = 1.5;
     this->DriveTrainEfficiency = 0.95;// in percentage
+    this->ChargerProfiles = {
+        { charger_type::FAST_175KW, ChargerProfile(
+                                            { 0.0, 0.1, 0.2, 0.52, 0.61, 0.9, 1.0 },
+                                            { 0.0, 135.0, 140.0, 148.0, 110.0, 30.0, 0.0 }) },
+        { charger_type::SLOW_50KW, ChargerProfile(
+                                           { 0.0, 0.07, 0.5, 0.83, 0.9, 1.0 },
+                                           { 0.0, 40.0, 50.0, 50.0, 25.0, 0.0 }) },
+    };
 }
 
 bool Car::can_traverse(const Edge &e) const {
@@ -59,30 +67,14 @@ Time Car::get_charge_time_to_max(const Edge &e, double initialSoC) const {
 }
 
 // The most general implementation, when information about destinationCharger is given in edge and initial and required SoCs are given as input parameters
-Time Car::get_charge_time(const Node *charger, double initialSoC, double endSoC) const {
-    double charging_time = 0.0;// in hours
-    double currentSoC = initialSoC;
+Time Car::get_charge_time(const Node *chargingStation, double initialSoC, double endSoC) const {
+    if (soc_cmp(initialSoC, OP::GREATER_EQUAL, endSoC))
+        return 0;// no charging required
 
-    //TODO: for now the edge doesn't hold information about the different chargers.
-    // Those fixed modifiers and cutoff levels should be part of the Node located at the head of the edge
-    std::vector<double> rate_modifier = { 1.0, 0.7, 0.5 };
-    std::vector<double> cutoff_level = { 0.7, 0.9, 1.0 };
-
-    for (int i = 0; i < rate_modifier.size(); i++) {
-        if (soc_cmp(currentSoC, OP::GREATER_EQUAL, endSoC))
-            break;// reached desired charge. No need to charge further.
-
-        if (soc_cmp(cutoff_level[i], OP::SMALLER_EQUAL, currentSoC))
-            continue;// skip to the correct charging rate
-
-        double additional_charge = soc_cmp(cutoff_level[i], OP::SMALLER, endSoC)
-                                           ? cutoff_level[i] - currentSoC
-                                           : endSoC - currentSoC;
-
-        charging_time += additional_charge / (charging_rate * rate_modifier[i]);
-        currentSoC += additional_charge;
-    }
-
+    const ChargerProfile &charger = ChargerProfiles.at(chargingStation->best_compatible_type(*this));
+    double average_charging_power = charger.charging_power(initialSoC, endSoC);// kW
+    double average_charging_rate = average_charging_power / battery_capacity;  // %/h
+    double charging_time = (endSoC - initialSoC) / average_charging_rate;
 
     return Time(3600.0 * charging_time);// in seconds
 }

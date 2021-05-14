@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 project(EVRP)
 
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(Threads REQUIRED)
@@ -14,7 +17,7 @@ include_directories(RoutingKit/include)
 # Combine common classes into single library
 add_library(UTILS src/utils/utils.cpp)
 
-add_library(COMMON src/common/car.cpp src/common/edge.cpp src/common/node.cpp)
+add_library(COMMON src/common/car.cpp src/common/edge.cpp src/common/node.cpp src/common/charger_profile.cpp)
 target_link_libraries(COMMON PUBLIC UTILS)
 
 add_library(GRAPH src/graph/graph.cpp)
@@ -31,7 +34,7 @@ target_include_directories(Catch2 INTERFACE testing/include)
 ### EXECUTABLES ###
 # Main project executable
 add_executable(EVRP src/main.cpp)
-target_link_libraries(EVRP PUBLIC ${RK_LIB} OpenMP::OpenMP_CXX Threads::Threads ZLIB::ZLIB COMMON ROUTER)
+target_link_libraries(EVRP PUBLIC ${RK_LIB} COMMON ROUTER)
 
 # Test executable using Catch2
 # Longer test cases get split into separate files. Include those files to run tests
@@ -41,7 +44,7 @@ target_include_directories(TESTCASES PUBLIC testing/include)
 target_include_directories(TESTCASES PUBLIC testing/testcases)
 
 
-add_executable(TESTS testing/test.cpp testing/graph_test.cpp testing/car_test.cpp testing/router_test.cpp)
+add_executable(TESTS testing/test.cpp testing/graph_test.cpp testing/car_test.cpp testing/router_test.cpp testing/charger_test.cpp)
 target_link_libraries(TESTS Catch2 ${RK_LIB} TESTCASES COMMON ROUTER GRAPH UTILS)
 #target_include_directories(TESTS PUBLIC testing/testcases)
 

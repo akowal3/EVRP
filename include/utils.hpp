@@ -27,6 +27,11 @@ enum class OP {
     NOT_EQUAL,
 };
 
+enum class charger_type {
+    FAST_175KW,
+    SLOW_50KW,
+};
+
 bool soc_cmp(double left, OP operand, double right);
 bool time_cmp(Time left, OP operand, Time right);
 std::ostream &operator<<(std::ostream &os, const label_type &type);

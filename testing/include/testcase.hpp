@@ -84,5 +84,4 @@ public:
         path(std::move(path)){};
 };
 
-
 #endif//EVRP_TESTCASE_HPP

@@ -258,7 +258,7 @@ TEST_CASE("Charge time calculations", "[CAR, ROUTER]") {
             auto time_40_to_70 = c.get_charge_time(charger, 0.4, 0.7);
             auto time_70_to_90 = c.get_charge_time(charger, 0.7, 0.9);
             auto time_90_to_100 = c.get_charge_time(charger, 0.9, 1.0);
-
+            REQUIRE(time_40_to_70 + time_70_to_90 == c.get_charge_time(charger, 0.4, 0.9));
             REQUIRE(time_cmp(time_40_to_70 + time_70_to_90, OP::EQUAL, c.get_charge_time(charger, 0.4, 0.9)));
             REQUIRE(time_cmp(time_40_to_70 + time_70_to_90 + time_90_to_100, OP::EQUAL, c.get_charge_time(charger, 0.4, 1.0)));
         }

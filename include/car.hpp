@@ -7,10 +7,14 @@
 
 class Edge;
 class Node;
+#include <charger_profile.hpp>
 #include <edge.hpp>
 #include <node.hpp>
 #include <utils.hpp>
 
+#include <unordered_map>
+
+typedef std::unordered_map<charger_type, ChargerProfile> ChargerProfileMap;
 
 class Car {
 
@@ -33,7 +37,7 @@ public:
     double soc_left(const Edge &e, double initialSoC) const;
     double soc_left_from_max_soc(const Edge &e) const;
 
-    Time get_charge_time(const Node *charger, double initialSoC, double endSoC) const;
+    Time get_charge_time(const Node *chargingStation, double initialSoC, double endSoC) const;
     Time get_charge_time_to_max(const Edge &e, double initialSoC) const;
     Time get_charge_time_to_traverse(const Edge &e, double initialSoC) const;
     Time get_charge_time(const Edge &e) const;
@@ -57,6 +61,7 @@ private:
     int Mass;                   // in kg
     double IdleConsumption;     // in kW
     double DriveTrainEfficiency;// in percentage (0,1)
+    ChargerProfileMap ChargerProfiles;
 };
 
 

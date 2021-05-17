@@ -27,12 +27,8 @@ Car::Car(double soc_initial) :
     this->IdleConsumption = 1.5;
     this->DriveTrainEfficiency = 0.95;// in percentage
     this->ChargerProfiles = {
-        { charger_type::FAST_175KW, ChargerProfile(
-                                            { 0.0, 0.1, 0.2, 0.52, 0.61, 0.9, 1.0 },
-                                            { 0.0, 135.0, 140.0, 148.0, 110.0, 30.0, 0.0 }) },
-        { charger_type::SLOW_50KW, ChargerProfile(
-                                           { 0.0, 0.07, 0.5, 0.83, 0.9, 1.0 },
-                                           { 0.0, 40.0, 50.0, 50.0, 25.0, 0.0 }) },
+        { charger_type::FAST_175KW, ChargerProfile::FastCharger(90.0) },
+        { charger_type::SLOW_50KW, ChargerProfile::FastCharger(45.0) },
     };
 }
 
@@ -72,13 +68,7 @@ Time Car::get_charge_time(const Node *chargingStation, double initialSoC, double
         return 0;// no charging required
 
     const ChargerProfile &charger = ChargerProfiles.at(chargingStation->best_compatible_type(*this));
-    double average_charging_power = charger.charging_power(initialSoC, endSoC);// kW
-                                                                               //    double average_charging_rate = average_charging_power / battery_capacity;  // %/h
-                                                                               //    double charging_time = (endSoC - initialSoC) / average_charging_rate;      //h
-
-    double charging_time = (endSoC - initialSoC) * battery_capacity / average_charging_power;
-
-    return Time(3600.0 * charging_time);// in seconds
+    return charger.get_charging_time(initialSoC, endSoC, battery_capacity);
 }
 
 // This function calculates the time necessary to charge a car in order to traverse the edge

@@ -8,39 +8,31 @@
 #include <utils.hpp>
 #include <vector>
 
-
-class ChargerProfilePoint {
+class ChargerProfileRange {
     friend class ChargerProfile;
-    friend std::ostream &operator<<(std::ostream &os, const ChargerProfilePoint &p);
 
 private:
-    double soc;           // in percentage (0,1)
-    double charging_power;// in kW
+    double start_soc;
+    double end_soc;
+    double average_charging_power;
+
 public:
-    ChargerProfilePoint(double soc, double power);
-    static ChargerProfilePoint interpolate(const ChargerProfilePoint &left, double soc, const ChargerProfilePoint &right);
-    static double average_charging_rate(const ChargerProfilePoint &left, const ChargerProfilePoint &right);
-    bool operator<(const ChargerProfilePoint &other) const;
-    bool operator<=(const ChargerProfilePoint &other) const;
-    bool operator==(const ChargerProfilePoint &other) const;
-    bool operator<(double soc) const;
-    bool operator>=(double soc) const;
-    double get_charging_power() const;
-    double get_soc() const;
+    ChargerProfileRange(double start, double end, double charging_power);
+    Time get_charging_time(double initialSoC, double endSoC, double battery_capacity) const;
 };
 
+// models charging data from ev database as a set of ranges and associated average charging power
+// for example fast charger (175kW) has 90kW average power on 10%-80% range and 11kW otherwise
+// calculating the charging time is sum of intersections between charging need and the profile
 class ChargerProfile {
 private:
-    std::vector<ChargerProfilePoint> profile;
+    std::vector<ChargerProfileRange> profile;
 
 public:
-    ChargerProfile(const std::vector<ChargerProfilePoint> &p);
-    double charging_power(double initialSoC, double endSoC) const;
-    ChargerProfile(const std::vector<double> &socs, const std::vector<double> &powers);
-    Time charging_time(double initialSoC, double endSoC, double battery_capacity) const;
+    ChargerProfile(const std::vector<std::pair<double, double>> &socs, const std::vector<double> &powers);
+    ChargerProfile(std::vector<ChargerProfileRange> p);
+    static ChargerProfile FastCharger(double avg_fast_charging_power, double avg_slow_charging_power = 11.0);
+    Time get_charging_time(double initialSoC, double endSoC, double battery_capacity) const;
 };
-
-
-std::ostream &operator<<(std::ostream &os, const ChargerProfilePoint &p);
 
 #endif//EVRP_CHARGER_PROFILE_HPP

@@ -19,14 +19,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="[WIP] added charger profiles&#10;working on solving failing tests">
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="[WIP] charging profiles. commit before deleting ChargerProfilePoints">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/charger_profile.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/charger_profile.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/utils.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/car.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/charger_profile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/charger_profile.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/router.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/router.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/charger_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/charger_test.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/testcases/graph_cases.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/testcases/graph_cases.cpp" afterDir="false" />
@@ -91,14 +88,20 @@
       <command value="Edge traversal" />
     </option>
   </component>
-  <component name="RunManager" selected="Catch.Charge time is additive">
+  <component name="RunManager" selected="Catch.TESTS">
     <configuration name="Charge time is additive" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR, CHARGER]" TEST_METHOD="Charge time is additive" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChargerPoint interpolation" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CHARGER]" TEST_METHOD="ChargerPoint interpolation" TEST_MODE="SUITE_TEST">
+    <configuration name="ChargerProfile charging time" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CHARGER]" TEST_METHOD="ChargerProfile charging time" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChargerProfileRange" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CHARGER]" TEST_METHOD="ChargerProfileRange" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -151,27 +154,6 @@
         <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="EVRP" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="scratch_2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EVRP" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -195,7 +177,6 @@
     </configuration>
     <list>
       <item itemvalue="Catch.TESTS" />
-      <item itemvalue="Catch.ChargerPoint interpolation" />
       <item itemvalue="Catch.Connect to RoutingKit" />
       <item itemvalue="CMake Application.UTILS" />
       <item itemvalue="CMake Application.COMMON" />
@@ -204,16 +185,17 @@
       <item itemvalue="CMake Application.ROUTER" />
       <item itemvalue="CMake Application.TESTCASES" />
       <item itemvalue="Python.scratch_2" />
-      <item itemvalue="Python.scratch" />
       <item itemvalue="Catch.Charge time is additive" />
+      <item itemvalue="Catch.ChargerProfile charging time" />
+      <item itemvalue="Catch.ChargerProfileRange" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Catch.ChargerProfileRange" />
+        <item itemvalue="Catch.ChargerProfile charging time" />
         <item itemvalue="Catch.Charge time is additive" />
         <item itemvalue="Python.scratch_2" />
         <item itemvalue="Catch.Connect to RoutingKit" />
-        <item itemvalue="Catch.ChargerPoint interpolation" />
-        <item itemvalue="Python.scratch" />
       </list>
     </recent_temporary>
   </component>
@@ -253,7 +235,7 @@
       <workItem from="1620809378558" duration="21669000" />
       <workItem from="1620896102064" duration="1393000" />
       <workItem from="1621162701350" duration="1198000" />
-      <workItem from="1621243117364" duration="6507000" />
+      <workItem from="1621243117364" duration="13225000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -437,7 +419,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621004623886</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="[WIP] charging profiles. commit before deleting ChargerProfilePoints">
+      <created>1621253200202</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1621253200202</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -468,7 +457,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Revert &quot;changed all line endings to LF&quot;&#10;&#10;This reverts commit ae0d5386" />
     <MESSAGE value="added more unit tests.&#10;verified that there wasn't a bug" />
     <MESSAGE value="[BROKEN] Improved graph&#10;Added the ability to modify number of both soc levels and speeds.&#10;Added test suite for graph.&#10;Test cases for edge are broken. Probably doesn't compile" />
     <MESSAGE value="[BROKEN] Commit before fixing car tests. &#10;Some code cleanup and refactoring." />
@@ -493,7 +481,8 @@
     <MESSAGE value="Fixed my failed attempt at amending commits xD" />
     <MESSAGE value="Added insertion operator for RouterResult" />
     <MESSAGE value="[WIP] added charger profiles&#10;working on solving failing tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="[WIP] added charger profiles&#10;working on solving failing tests" />
+    <MESSAGE value="[WIP] charging profiles. commit before deleting ChargerProfilePoints" />
+    <option name="LAST_COMMIT_MESSAGE" value="[WIP] charging profiles. commit before deleting ChargerProfilePoints" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -526,26 +515,6 @@
           <url>file://$PROJECT_DIR$/src/router.cpp</url>
           <line>142</line>
           <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/testing/car_test.cpp</url>
-          <line>258</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/testing/car_test.cpp</url>
-          <line>259</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/testing/car_test.cpp</url>
-          <line>260</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/common/car.cpp</url>
-          <line>75</line>
-          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

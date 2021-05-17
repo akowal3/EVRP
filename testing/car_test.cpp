@@ -253,14 +253,18 @@ TEST_CASE("Charge time calculations", "[CAR, ROUTER]") {
             }
         }
         THEN("Charge times are (almost) additive") {
-            Edge e = Edge(&start, &end, 100, 120);
-            auto charger = e.sourceCharger();
-            auto time_40_to_70 = c.get_charge_time(charger, 0.4, 0.7);
-            auto time_70_to_90 = c.get_charge_time(charger, 0.7, 0.9);
-            auto time_90_to_100 = c.get_charge_time(charger, 0.9, 1.0);
-            REQUIRE(time_40_to_70 + time_70_to_90 == c.get_charge_time(charger, 0.4, 0.9));
-            REQUIRE(time_cmp(time_40_to_70 + time_70_to_90, OP::EQUAL, c.get_charge_time(charger, 0.4, 0.9)));
-            REQUIRE(time_cmp(time_40_to_70 + time_70_to_90 + time_90_to_100, OP::EQUAL, c.get_charge_time(charger, 0.4, 1.0)));
+            //            Edge e = Edge(&start, &end, 100, 120);
+            //            auto charger = e.sourceCharger();
+            auto charger = Node(0, 1.0, charger_type::FAST_175KW);
+            auto time_40_to_70 = c.get_charge_time(&charger, 0.3, 0.4);
+            auto time_70_to_90 = c.get_charge_time(&charger, 0.4, 0.7);
+            auto time_90_to_100 = c.get_charge_time(&charger, 0.9, 1.0);
+
+            std::cout << time_40_to_70 << ", " << time_70_to_90 << ", " << c.get_charge_time(&charger, 0.3, 0.7) << std::endl;
+
+            REQUIRE((time_40_to_70 + time_70_to_90) == c.get_charge_time(&charger, 0.4, 0.9));
+            REQUIRE(time_cmp(time_40_to_70 + time_70_to_90, OP::EQUAL, c.get_charge_time(&charger, 0.4, 0.9)));
+            REQUIRE(time_cmp(time_40_to_70 + time_70_to_90 + time_90_to_100, OP::EQUAL, c.get_charge_time(&charger, 0.4, 1.0)));
         }
     }
 }

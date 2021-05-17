@@ -26,6 +26,7 @@ public:
     bool operator<(double soc) const;
     bool operator>=(double soc) const;
     double get_charging_power() const;
+    double get_soc() const;
 };
 
 class ChargerProfile {
@@ -36,6 +37,7 @@ public:
     ChargerProfile(const std::vector<ChargerProfilePoint> &p);
     double charging_power(double initialSoC, double endSoC) const;
     ChargerProfile(const std::vector<double> &socs, const std::vector<double> &powers);
+    Time charging_time(double initialSoC, double endSoC, double battery_capacity) const;
 };
 
 

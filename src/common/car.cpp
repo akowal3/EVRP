@@ -73,8 +73,10 @@ Time Car::get_charge_time(const Node *chargingStation, double initialSoC, double
 
     const ChargerProfile &charger = ChargerProfiles.at(chargingStation->best_compatible_type(*this));
     double average_charging_power = charger.charging_power(initialSoC, endSoC);// kW
-    double average_charging_rate = average_charging_power / battery_capacity;  // %/h
-    double charging_time = (endSoC - initialSoC) / average_charging_rate;
+                                                                               //    double average_charging_rate = average_charging_power / battery_capacity;  // %/h
+                                                                               //    double charging_time = (endSoC - initialSoC) / average_charging_rate;      //h
+
+    double charging_time = (endSoC - initialSoC) * battery_capacity / average_charging_power;
 
     return Time(3600.0 * charging_time);// in seconds
 }
@@ -96,7 +98,7 @@ double Car::power_left(const Edge &e, double initialSoC) const {
     return battery_capacity * initialSoC - consumed_power(e);
 }
 
-double Car::consumed_power(const Edge &e) const {                             //kWh
+double Car::consumed_power(const Edge &e) const {
     double consumption_rate = this->calculate_consumption_rate(e.get_speed());//Wh/km
     return consumption_rate * e.get_distance() / 1000;                        //kWh
 }

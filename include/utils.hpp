@@ -16,6 +16,7 @@ enum class label_type {
     CHARGE_MAXIMUM,
     CHARGE_MINIMUM,
     CHARGE_70,
+    CHARGE_80,
 };
 
 enum class OP {

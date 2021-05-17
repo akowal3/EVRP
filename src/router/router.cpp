@@ -106,6 +106,15 @@ RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, co
                                           partial_charge_time, 0.7, &edge));
             }
 
+            // 4. Charge to 80%
+            if (soc_cmp(current.soc(), OP::SMALLER, 0.8) &&
+                c.can_traverse(edge, 0.8)) {
+                Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.8);
+                labels.emplace_back(Label(label_type::CHARGE_80, connectionID, currentID,
+                                          current.get_total_time() + travel_time + partial_charge_time,
+                                          partial_charge_time, 0.8, &edge));
+            }
+
             // Update this nodes label bag. This is similar to "relaxing" edges in standard Dijkstra's.
             auto search = label_map.find(connectionID);
             if (search == label_map.end()) {

@@ -19,14 +19,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="[WIP] charging profiles. commit before deleting ChargerProfilePoints">
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Changed charging profiles to follow the data on ev-database.org.&#10;This is a simpler model than modelling charging power vs soc graph as attempted in earlier commits, but in the interest of time, it had to be simplified.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/charger_profile.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/charger_profile.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/car.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/charger_profile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/charger_profile.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/charger_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/charger_test.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/testcases/graph_cases.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/testcases/graph_cases.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -235,7 +230,7 @@
       <workItem from="1620809378558" duration="21669000" />
       <workItem from="1620896102064" duration="1393000" />
       <workItem from="1621162701350" duration="1198000" />
-      <workItem from="1621243117364" duration="13225000" />
+      <workItem from="1621243117364" duration="14147000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -426,7 +421,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621253200202</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Changed charging profiles to follow the data on ev-database.org.&#10;This is a simpler model than modelling charging power vs soc graph as attempted in earlier commits, but in the interest of time, it had to be simplified.">
+      <created>1621260003057</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1621260003057</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -457,7 +459,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added more unit tests.&#10;verified that there wasn't a bug" />
     <MESSAGE value="[BROKEN] Improved graph&#10;Added the ability to modify number of both soc levels and speeds.&#10;Added test suite for graph.&#10;Test cases for edge are broken. Probably doesn't compile" />
     <MESSAGE value="[BROKEN] Commit before fixing car tests. &#10;Some code cleanup and refactoring." />
     <MESSAGE value="Added &quot;realistic&quot; EV charging&#10; Based on 3 line piecewise approximation. Currently charging parameters are hard-codded, but can be made car dependent easily. Fixed traverse bug, which always returned inf weight.&#10; Fixed car tests. Removed edge tests (unnecessary)" />
@@ -482,7 +483,8 @@
     <MESSAGE value="Added insertion operator for RouterResult" />
     <MESSAGE value="[WIP] added charger profiles&#10;working on solving failing tests" />
     <MESSAGE value="[WIP] charging profiles. commit before deleting ChargerProfilePoints" />
-    <option name="LAST_COMMIT_MESSAGE" value="[WIP] charging profiles. commit before deleting ChargerProfilePoints" />
+    <MESSAGE value="Changed charging profiles to follow the data on ev-database.org.&#10;This is a simpler model than modelling charging power vs soc graph as attempted in earlier commits, but in the interest of time, it had to be simplified." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed charging profiles to follow the data on ev-database.org.&#10;This is a simpler model than modelling charging power vs soc graph as attempted in earlier commits, but in the interest of time, it had to be simplified." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

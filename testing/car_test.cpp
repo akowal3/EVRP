@@ -265,3 +265,16 @@ TEST_CASE("Charge time calculations", "[CAR, ROUTER]") {
         }
     }
 }
+
+TEST_CASE("Charging follows ev-database.org data", "[CAR, CHARGER]") {
+    Car c = Car();
+    auto chargerFast = Node(0, 1.0, charger_type::FAST_175KW);
+    Time expected_mins = 34;
+    auto diff = std::abs(int(c.get_charge_time(&chargerFast, 0.1, 0.8)) - int(expected_mins * 60));
+    REQUIRE(diff < 4 * 60);// difference of 5 minutes is acceptable
+
+    auto chargerSlow = Node(0, 1.0, charger_type::SLOW_50KW);
+    expected_mins = 69;
+    diff = std::abs(int(c.get_charge_time(&chargerSlow, 0.1, 0.8)) - int(expected_mins * 60));
+    REQUIRE(diff < 4 * 60);
+}

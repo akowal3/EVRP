@@ -32,6 +32,7 @@ public:
     ChargerProfile(const std::vector<std::pair<double, double>> &socs, const std::vector<double> &powers);
     ChargerProfile(std::vector<ChargerProfileRange> p);
     static ChargerProfile FastCharger(double avg_fast_charging_power, double avg_slow_charging_power = 11.0);
+    static ChargerProfile SlowCharger(double voltage, double current, double phases);
     Time get_charging_time(double initialSoC, double endSoC, double battery_capacity) const;
 };
 

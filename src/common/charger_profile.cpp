@@ -33,6 +33,12 @@ ChargerProfile ChargerProfile::FastCharger(double avg_fast_charging_power, doubl
             { avg_slow_charging_power, avg_fast_charging_power, avg_slow_charging_power });
 }
 
+ChargerProfile ChargerProfile::SlowCharger(double voltage, double current, double phases) {
+    return ChargerProfile(
+            { { 0.0, 1.0 } },
+            { voltage * current * phases / 1000.0 });
+}
+
 Time ChargerProfileRange::get_charging_time(double initialSoC, double endSoC, double battery_capacity) const {
     if (initialSoC > end_soc || start_soc > endSoC) {
         return 0;// no charging in this range

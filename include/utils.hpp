@@ -16,6 +16,7 @@ enum class label_type {
     CHARGE_MAXIMUM,
     CHARGE_MINIMUM,
     CHARGE_70,
+    CHARGE_80,
 };
 
 enum class OP {
@@ -25,6 +26,11 @@ enum class OP {
     SMALLER,
     SMALLER_EQUAL,
     NOT_EQUAL,
+};
+
+enum class charger_type {
+    FAST_175KW,
+    SLOW_50KW,
 };
 
 bool soc_cmp(double left, OP operand, double right);

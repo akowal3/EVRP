@@ -6,7 +6,6 @@
 #define EVRP_LABEL_HPP
 
 #include <edge.hpp>
-#include <utils.hpp>
 
 // Label is one particular way of getting from parentID to nodeID.
 // It can have different charges, travel speeds etc.
@@ -23,8 +22,8 @@ public:
     unsigned get_parentID() const;
     unsigned get_labelID() const;
     Time get_total_time() const;
-    double soc() const;
     Time get_charge_time() const;
+    double soc() const;
 
 private:
     unsigned nodeID;

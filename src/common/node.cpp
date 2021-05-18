@@ -4,11 +4,14 @@
 
 #include <node.hpp>
 
+Node::Node(unsigned int ID, double SoC, charger_type type) :
+    ID(ID), charge_level(SoC), type(type) {}
+
 Node::Node(unsigned ID, double SoC) :
-    ID(ID), charge_level(SoC) {}
+    ID(ID), charge_level(SoC), type(charger_type::FAST_175KW) {}
 
 Node::Node(unsigned ID) :
-    ID(ID), charge_level(100.0) {}
+    ID(ID), charge_level(100.0), type(charger_type::FAST_175KW) {}
 
 unsigned Node::id() const {
     return this->ID;
@@ -18,4 +21,8 @@ double Node::soc() const {
     return this->charge_level;
 }
 
-Node::Node() = default;
+// can be extended to chargers having more than one type (as vector) and cars not supporting all kinds of chargers.
+charger_type Node::best_compatible_type(const Car &c) const {
+    // TODO: this assumes that charger has only one type and every car is compatible with every charger type
+    return this->type;
+}

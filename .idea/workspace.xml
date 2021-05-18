@@ -15,20 +15,14 @@
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" ENABLED="true" />
       <configuration PROFILE_NAME="Debug-Coverage" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DCMAKE_CXX_FLAGS=--coverage -DCMAKE_C_FLAGS=--coverage" ENABLED="true" />
+      <configuration PROFILE_NAME="Release" CONFIG_NAME="Release" ENABLED="true" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Added more tests. Added time comparison function">
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="added simple sanity-check test to verify the model is roughly following the database">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/car.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/edge.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/edge.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/label.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/label.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/router.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/router.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/utils.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/car.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/car_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/car_test.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/charger_profile.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/charger_profile.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/charger_profile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/charger_profile.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +31,11 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_COMMON_BRANCH" value="master" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -70,7 +69,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/testing/testcases" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -86,36 +85,31 @@
     </option>
   </component>
   <component name="RunManager" selected="Catch.TESTS">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Can traverse for Router" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR, ROUTER]" TEST_METHOD="Can traverse for Router" TEST_MODE="SUITE_TEST">
+    <configuration name="Charge time is additive" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR, CHARGER]" TEST_METHOD="Charge time is additive" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Consumed SoC" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR, EDGE]" TEST_METHOD="Consumed SoC" TEST_MODE="SUITE_TEST">
+    <configuration name="ChargerProfile charging time" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CHARGER]" TEST_METHOD="ChargerProfile charging time" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Simple router verifier" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Simple router verifier" TEST_MODE="SUITE_TEST">
+    <configuration name="ChargerProfileRange" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CHARGER]" TEST_METHOD="ChargerProfileRange" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Simple router" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Simple router" TEST_MODE="SUITE_TEST">
+    <configuration name="Connect to RoutingKit" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH, RK]" TEST_METHOD="Connect to RoutingKit" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TESTS" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_MODE="SUITE_TEST">
+    <configuration name="TESTS" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" singleton="false" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -151,12 +145,12 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="scratch_1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="scratch_2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EVRP" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -168,7 +162,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -179,25 +173,25 @@
     </configuration>
     <list>
       <item itemvalue="Catch.TESTS" />
-      <item itemvalue="Catch.Simple router" />
-      <item itemvalue="Catch.Simple router verifier" />
-      <item itemvalue="Catch.Can traverse for Router" />
-      <item itemvalue="Catch.Consumed SoC" />
+      <item itemvalue="Catch.Connect to RoutingKit" />
+      <item itemvalue="Catch.Charge time is additive" />
+      <item itemvalue="Catch.ChargerProfile charging time" />
+      <item itemvalue="Catch.ChargerProfileRange" />
       <item itemvalue="CMake Application.UTILS" />
       <item itemvalue="CMake Application.COMMON" />
       <item itemvalue="CMake Application.EVRP" />
       <item itemvalue="CMake Application.GRAPH" />
       <item itemvalue="CMake Application.ROUTER" />
       <item itemvalue="CMake Application.TESTCASES" />
-      <item itemvalue="Python.scratch_1" />
+      <item itemvalue="Python.scratch_2" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Catch.Consumed SoC" />
-        <item itemvalue="Catch.Can traverse for Router" />
-        <item itemvalue="Catch.Simple router verifier" />
-        <item itemvalue="Catch.Simple router" />
-        <item itemvalue="Python.scratch_1" />
+        <item itemvalue="Catch.ChargerProfileRange" />
+        <item itemvalue="Catch.ChargerProfile charging time" />
+        <item itemvalue="Catch.Charge time is additive" />
+        <item itemvalue="Python.scratch_2" />
+        <item itemvalue="Catch.Connect to RoutingKit" />
       </list>
     </recent_temporary>
   </component>
@@ -236,6 +230,10 @@
       <workItem from="1620732677774" duration="18683000" />
       <workItem from="1620809378558" duration="21669000" />
       <workItem from="1620896102064" duration="1393000" />
+      <workItem from="1621162701350" duration="1198000" />
+      <workItem from="1621243117364" duration="16425000" />
+      <workItem from="1621320421743" duration="785000" />
+      <workItem from="1621343845250" duration="450000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -398,7 +396,49 @@
       <option name="project" value="LOCAL" />
       <updated>1620834668722</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Fixed my failed attempt at amending commits xD">
+      <created>1620901210795</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1620901210796</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Added insertion operator for RouterResult">
+      <created>1620903954399</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1620903954399</updated>
+    </task>
+    <task id="LOCAL-00026" summary="[WIP] added charger profiles&#10;working on solving failing tests">
+      <created>1621004623886</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1621004623886</updated>
+    </task>
+    <task id="LOCAL-00027" summary="[WIP] charging profiles. commit before deleting ChargerProfilePoints">
+      <created>1621253200202</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1621253200202</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Changed charging profiles to follow the data on ev-database.org.&#10;This is a simpler model than modelling charging power vs soc graph as attempted in earlier commits, but in the interest of time, it had to be simplified.">
+      <created>1621260003057</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1621260003057</updated>
+    </task>
+    <task id="LOCAL-00029" summary="added simple sanity-check test to verify the model is roughly following the database">
+      <created>1621261482658</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1621261482658</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -415,7 +455,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="Router" />
+                        <option value="multi-chargers" />
                       </list>
                     </value>
                   </entry>
@@ -429,10 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="changed all line endings to LF" />
-    <MESSAGE value="Revert &quot;changed all line endings to LF&quot;&#10;&#10;This reverts commit ae0d5386" />
-    <MESSAGE value="added more unit tests.&#10;verified that there wasn't a bug" />
-    <MESSAGE value="[BROKEN] Improved graph&#10;Added the ability to modify number of both soc levels and speeds.&#10;Added test suite for graph.&#10;Test cases for edge are broken. Probably doesn't compile" />
     <MESSAGE value="[BROKEN] Commit before fixing car tests. &#10;Some code cleanup and refactoring." />
     <MESSAGE value="Added &quot;realistic&quot; EV charging&#10; Based on 3 line piecewise approximation. Currently charging parameters are hard-codded, but can be made car dependent easily. Fixed traverse bug, which always returned inf weight.&#10; Fixed car tests. Removed edge tests (unnecessary)" />
     <MESSAGE value="Connected graph to RoutingKit&#10;It appears to be working on a toy example." />
@@ -452,7 +488,13 @@
     <MESSAGE value="Testing car and router" />
     <MESSAGE value="Added comparison function for SoCs.&#10;This enables to perform epsilon comparison. In other words, we treat SoC as XX.X number, and the remaining digits are irrelevant. We perform epsilon = 0.1 comparison between the SoC levels ie. 69.9 == 69.88, 42.0 &gt;= 42.09 etc." />
     <MESSAGE value="Added more tests. Added time comparison function" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added more tests. Added time comparison function" />
+    <MESSAGE value="Fixed my failed attempt at amending commits xD" />
+    <MESSAGE value="Added insertion operator for RouterResult" />
+    <MESSAGE value="[WIP] added charger profiles&#10;working on solving failing tests" />
+    <MESSAGE value="[WIP] charging profiles. commit before deleting ChargerProfilePoints" />
+    <MESSAGE value="Changed charging profiles to follow the data on ev-database.org.&#10;This is a simpler model than modelling charging power vs soc graph as attempted in earlier commits, but in the interest of time, it had to be simplified." />
+    <MESSAGE value="added simple sanity-check test to verify the model is roughly following the database" />
+    <option name="LAST_COMMIT_MESSAGE" value="added simple sanity-check test to verify the model is roughly following the database" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

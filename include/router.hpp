@@ -8,7 +8,6 @@
 #include <car.hpp>
 #include <label.hpp>
 #include <node.hpp>
-#include <utils.hpp>
 
 #include <queue>
 #include <unordered_map>
@@ -26,6 +25,8 @@ typedef struct {
     Time charge_time;
 } RouterResult;
 
+std::ostream &operator<<(std::ostream &os, const RouterResult &r);
+
 
 class Router {
 private:
@@ -36,7 +37,6 @@ private:
 public:
     RouterResult route(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
     Router(int charger_count, const std::vector<BuildingEdge> &edges);
-    static void printSPT(const RouterResult &res);
 };
 
 

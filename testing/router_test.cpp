@@ -4,9 +4,7 @@
 
 
 #include <catch.hpp>
-#include <custom_macros.hpp>
 #include <graph_cases.hpp>
-#include <iostream>
 #include <router.hpp>
 #include <sstream>
 #include <utils.hpp>
@@ -22,7 +20,7 @@ TEST_CASE("Simple router verifier", "[ROUTER]") {
 
             Car c = Car(initial_soc);
 
-            auto ret = router.route(sourceID, destinationID, c);
+            RouterResult ret = router.route(sourceID, destinationID, c);
             //            auto total_time = ret.at(destinationID).get_total_time();
             //
 

@@ -19,7 +19,7 @@ Graph::Graph(unsigned int charger_count, const std::vector<BuildingEdge> &edges)
         this->nodes.emplace_back(Node(id, chargeAt(id)));
     }
 
-    // Crete edges corresponding to different speeds of traveling between the chargers
+    // Crete edges corresponding to different speeds of traveling between the ChargerProfiles
     this->edges.reserve(CHARGER_STEPS.size() * CHARGER_STEPS.size() * SPEED_STEPS.size() * edges.size());
     for (const BuildingEdge &e : edges) {
         unsigned charge_levels = CHARGER_STEPS.size();

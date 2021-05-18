@@ -253,14 +253,28 @@ TEST_CASE("Charge time calculations", "[CAR, ROUTER]") {
             }
         }
         THEN("Charge times are (almost) additive") {
-            Edge e = Edge(&start, &end, 100, 120);
-            auto charger = e.sourceCharger();
-            auto time_40_to_70 = c.get_charge_time(charger, 0.4, 0.7);
-            auto time_70_to_90 = c.get_charge_time(charger, 0.7, 0.9);
-            auto time_90_to_100 = c.get_charge_time(charger, 0.9, 1.0);
+            //            Edge e = Edge(&start, &end, 100, 120);
+            //            auto charger = e.sourceCharger();
+            auto charger = Node(0, 1.0, charger_type::FAST_175KW);
+            auto time_40_to_70 = c.get_charge_time(&charger, 0.4, 0.7);
+            auto time_70_to_90 = c.get_charge_time(&charger, 0.7, 0.9);
+            auto time_90_to_100 = c.get_charge_time(&charger, 0.9, 1.0);
 
-            REQUIRE(time_cmp(time_40_to_70 + time_70_to_90, OP::EQUAL, c.get_charge_time(charger, 0.4, 0.9)));
-            REQUIRE(time_cmp(time_40_to_70 + time_70_to_90 + time_90_to_100, OP::EQUAL, c.get_charge_time(charger, 0.4, 1.0)));
+            REQUIRE((time_40_to_70 + time_70_to_90) == Approx(c.get_charge_time(&charger, 0.4, 0.9)).epsilon(1));
+            REQUIRE((time_40_to_70 + time_70_to_90 + time_90_to_100) == Approx(c.get_charge_time(&charger, 0.4, 1.0)).epsilon(1));
         }
     }
+}
+
+TEST_CASE("Charging follows ev-database.org data", "[CAR, CHARGER]") {
+    Car c = Car();
+    auto chargerFast = Node(0, 1.0, charger_type::FAST_175KW);
+    Time expected_mins = 34;
+    auto diff = std::abs(int(c.get_charge_time(&chargerFast, 0.1, 0.8)) - int(expected_mins * 60));
+    REQUIRE(diff < 4 * 60);// difference of 5 minutes is acceptable
+
+    auto chargerSlow = Node(0, 1.0, charger_type::SLOW_50KW);
+    expected_mins = 69;
+    diff = std::abs(int(c.get_charge_time(&chargerSlow, 0.1, 0.8)) - int(expected_mins * 60));
+    REQUIRE(diff < 4 * 60);
 }

@@ -63,3 +63,12 @@ std::ostream &operator<<(std::ostream &os, const label_type &type) {
             return os << "CHARGE_80";
     }
 }
+
+std::ostream &operator<<(std::ostream &os, const charger_type &type) {
+    switch (type) {
+        case charger_type::FAST_175KW:
+            return os << "FAST_175KW";
+        case charger_type::SLOW_50KW:
+            return os << "SLOW_50KW";
+    }
+}

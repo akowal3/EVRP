@@ -37,6 +37,7 @@ private:
 public:
     RouterResult route(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
     Router(int charger_count, const std::vector<BuildingEdge> &edges);
+    Router(const std::vector<Node> &nodes, const std::vector<BuildingEdge> &edges);
 };
 
 

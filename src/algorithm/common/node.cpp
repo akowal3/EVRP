@@ -26,3 +26,6 @@ charger_type Node::best_compatible_type(const Car &c) const {
     // TODO: this assumes that charger has only one type and every car is compatible with every charger type
     return this->type;
 }
+std::vector<charger_type> Node::supported_types() const {
+    return { this->type };
+}

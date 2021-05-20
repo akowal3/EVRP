@@ -21,6 +21,7 @@ public:
     unsigned id() const;
     double soc() const;
     charger_type best_compatible_type(const Car &c) const;
+    std::vector<charger_type> supported_types() const;
 };
 
 

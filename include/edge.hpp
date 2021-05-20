@@ -38,7 +38,7 @@ public:
     unsigned distance;
     unsigned max_speed;
     BuildingEdge(unsigned from, unsigned to, unsigned distance, unsigned max_speed);
-    Time get_travel_time(double speed_modifier) const;
+    Time get_travel_time(double speed_modifier = 1.0) const;
 };
 
 #endif//EVRP_EDGE_H

@@ -24,6 +24,16 @@ Router::Router(int charger_count, const std::vector<BuildingEdge> &edges) {
     }
 }
 
+Router::Router(const std::vector<Node> &nodes, const std::vector<BuildingEdge> &edges) :
+    nodes(nodes) {
+    for (const BuildingEdge &e : edges) {
+        for (auto speed_modifier : Graph::SPEED_STEPS) {
+            this->edges[e.from].emplace_back(Edge(&nodes[e.from], &nodes[e.to], e.distance, e.max_speed * speed_modifier));
+        }
+        //        this->edges[e.from].emplace_back(Edge(&nodes[e.from], &nodes[e.to], e.distance, e.max_speed));
+    }
+}
+
 RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, const Car &c) const {
     // adapted from https://github.com/keyan/ev_routing_engine
     // All labels in the vector are non-dominating in respect to total_time and soc_left.
@@ -183,6 +193,7 @@ RouterResult Router::build_result(const std::unordered_map<unsigned int, Label> 
 
     return res;
 }
+
 
 std::ostream &operator<<(std::ostream &os, const RouterResult &res) {
     for (int i = 0; i < res.nodes.size(); i++) {

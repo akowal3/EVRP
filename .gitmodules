@@ -1,0 +1,6 @@
+[submodule "dependencies/pybind11"]
+	path = dependencies/pybind11
+	url = git@github.com:pybind/pybind11.git
+[submodule "dependencies/RoutingKit"]
+	path = dependencies/RoutingKit
+	url = git@github.com:RoutingKit/RoutingKit.git

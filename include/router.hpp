@@ -36,8 +36,9 @@ private:
 
 public:
     RouterResult route(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
+    std::unordered_map<unsigned int, Label> route_internal(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
     Router(int charger_count, const std::vector<BuildingEdge> &edges);
-    Router(const std::vector<Node> &nodes, const std::vector<BuildingEdge> &edges);
+    Router(std::vector<Node> nodes, const std::vector<BuildingEdge> &edges);
 };
 
 

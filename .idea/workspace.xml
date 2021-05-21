@@ -24,24 +24,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="moved files to subdirectories">
-      <change afterPath="$PROJECT_DIR$/src/backend/backend.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/backend/bindings/bindings.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/backend/config.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/backend/graph/charger.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/backend/graph/edge.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/backend/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/backend/services/osm.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/backend/services/osrm.py" afterDir="false" />
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="started working on backend in Python3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/edge.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/edge.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/node.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/node.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/router.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/router.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/utils.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm/common/node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/node.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/algorithm/router/router.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/router/router.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm/utils/utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/utils/utils.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/bindings/bindings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/bindings/bindings.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/services/osrm.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/services/osrm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/router_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/router_test.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,12 +107,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ChargerProfileRange" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CHARGER]" TEST_METHOD="ChargerProfileRange" TEST_MODE="SUITE_TEST">
+    <configuration name="Stress test" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Stress test" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -178,6 +164,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="graph" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EVRP" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -203,6 +194,9 @@
       <module name="EVRP" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/backend" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -210,8 +204,8 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/backend/main.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="true" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
@@ -261,7 +255,7 @@
     </configuration>
     <list>
       <item itemvalue="Catch.TESTS" />
-      <item itemvalue="Catch.ChargerProfileRange" />
+      <item itemvalue="Catch.Stress test" />
       <item itemvalue="CMake Application.UTILS" />
       <item itemvalue="CMake Application.bindings" />
       <item itemvalue="CMake Application.build_RK_LIB" />
@@ -278,8 +272,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Catch.Stress test" />
         <item itemvalue="Python.graph" />
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.test" />
       </list>
@@ -327,6 +321,7 @@
       <workItem from="1621367411193" duration="26848000" />
       <workItem from="1621462104763" duration="1140000" />
       <workItem from="1621513666739" duration="8065000" />
+      <workItem from="1621588079190" duration="5255000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -552,7 +547,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621373001792</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="started working on backend in Python3">
+      <created>1621549029393</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1621549029393</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -586,7 +588,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/RoutingKit" />
     </ignored-roots>
-    <MESSAGE value="Clion stuff" />
     <MESSAGE value="small refactoring" />
     <MESSAGE value="[CAR tests broken] Added energy consumption modifier. &#10;It's a very simple linear modifier with respect to speed the car travels. Should be changed for more sophisticated one!&#10;Tests are broken because they were calculated based on the assumption that energy consumption is constant at every speed.&#10;Refactored car.get_charge_time to operate with battery percentage instead of battery capacity." />
     <MESSAGE value="Added better path printing coming from RoutingKit" />
@@ -611,7 +612,8 @@
     <MESSAGE value="added slow charger profile" />
     <MESSAGE value="added submodules" />
     <MESSAGE value="moved files to subdirectories" />
-    <option name="LAST_COMMIT_MESSAGE" value="moved files to subdirectories" />
+    <MESSAGE value="started working on backend in Python3" />
+    <option name="LAST_COMMIT_MESSAGE" value="started working on backend in Python3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -649,6 +651,11 @@
           <url>file://$PROJECT_DIR$/include/utils.hpp</url>
           <line>37</line>
           <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/testing/router_test.cpp</url>
+          <line>96</line>
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

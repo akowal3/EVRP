@@ -3,6 +3,7 @@
 //
 
 #include <algorithm>
+#include <cassert>
 #include <graph.hpp>
 #include <iostream>
 #include <router.hpp>
@@ -20,21 +21,56 @@ Router::Router(int charger_count, const std::vector<BuildingEdge> &edges) {
         for (auto speed_modifier : Graph::SPEED_STEPS) {
             this->edges[e.from].emplace_back(Edge(&nodes[e.from], &nodes[e.to], e.distance, e.max_speed * speed_modifier));
         }
-        //        this->edges[e.from].emplace_back(Edge(&nodes[e.from], &nodes[e.to], e.distance, e.max_speed));
     }
 }
 
-Router::Router(const std::vector<Node> &nodes, const std::vector<BuildingEdge> &edges) :
-    nodes(nodes) {
+Router::Router(std::vector<Node> nodes, const std::vector<BuildingEdge> &edges) :
+    nodes(std::move(nodes)) {
     for (const BuildingEdge &e : edges) {
         for (auto speed_modifier : Graph::SPEED_STEPS) {
-            this->edges[e.from].emplace_back(Edge(&nodes[e.from], &nodes[e.to], e.distance, e.max_speed * speed_modifier));
+            this->edges[e.from].emplace_back(Edge(&this->nodes[e.from], &this->nodes[e.to], e.distance, e.max_speed * speed_modifier));
         }
-        //        this->edges[e.from].emplace_back(Edge(&nodes[e.from], &nodes[e.to], e.distance, e.max_speed));
     }
 }
 
 RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, const Car &c) const {
+    auto spt = route_internal(sourceID, destinationID, c);
+    return build_result(spt, c, sourceID, destinationID);
+}
+
+RouterResult Router::build_result(const std::unordered_map<unsigned int, Label> &spt, const Car &c, unsigned sourceID, unsigned destinationID) {
+    // possibly could be made more efficiently without vectors
+    RouterResult res = RouterResult();
+    Label current = spt.at(destinationID);
+    res.total_time = current.get_total_time();
+
+
+    while (current.get_nodeID() != sourceID) {
+        res.socs_in.push_back(current.soc());
+        res.socs_out.push_back(current.soc() + c.consumed_soc(*current.edge));
+        res.charge_times.push_back(current.get_charge_time());
+        res.arcs.push_back(current.edge);
+        res.nodes.push_back(current.edge->destinationCharger());
+        res.charges.push_back(current.type);
+        current = spt.at(current.get_parentID());
+    }
+
+    res.nodes.push_back(res.arcs.back()->sourceCharger());
+
+    for (auto t : res.charge_times) {
+        res.charge_time += t;
+    }
+
+    std::reverse(res.socs_out.begin(), res.socs_out.end());
+    std::reverse(res.socs_in.begin(), res.socs_in.end());
+    std::reverse(res.charge_times.begin(), res.charge_times.end());
+    std::reverse(res.arcs.begin(), res.arcs.end());
+    std::reverse(res.nodes.begin(), res.nodes.end());
+    std::reverse(res.charges.begin(), res.charges.end());
+
+    return res;
+}
+std::unordered_map<unsigned int, Label> Router::route_internal(unsigned int sourceID, unsigned int destinationID, const Car &c) const {
     // adapted from https://github.com/keyan/ev_routing_engine
     // All labels in the vector are non-dominating in respect to total_time and soc_left.
     // That is, all labels for a node are Pareto optimal!
@@ -158,40 +194,7 @@ RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, co
         }
     }
 
-    return build_result(shortest_path_tree, c, sourceID, destinationID);
-}
-
-RouterResult Router::build_result(const std::unordered_map<unsigned int, Label> &spt, const Car &c, unsigned sourceID, unsigned destinationID) {
-    // possibly could be made more efficiently without vectors
-    RouterResult res = RouterResult();
-    Label current = spt.at(destinationID);
-    res.total_time = current.get_total_time();
-
-
-    while (current.get_nodeID() != sourceID) {
-        res.socs_in.push_back(current.soc());
-        res.socs_out.push_back(current.soc() + c.consumed_soc(*current.edge));
-        res.charge_times.push_back(current.get_charge_time());
-        res.arcs.push_back(current.edge);
-        res.nodes.push_back(current.edge->destinationCharger());
-        res.charges.push_back(current.type);
-        current = spt.at(current.get_parentID());
-    }
-
-    res.nodes.push_back(res.arcs.back()->sourceCharger());
-
-    for (auto t : res.charge_times) {
-        res.charge_time += t;
-    }
-
-    std::reverse(res.socs_out.begin(), res.socs_out.end());
-    std::reverse(res.socs_in.begin(), res.socs_in.end());
-    std::reverse(res.charge_times.begin(), res.charge_times.end());
-    std::reverse(res.arcs.begin(), res.arcs.end());
-    std::reverse(res.nodes.begin(), res.nodes.end());
-    std::reverse(res.charges.begin(), res.charges.end());
-
-    return res;
+    return shortest_path_tree;
 }
 
 

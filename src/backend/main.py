@@ -4,7 +4,7 @@ sys.path.append("../../cmake-build-debug")
 sys.path.append("cmake-build-debug")
 from bindings import Router, Car
 
-from src.backend.backend import EvrpBackend
+from backend import EvrpBackend
 
 if __name__ == '__main__':
     backend = EvrpBackend()
@@ -16,7 +16,9 @@ if __name__ == '__main__':
     c = Car(0.3)
 
     while True:
-        src = input(f"Give source (0 - {len(nodes)}): ")
-        dst = input(f"Give destination (0 - {len(nodes)}): ")
-        result = router.route(int(src), int(dst), c)
+        src = int(input(f"Give source (0 - {len(nodes)}): "))
+        dst = int(input(f"Give destination (0 - {len(nodes)}): "))
+        result = router.route(src, dst, c)
+        t = router.route_internal(src, dst, c)
         print(result)
+        print(t)

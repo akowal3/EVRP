@@ -62,9 +62,8 @@ class OSRM:
         for i, src in enumerate(chargers):
             for j, dst in enumerate(chargers):
                 res[i][j] = self.route_dt([src.location(), dst.location()])
-
-                if j % 50 == 0:
-                    sleep(1)
+                if j % 40 == 0:
+                    sleep(0.1)
 
         return res
 
@@ -76,7 +75,9 @@ class OSRM:
             for j, dst in enumerate(chargers):
                 if src.internalID != dst.internalID:
                     distance_m, duration_s = self.route_dt([src.location(), dst.location()])
-                    res.append(Edge(src, dst, distance_m, duration_s))
-                if j % 50 == 0:
-                    sleep(0.5)
+                    if distance_lower_bound <= distance_m <= distance_upper_bound and duration_s >= 10:
+                        res.append(Edge(src, dst, distance_m, duration_s))
+                # if j % 40 == 0:
+                #     sleep(0.5)
+                sleep(0.01)
         return res

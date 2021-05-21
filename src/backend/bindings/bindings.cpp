@@ -2,6 +2,7 @@
 // Created by akowal3 on 19/05/2021.
 //
 
+#include <pybind11/iostream.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
@@ -40,9 +41,12 @@ PYBIND11_MODULE(bindings, m) {
                  });
 
     py::class_<Router>(m, "Router")
-            .def(py::init<unsigned, const std::vector<BuildingEdge> &>())
-            .def(py::init<const std::vector<Node> &, const std::vector<BuildingEdge> &>())
-            .def("route", &Router::route);
+            .def(py::init<unsigned, const std::vector<BuildingEdge> &>(), py::call_guard<py::scoped_ostream_redirect,
+                                                                                         py::scoped_estream_redirect>())
+            .def(py::init<std::vector<Node>, const std::vector<BuildingEdge> &>())
+            .def("route", &Router::route)
+            .def("route_internal", &Router::route_internal);
+
 
     py::enum_<label_type>(m, "label_type")
             .value("CHARGE_80", label_type::CHARGE_80)
@@ -80,4 +84,12 @@ PYBIND11_MODULE(bindings, m) {
             .def_property_readonly("speed", &Edge::get_speed)
             .def_property_readonly("destination", &Edge::destinationCharger)
             .def_property_readonly("source", &Edge::sourceCharger);
+
+    py::class_<Label>(m, "Label")
+            .def_property_readonly("nodeID", &Label::get_nodeID)
+            .def_property_readonly("parendID", &Label::get_parentID)
+            .def_property_readonly("labelID", &Label::get_labelID)
+            .def_property_readonly("remaining_soc", &Label::soc)
+            .def_property_readonly("total_time", &Label::get_total_time)
+            .def_property_readonly("charge_time", &Label::get_charge_time);
 }

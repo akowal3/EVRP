@@ -3,8 +3,8 @@ from typing import Dict, Any, List, Tuple
 
 import requests
 
-from src.backend.graph.charger import Charger
-from src.backend.graph.edge import Edge
+from charger import Charger
+from edge import Edge
 
 
 class OSRM:
@@ -57,6 +57,14 @@ class OSRM:
         x = x['routes'][0]
         return x['distance'], x['duration']
 
+    def route_result(self, coords: List[Tuple[float, float]]):
+        """Returns the full json to travel a given route between chargers."""
+        return self.make_request(
+            service='route',
+            coords=coords,
+            options={'steps': 'false', 'overview': 'false'}
+        )
+
     def charger_table(self, chargers: List[Charger]):
         res = pd.DataFrame(columns=range(len(chargers)), index=range(len(chargers)))
         for i, src in enumerate(chargers):
@@ -77,7 +85,5 @@ class OSRM:
                     distance_m, duration_s = self.route_dt([src.location(), dst.location()])
                     if distance_lower_bound <= distance_m <= distance_upper_bound and duration_s >= 10:
                         res.append(Edge(src, dst, distance_m, duration_s))
-                # if j % 40 == 0:
-                #     sleep(0.5)
                 sleep(0.01)
         return res

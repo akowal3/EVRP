@@ -2,7 +2,7 @@ ChargersFile: chargers.p
 EdgesFile: edges.p
 
 OSM:
-  MaxResults: 100
+  MaxResults: 1000
   CountryCode: PL
   Host: https://api.openchargemap.io/v3/
   Key: 485978b8-d8ec-4d0a-8caa-a1a65bee5367

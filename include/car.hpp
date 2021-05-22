@@ -20,6 +20,11 @@ class Car {
 
 public:
     Car(double soc_initial = 1.0);// start with full battery by default
+    Car(double soc_initial, double soc_min, double soc_max, double soc_min_final, double battery_capacity, double CrossSectionalArea, double RollingResistanceCoeff, double DragCoeff, int Mass, double IdleConsumption, double DriveTrainEfficiency, std::unordered_map<charger_type, ChargerProfile> ChargerProfiles);
+
+    static Car TeslaModel3(double soc_initial, double soc_min, double soc_max, double soc_min_final);
+    static Car RenaultZoe(double soc_initial, double soc_min, double soc_max, double soc_final_min);
+
     bool can_traverse(const Edge &e) const;
     bool can_traverse(const Edge &e, double initialSoC) const;
     bool can_traverse_with_max_soc(const Edge &e) const;
@@ -48,13 +53,10 @@ public:
 
 private:
     double battery_capacity;  // in Wh
-    double energy_consumption;// in Wh/km
-    double charging_power;    // in kW
     double soc_min;           // in percentage (0,1)
     double soc_max;           // in percentage (0,1)
     double soc_initial;       // in percentage (0,1). Initial SoC given by the user
-    double range;             // in km
-    double charging_rate;     // in %/hour
+    double soc_min_final;     // in percentage (0,1). Final SoC given by the user
     double CrossSectionalArea;// in m2
     double RollingResistanceCoeff;
     double DragCoeff;

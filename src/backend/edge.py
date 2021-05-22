@@ -1,6 +1,6 @@
 import sys
 
-from src.backend.graph.charger import Charger
+from charger import Charger
 
 sys.path.append("../../cmake-build-debug")
 sys.path.append("cmake-build-debug")

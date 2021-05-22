@@ -22,7 +22,21 @@ PYBIND11_MODULE(bindings, m) {
             .def_readwrite("max_speed", &BuildingEdge::max_speed);
 
     py::class_<Car>(m, "Car")
-            .def(py::init<double>());
+            .def(py::init<double>())
+            .def(py::init<double,
+                          double,
+                          double,
+                          double,
+                          double,
+                          double,
+                          double,
+                          double,
+                          int,
+                          double,
+                          double,
+                          std::unordered_map<charger_type, ChargerProfile>>())
+            .def_static("TeslaModel3", &Car::TeslaModel3);
+
 
     py::class_<RouterResult>(m, "RouterResult")
             .def_readwrite("nodes", &RouterResult::nodes)

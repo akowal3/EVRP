@@ -179,6 +179,59 @@ TEST_CASE("Connect to RoutingKit", "[GRAPH, RK]") {
     }
 }
 
+TEST_CASE("Graph stress test", "[GRAPH]") {
+    srandom(std::time(nullptr));
+
+    int node_count = 50;
+
+
+    std::vector<BuildingEdge> edges;
+    int edge_count = 1000;
+    edges.reserve(edge_count);
+
+    for (int i = 0; i < edge_count; ++i) {
+        unsigned from = random() % node_count;
+        unsigned to = random() % node_count;
+        while (from == to) to = random() % node_count;
+        assert(from != to);
+        unsigned distance = random() % 600 + 80;
+        unsigned speed = random() % 200 + 30;
+        edges.emplace_back(BuildingEdge(from, to, distance, speed));
+    }
+
+    Graph g = Graph(node_count, edges);
+
+    std::cout << "Graph built" << std::endl;
+
+    unsigned from = random() % node_count;
+    unsigned to = random() % node_count;
+    while (from == to) to = random() % node_count;
+    assert(from != to);
+
+    Car c = Car();
+
+    // RoutingKit
+    auto ch = ContractionHierarchy::build(g.node_size(), g.tail, g.head, g.evaluate_with(c));
+
+    std::cout << "CH built" << std::endl;
+
+    ContractionHierarchyQuery query(ch);
+
+    query.reset().add_source(from);
+
+    for (auto &t : Graph::ID_to_nodes(to)) {
+        query.add_target(t);
+    }
+
+    query.run();
+
+    // Verify correctness
+    auto node_path = query.get_node_path();
+    auto arc_path = query.get_arc_path();
+
+    PathPrint(g, arc_path);
+}
+
 //TEST_CASE("Different car", "[GRAPH]") {
 //    std::vector<Edge> e = { Edge(0, 1, 100, 80), Edge(1, 0, 50, 12) };
 //    Graph g = Graph(2, e);

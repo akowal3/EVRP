@@ -13,13 +13,9 @@
 Car::Car(double soc_initial) :
     soc_initial(soc_initial) {
     // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
-    this->battery_capacity = 70.0;            // (kWh) battery usable
-    this->energy_consumption = 131.0 / 1000.0;// (Wh/km) Combined - Mild Weather
-    this->charging_power = 85.0;              // (kW)  Supercharver v2 150kW
-    this->range = 535.0;                      // (km) Combined - Mild Weather
+    this->battery_capacity = 70.0;// (kWh) battery usable
     this->soc_min = 0.1;
     this->soc_max = 0.95;
-    this->charging_rate = charging_power / battery_capacity;
     this->CrossSectionalArea = 2.2;// cross sectional area in m2
     this->RollingResistanceCoeff = 0.007;
     this->DragCoeff = 0.23;
@@ -30,7 +26,57 @@ Car::Car(double soc_initial) :
         { charger_type::FAST_175KW, ChargerProfile::FastCharger(90.0) },
         { charger_type::SLOW_50KW, ChargerProfile::FastCharger(45.0) },
     };
+    this->soc_min_final = this->soc_min;
 }
+
+Car::Car(double soc_initial,
+         double soc_min,
+         double soc_max,
+         double soc_min_final,
+         double battery_capacity,
+         double CrossSectionalArea,
+         double RollingResistanceCoeff,
+         double DragCoeff,
+         int Mass,
+         double IdleConsumption,
+         double DriveTrainEfficiency,
+         std::unordered_map<charger_type, ChargerProfile> ChargerProfiles) :
+    soc_initial(soc_initial),
+    soc_min(soc_min),
+    soc_max(soc_max),
+    soc_min_final(soc_min_final),
+    battery_capacity(battery_capacity),
+    CrossSectionalArea(CrossSectionalArea),
+    RollingResistanceCoeff(RollingResistanceCoeff),
+    DragCoeff(DragCoeff),
+    Mass(Mass),
+    IdleConsumption(IdleConsumption),
+    DriveTrainEfficiency(DriveTrainEfficiency),
+    ChargerProfiles(std::move(ChargerProfiles)){};
+
+
+Car Car::TeslaModel3(double soc_initial, double soc_min, double soc_max, double soc_min_final) {
+    // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
+    return Car(soc_initial, soc_min, soc_max, soc_min_final,
+               70.0, 2.2,
+               0.007, 0.23, 2000, 1.5, 0.95,
+               {
+                       { charger_type::FAST_175KW, ChargerProfile::FastCharger(90.0) },
+                       { charger_type::SLOW_50KW, ChargerProfile::FastCharger(45.0) },
+               });
+}
+
+Car Car::RenaultZoe(double soc_initial, double soc_min, double soc_max, double soc_min_final) {
+    // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
+    return Car(soc_initial, soc_min, soc_max, soc_min_final,
+               70.0, 2.2,
+               0.007, 0.23, 2000, 1.5, 0.95,
+               {
+                       { charger_type::FAST_175KW, ChargerProfile::FastCharger(90.0) },
+                       { charger_type::SLOW_50KW, ChargerProfile::FastCharger(45.0) },
+               });
+}
+
 
 bool Car::can_traverse(const Edge &e) const {
     return soc_cmp(power_left(e), OP::GREATER_EQUAL, min_charge_level());

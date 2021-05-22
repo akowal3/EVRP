@@ -2,10 +2,10 @@ from typing import Dict, Any, List
 
 import requests
 
-from src.backend.graph.charger import Charger
+from charger import Charger
 
 
-class OSM:
+class OCM:
     def __init__(
             self,
             host: str,

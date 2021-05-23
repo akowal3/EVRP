@@ -70,7 +70,7 @@ class EvrpBackend:
             osrm_route = self.get_osrm_route(charger_ids)
 
             return {
-                'status': 'ok',
+                'code': 'ok',
                 'osrm': osrm_route,
                 'charge_time': route.charge_time,
                 'total_time': route.total_time
@@ -106,6 +106,6 @@ class EvrpBackend:
     @staticmethod
     def construct_error(e: Exception) -> Dict[str, Any]:
         return {
-            'status': 'fail',
+            'code': 'fail',
             'message': str(e)
         }

@@ -23,17 +23,17 @@ PYBIND11_MODULE(bindings, m) {
 
     py::class_<Car>(m, "Car")
             .def(py::init<double>())
-            .def(py::init<double,
-                          double,
-                          double,
-                          double,
-                          double,
-                          double,
-                          double,
-                          double,
-                          int,
-                          double,
-                          double,
+            .def(py::init<double,//soc_initial
+                          double,//soc_min
+                          double,//soc_max
+                          double,//soc_min_final
+                          double,//battery_capacity
+                          double,//CrossSectionalArea
+                          double,//RollingResistanceCoeff
+                          double,//DragCoeff
+                          int,   //Mass
+                          double,//IdleConsumption
+                          double,//DriveTrainEfficiency
                           std::unordered_map<charger_type, ChargerProfile>>())
             .def_static("TeslaModel3", &Car::TeslaModel3);
 

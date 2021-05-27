@@ -68,8 +68,7 @@ class EvrpBackend:
 
         response = self.route(src, dst, req.car())
 
-        # self.clear_temporary_nodes(req)
-        self.fucking_purge(req)
+        self.clear_temporary_nodes(req)
 
         return response
 
@@ -99,21 +98,11 @@ class EvrpBackend:
 
     def clear_temporary_nodes(self, req: RoutingRequest) -> None:
         if not req.destination_is_charger():
-            self.router.pop_node()
-            self.chargers.pop()
+            c = self.chargers.pop()
+            self.router.remove_node_by_id(c.internalID)
         if not req.source_is_charger():
-            self.router.pop_node()
-            self.chargers.pop()
-
-    def fucking_purge(self, req: RoutingRequest):
-        if not req.destination_is_charger():
-            self.chargers.pop()
-        if not req.source_is_charger():
-            self.chargers.pop()
-
-        del self.router
-
-        self.initialize_router()
+            c = self.chargers.pop()
+            self.router.remove_node_by_id(c.internalID)
 
     def get_osrm_route(self, charger_ids: List[int]) -> Dict[str, Any]:
         waypoints = [self.chargers[i].location() for i in charger_ids]

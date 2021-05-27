@@ -35,38 +35,43 @@ Router::Router(std::vector<Node> nodes, const std::vector<BuildingEdge> &edges) 
 }
 
 void Router::add_node(Node n, const std::vector<BuildingEdge> &new_edges) {
-    std::cout << "[Router][add_node]: last id: " << this->nodes.back().id() << std::endl;
-    Node new_node = n;
-    this->nodes.emplace_back(new_node);
+
+    this->temp_nodes.insert({ n.id(), n });
 
     for (const BuildingEdge &e : new_edges) {
         for (auto speed_modifier : Graph::SPEED_STEPS) {
-            assert(this->nodes.at(e.to).id() == new_node.id() || this->nodes.at(e.from).id() == new_node.id());
-            this->edges[e.from].push_back(Edge(&this->nodes.at(e.from), &this->nodes.at(e.to), e.distance, e.max_speed * speed_modifier));
+
+            const Node *source = (this->temp_nodes.find(e.from) != this->temp_nodes.end()) ? &this->temp_nodes.at(e.from) : &this->nodes.at(e.from);
+            const Node *destination = (this->temp_nodes.find(e.to) != this->temp_nodes.end()) ? &this->temp_nodes.at(e.to) : &this->nodes.at(e.to);
+
+            this->edges[e.from].push_back(Edge(source, destination, e.distance, e.max_speed * speed_modifier));
         }
     }
-    std::cout << "[Router][add_node]: new last id: " << this->nodes.back().id() << std::endl;
 }
 
 // function used to remove the temporary target/destination nodes added at query time
-void Router::pop_node() {
-    unsigned nodeID = this->nodes.back().id();
+void Router::remove_node_by_id(unsigned nodeID) {
+    if (this->temp_nodes.find(nodeID) != this->temp_nodes.end()) {
+        this->edges[nodeID].clear();// clear vector of connections from nodeID
+        this->edges.erase(nodeID);  // remove entry in the map
 
-    this->edges[nodeID].clear();// clear vector of connections from nodeID
-    this->edges.erase(nodeID);  // remove entry in the map
+        for (auto &m : this->edges) {
+            // remove all the edges which have the nodeID as the destination
+            m.second.erase(
+                    std::remove_if(
+                            m.second.begin(), m.second.end(),
+                            [nodeID](const Edge &e) {
+                                return e.headID() == nodeID;
+                            }),
+                    m.second.end());
+        }
 
-    for (auto &m : this->edges) {
-        // remove all the edges which have the nodeID as the destination
-        m.second.erase(
-                std::remove_if(
-                        m.second.begin(), m.second.end(),
-                        [nodeID](const Edge &e) {
-                            return e.headID() == nodeID;
-                        }),
-                m.second.end());
+        this->temp_nodes.erase(nodeID);
     }
+}
 
-    this->nodes.pop_back();
+void Router::remove_node(const Node &node) {
+    remove_node_by_id(node.id());
 }
 
 RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, const Car &c) const {
@@ -248,7 +253,9 @@ bool operator==(const Router &left, const Router &right) {
         return false;
     });
 
-    return nodes_equal && edges_equal;
+    bool temp_nodes_equal = left.temp_nodes == right.temp_nodes;
+
+    return nodes_equal && edges_equal && temp_nodes_equal;
 }
 
 bool operator!=(const Router &left, const Router &right) {

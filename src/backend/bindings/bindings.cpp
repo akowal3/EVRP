@@ -61,7 +61,8 @@ PYBIND11_MODULE(bindings, m) {
             .def("route", &Router::route)
             .def("route_internal", &Router::route_internal)
             .def("add_node", &Router::add_node, py::call_guard<py::scoped_ostream_redirect, py::scoped_estream_redirect>())
-            .def("pop_node", &Router::pop_node, py::call_guard<py::scoped_ostream_redirect, py::scoped_estream_redirect>());
+            .def("remove_node", &Router::remove_node)
+            .def("remove_node_by_id", &Router::remove_node_by_id);
 
 
     py::enum_<label_type>(m, "label_type")

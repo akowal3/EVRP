@@ -33,14 +33,16 @@ private:
     std::vector<Node> nodes;                              // NodeID, node
     std::unordered_map<unsigned, std::vector<Edge>> edges;// NodeID, edge list (adjacency list)
     static RouterResult build_result(const std::unordered_map<unsigned int, Label> &spt, const Car &c, unsigned int sourceID, unsigned int destinationID);
+    std::unordered_map<unsigned, Node> temp_nodes;
 
 public:
     RouterResult route(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
     std::unordered_map<unsigned int, Label> route_internal(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
     Router(int charger_count, const std::vector<BuildingEdge> &edges);
     Router(std::vector<Node> nodes, const std::vector<BuildingEdge> &edges);
-    void pop_node();
     void add_node(Node n, const std::vector<BuildingEdge> &new_edges);
+    void remove_node_by_id(unsigned nodeID);
+    void remove_node(const Node &node);
     friend bool operator==(const Router &left, const Router &right);
     friend bool operator!=(const Router &left, const Router &right);
 };

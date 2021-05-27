@@ -237,13 +237,11 @@ TEST_CASE("Node addition", "[ROUTER]") {
 
     std::cout << r.route(src.id(), dst.id(), c) << std::endl;
 
-    r.pop_node();
+    r.remove_node(src);
 
-    r.pop_node();
+    r.remove_node(dst);
 
-    bool equal = r2 == r;
-
-    REQUIRE(equal);
+    REQUIRE(r2 == r);
 
     r.add_node(dst, {
                             BuildingEdge(6, 8, 100, 70),
@@ -257,6 +255,12 @@ TEST_CASE("Node addition", "[ROUTER]") {
                     });
 
     std::cout << r.route(src.id(), dst.id(), c) << std::endl;
+
+    r.remove_node(src);
+
+    r.remove_node(dst);
+
+    REQUIRE(r2 == r);
     //
     //    std::cout << r.route(src.id(), 5, c) << std::endl;
 }

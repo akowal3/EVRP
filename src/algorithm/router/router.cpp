@@ -11,15 +11,16 @@
 using PriorityQueue = std::priority_queue<Label, std::vector<Label>, std::greater<>>;
 
 Router::Router(int charger_count, const std::vector<BuildingEdge> &edges) {
-    //    this->nodes = std::vector<Node>{};
+    this->nodes = std::vector<Node>{};
     this->nodes.reserve(charger_count);
     for (int id = 0; id < charger_count; id++) {
         this->nodes.emplace_back(Node(id));
     }
 
+    this->edges = std::unordered_map<unsigned int, std::vector<Edge>>{};
     for (const BuildingEdge &e : edges) {
         for (auto speed_modifier : Graph::SPEED_STEPS) {
-            this->edges[e.from].emplace_back(Edge(&nodes[e.from], &nodes[e.to], e.distance, e.max_speed * speed_modifier));
+            this->edges[e.from].push_back(Edge(&this->nodes.at(e.from), &this->nodes.at(e.to), e.distance, e.max_speed * speed_modifier));
         }
     }
 }
@@ -28,9 +29,44 @@ Router::Router(std::vector<Node> nodes, const std::vector<BuildingEdge> &edges) 
     nodes(std::move(nodes)) {
     for (const BuildingEdge &e : edges) {
         for (auto speed_modifier : Graph::SPEED_STEPS) {
-            this->edges[e.from].emplace_back(Edge(&this->nodes[e.from], &this->nodes[e.to], e.distance, e.max_speed * speed_modifier));
+            this->edges[e.from].push_back(Edge(&this->nodes.at(e.from), &this->nodes.at(e.to), e.distance, e.max_speed * speed_modifier));
         }
     }
+}
+
+void Router::add_node(Node n, const std::vector<BuildingEdge> &new_edges) {
+    std::cout << "[Router][add_node]: last id: " << this->nodes.back().id() << std::endl;
+    Node new_node = n;
+    this->nodes.emplace_back(new_node);
+
+    for (const BuildingEdge &e : new_edges) {
+        for (auto speed_modifier : Graph::SPEED_STEPS) {
+            assert(this->nodes.at(e.to).id() == new_node.id() || this->nodes.at(e.from).id() == new_node.id());
+            this->edges[e.from].push_back(Edge(&this->nodes.at(e.from), &this->nodes.at(e.to), e.distance, e.max_speed * speed_modifier));
+        }
+    }
+    std::cout << "[Router][add_node]: new last id: " << this->nodes.back().id() << std::endl;
+}
+
+// function used to remove the temporary target/destination nodes added at query time
+void Router::pop_node() {
+    unsigned nodeID = this->nodes.back().id();
+
+    this->edges[nodeID].clear();// clear vector of connections from nodeID
+    this->edges.erase(nodeID);  // remove entry in the map
+
+    for (auto &m : this->edges) {
+        // remove all the edges which have the nodeID as the destination
+        m.second.erase(
+                std::remove_if(
+                        m.second.begin(), m.second.end(),
+                        [nodeID](const Edge &e) {
+                            return e.headID() == nodeID;
+                        }),
+                m.second.end());
+    }
+
+    this->nodes.pop_back();
 }
 
 RouterResult Router::route(unsigned int sourceID, unsigned int destinationID, const Car &c) const {
@@ -101,100 +137,122 @@ std::unordered_map<unsigned int, Label> Router::route_internal(unsigned int sour
         // Search is done.
         if (currentID == destinationID) {
             break;
+            // clear label counter
         }
 
         //         Update weights for all neighbors not in the spt.
         //         This is the main departure from standard dijkstra's. Instead of relaxing edges between
         //         neighbors, we construct "labels" up to 3 per neighbor, and try to merge them into the
         //         LabelMap. Any non-dominated labels are also added to the priority queue.
-        for (auto &edge : edges.at(currentID)) {
+        if (auto connections = this->edges.find(currentID); connections != this->edges.end()) {
+            // if currentID has no connections coming ouf of it then we drop it and not enter this for loop
+            for (auto &edge : connections->second) {//edges.at(currentID)
 
-            unsigned connectionID = edge.headID();
-            Time travel_time = edge.get_travel_time();
+                unsigned connectionID = edge.headID();
+                Time travel_time = edge.get_travel_time();
 
-            if (shortest_path_tree.count(connectionID) == 1) {
-                continue;
-            }
-
-            std::vector<Label> labels;
-            // 1. Go to neighbor without any charging, if possible.
-            if (c.can_traverse(edge, current.soc())) {
-                labels.emplace_back(Label(label_type::NO_CHARGE, connectionID, currentID, current.get_total_time() + travel_time,
-                                          0, c.soc_left(edge, current.soc()), &edge));
-            }
-            // 2. Do a full recharge, if needed.
-            if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
-                c.can_traverse_with_max_soc(edge)) {
-
-                Time full_charge_time = c.get_charge_time_to_max(edge, current.soc());
-                labels.emplace_back(Label(label_type::CHARGE_MAXIMUM, connectionID, currentID,
-                                          current.get_total_time() + travel_time + full_charge_time,
-                                          full_charge_time, c.soc_left_from_max_soc(edge), &edge));
-            }
-
-
-            // 3. Only charge enough to get to neighbor.
-            if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
-                !c.can_traverse(edge, current.soc()) &&
-                c.can_traverse_with_max_soc(edge)) {
-                Time partial_charge_time = c.get_charge_time_to_traverse(edge, current.soc());
-                labels.emplace_back(Label(label_type::CHARGE_MINIMUM, connectionID, currentID,
-                                          current.get_total_time() + travel_time + partial_charge_time,
-                                          partial_charge_time, c.min_soc(), &edge));
-            }
-
-            // 4. Charge to 70%
-            if (soc_cmp(current.soc(), OP::SMALLER, 0.7) &&
-                c.can_traverse(edge, 0.7)) {
-                Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.7);
-                labels.emplace_back(Label(label_type::CHARGE_70, connectionID, currentID,
-                                          current.get_total_time() + travel_time + partial_charge_time,
-                                          partial_charge_time, 0.7, &edge));
-            }
-
-            // 4. Charge to 80%
-            if (soc_cmp(current.soc(), OP::SMALLER, 0.8) &&
-                c.can_traverse(edge, 0.8)) {
-                Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.8);
-                labels.emplace_back(Label(label_type::CHARGE_80, connectionID, currentID,
-                                          current.get_total_time() + travel_time + partial_charge_time,
-                                          partial_charge_time, 0.8, &edge));
-            }
-
-            // Update this nodes label bag. This is similar to "relaxing" edges in standard Dijkstra's.
-            auto search = label_map.find(connectionID);
-            if (search == label_map.end()) {
-                // No labels exist to dominate these ones, so add them all.
-                for (auto &label : labels) {
-                    label_queue.push(label);
+                if (shortest_path_tree.count(connectionID) == 1) {
+                    continue;
                 }
-                label_map[connectionID] = std::move(labels);
-            } else {
-                std::vector<Label> &bag = search->second;
 
-                for (auto &label : labels) {
-                    auto search = std::find_if(bag.begin(), bag.end(),
-                                               [&](const Label &other) { return other.dominates(label); });
-                    // This label is dominated, it can be ignored.
-                    if (search != bag.end()) {
-                        continue;
-                    }
+                std::vector<Label> labels;
+                // 1. Go to neighbor without any charging, if possible.
+                if (c.can_traverse(edge, current.soc())) {
+                    labels.emplace_back(Label(label_type::NO_CHARGE, connectionID, currentID, current.get_total_time() + travel_time,
+                                              0, c.soc_left(edge, current.soc()), &edge));
+                }
+                // 2. Do a full recharge, if needed.
+                if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
+                    c.can_traverse_with_max_soc(edge)) {
 
-                    // Does this label dominate anything in the bag already? If so, remove those labels.
-                    auto d_it = std::partition(bag.begin(), bag.end(),
-                                               [&](const Label &other) { return !label.dominates(other); });
-                    for (auto it = d_it; it != bag.end(); ++it) {
-                        deleted.insert((*it).get_labelID());
+                    Time full_charge_time = c.get_charge_time_to_max(edge, current.soc());
+                    labels.emplace_back(Label(label_type::CHARGE_MAXIMUM, connectionID, currentID,
+                                              current.get_total_time() + travel_time + full_charge_time,
+                                              full_charge_time, c.soc_left_from_max_soc(edge), &edge));
+                }
+
+
+                // 3. Only charge enough to get to neighbor.
+                if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
+                    !c.can_traverse(edge, current.soc()) &&
+                    c.can_traverse_with_max_soc(edge)) {
+                    Time partial_charge_time = c.get_charge_time_to_traverse(edge, current.soc());
+                    labels.emplace_back(Label(label_type::CHARGE_MINIMUM, connectionID, currentID,
+                                              current.get_total_time() + travel_time + partial_charge_time,
+                                              partial_charge_time, c.min_soc(), &edge));
+                }
+
+                // 4. Charge to 70%
+                if (soc_cmp(current.soc(), OP::SMALLER, 0.7) &&
+                    c.can_traverse(edge, 0.7)) {
+                    Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.7);
+                    labels.emplace_back(Label(label_type::CHARGE_70, connectionID, currentID,
+                                              current.get_total_time() + travel_time + partial_charge_time,
+                                              partial_charge_time, 0.7, &edge));
+                }
+
+                // 4. Charge to 80%
+                if (soc_cmp(current.soc(), OP::SMALLER, 0.8) &&
+                    c.can_traverse(edge, 0.8)) {
+                    Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.8);
+                    labels.emplace_back(Label(label_type::CHARGE_80, connectionID, currentID,
+                                              current.get_total_time() + travel_time + partial_charge_time,
+                                              partial_charge_time, 0.8, &edge));
+                }
+
+                // Update this nodes label bag. This is similar to "relaxing" edges in standard Dijkstra's.
+                auto search = label_map.find(connectionID);
+                if (search == label_map.end()) {
+                    // No labels exist to dominate these ones, so add them all.
+                    for (auto &label : labels) {
+                        label_queue.push(label);
                     }
-                    bag.erase(d_it, bag.end());
-                    bag.push_back(label);
-                    label_queue.push(label);
+                    label_map[connectionID] = std::move(labels);
+                } else {
+                    std::vector<Label> &bag = search->second;
+
+                    for (auto &label : labels) {
+                        auto search = std::find_if(bag.begin(), bag.end(),
+                                                   [&](const Label &other) { return other.dominates(label); });
+                        // This label is dominated, it can be ignored.
+                        if (search != bag.end()) {
+                            continue;
+                        }
+
+                        // Does this label dominate anything in the bag already? If so, remove those labels.
+                        auto d_it = std::partition(bag.begin(), bag.end(),
+                                                   [&](const Label &other) { return !label.dominates(other); });
+                        for (auto it = d_it; it != bag.end(); ++it) {
+                            deleted.insert((*it).get_labelID());
+                        }
+                        bag.erase(d_it, bag.end());
+                        bag.push_back(label);
+                        label_queue.push(label);
+                    }
                 }
             }
         }
     }
 
     return shortest_path_tree;
+}
+
+bool operator==(const Router &left, const Router &right) {
+
+    bool nodes_equal = std::equal(left.nodes.begin(), left.nodes.end(), right.nodes.begin());
+
+    bool edges_equal = std::all_of(left.edges.begin(), left.edges.end(), [&right](const auto &p) {
+        if (auto right_edges = right.edges.find(p.first); right_edges != right.edges.end()) {
+            return std::equal(p.second.begin(), p.second.end(), right_edges->second.begin());
+        }
+        return false;
+    });
+
+    return nodes_equal && edges_equal;
+}
+
+bool operator!=(const Router &left, const Router &right) {
+    return !(left == right);
 }
 
 

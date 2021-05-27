@@ -28,6 +28,7 @@ public:
     double end_charge_level() const;
     const Node *destinationCharger() const;
     const Node *sourceCharger() const;
+    friend bool operator==(const Edge &left, const Edge &right);
 };
 
 // Dummy datastructure used to create simple graph by hand

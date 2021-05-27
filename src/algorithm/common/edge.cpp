@@ -44,6 +44,11 @@ const Node *Edge::sourceCharger() const {
     return this->start;
 }
 
+bool operator==(const Edge &left, const Edge &right) {
+    return *left.start == *right.start && *left.end == *right.end &&
+           left.distance == right.distance && left.speed == right.speed;
+}
+
 BuildingEdge::BuildingEdge(unsigned from, unsigned to, unsigned distance, unsigned max_speed) :
     from(from),
     to(to),

@@ -30,3 +30,7 @@ class Edge:
             int(self.distance_km()),
             int(self.speed_kmh())
         )
+
+    def __repr__(self):
+        # return f"{self.source_charger.internalID}-{self.distance_km()}@{self.speed_kmh()}->{self.destination_charger.internalID}"
+        return f"{self.source_charger.internalID}->{self.destination_charger.internalID}"

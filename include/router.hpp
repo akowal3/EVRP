@@ -39,6 +39,10 @@ public:
     std::unordered_map<unsigned int, Label> route_internal(unsigned int sourceID, unsigned int destinationID, const Car &c) const;
     Router(int charger_count, const std::vector<BuildingEdge> &edges);
     Router(std::vector<Node> nodes, const std::vector<BuildingEdge> &edges);
+    void pop_node();
+    void add_node(Node n, const std::vector<BuildingEdge> &new_edges);
+    friend bool operator==(const Router &left, const Router &right);
+    friend bool operator!=(const Router &left, const Router &right);
 };
 
 

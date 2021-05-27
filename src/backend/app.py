@@ -22,8 +22,9 @@ def evroute():
     #     return backend.construct_error(e)
 
     req = RoutingRequest(request.json)
+    response = backend.process_request(req)
 
-    return backend.process_request(req)
+    return response
 
 # if __name__ == '__main__':
 #     backend = EvrpBackend.from_pickle()

@@ -59,7 +59,9 @@ PYBIND11_MODULE(bindings, m) {
                                                                                          py::scoped_estream_redirect>())
             .def(py::init<std::vector<Node>, const std::vector<BuildingEdge> &>())
             .def("route", &Router::route)
-            .def("route_internal", &Router::route_internal);
+            .def("route_internal", &Router::route_internal)
+            .def("add_node", &Router::add_node, py::call_guard<py::scoped_ostream_redirect, py::scoped_estream_redirect>())
+            .def("pop_node", &Router::pop_node, py::call_guard<py::scoped_ostream_redirect, py::scoped_estream_redirect>());
 
 
     py::enum_<label_type>(m, "label_type")

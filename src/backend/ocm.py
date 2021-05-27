@@ -34,4 +34,4 @@ class OCM:
                      'maxresults': maxresults, 'compact': True, 'verbose': False,
                      'connectiontypeid': [33, 27], 'levelid': 3, 'minpowerkw': 50}
         )
-        return [Charger(osm_charger, i) for i, osm_charger in enumerate(res)]
+        return [Charger.from_ocm(ocm_charger, i) for i, ocm_charger in enumerate(res)]

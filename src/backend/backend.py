@@ -55,26 +55,65 @@ class EvrpBackend:
         charger_ids = [n.ID for n in route.nodes]
         osrm_route = self.get_osrm_route(charger_ids)
 
-        return osrm_route
+        return {
+            'code': 'ok',
+            'osrm': osrm_route,
+            'charge_time': route.charge_time,
+            'total_time': route.total_time
+        }
 
     def process_request(self, req: RoutingRequest):
-        if req.is_between_chargers():
-            c = req.car()
+        src = self.process_source(req)
+        dst = self.process_destination(req)
 
-            src = req.source_charger_id
-            dst = req.destination_charger_id
+        response = self.route(src, dst, req.car())
 
-            route = self.router.route(src, dst, c)
+        # self.clear_temporary_nodes(req)
+        self.fucking_purge(req)
 
-            charger_ids = [n.ID for n in route.nodes]
-            osrm_route = self.get_osrm_route(charger_ids)
+        return response
 
-            return {
-                'code': 'ok',
-                'osrm': osrm_route,
-                'charge_time': route.charge_time,
-                'total_time': route.total_time
-            }
+    def process_source(self, req: RoutingRequest) -> int:
+        if req.source_is_charger():
+            return req.source_charger_id
+        else:
+            srcID = self.chargers[-1].internalID + 1
+            temp_node_src = Charger.temp_node(srcID, req.source_coordinates)
+            edges_from_source = self.osrm.edge_list([temp_node_src], self.chargers)
+            cpp_edges_from_source = [e.to_cpp() for e in edges_from_source]
+            self.router.add_node(temp_node_src.to_cpp(), cpp_edges_from_source)
+            self.chargers.append(temp_node_src)
+            return srcID
+
+    def process_destination(self, req: RoutingRequest) -> int:
+        if req.destination_is_charger():
+            return req.destination_charger_id
+        else:
+            dstID = self.chargers[-1].internalID + 1
+            temp_node_dst = Charger.temp_node(dstID, req.destination_coordinates)
+            edges_to_destination = self.osrm.edge_list(self.chargers, [temp_node_dst])
+            cpp_edges_to_destination = [e.to_cpp() for e in edges_to_destination]
+            self.router.add_node(temp_node_dst.to_cpp(), cpp_edges_to_destination)
+            self.chargers.append(temp_node_dst)
+            return dstID
+
+    def clear_temporary_nodes(self, req: RoutingRequest) -> None:
+        if not req.destination_is_charger():
+            self.router.pop_node()
+            self.chargers.pop()
+        if not req.source_is_charger():
+            self.router.pop_node()
+            self.chargers.pop()
+
+    def fucking_purge(self, req: RoutingRequest):
+        if not req.destination_is_charger():
+            self.chargers.pop()
+        if not req.source_is_charger():
+            self.chargers.pop()
+
+        del self.router
+
+        self.initialize_router()
 
     def get_osrm_route(self, charger_ids: List[int]) -> Dict[str, Any]:
         waypoints = [self.chargers[i].location() for i in charger_ids]
@@ -95,7 +134,7 @@ class EvrpBackend:
         this = cls()
         this.chargers = this.ocm.get_chargers_by_country(this.config['OSM']['CountryCode'],
                                                          this.config['OSM']['MaxResults'])
-        this.edges = this.osrm.edge_list(this.chargers)
+        this.edges = this.osrm.edge_list(this.chargers, this.chargers)
         this.initialize_router()
 
         if save_to_file:

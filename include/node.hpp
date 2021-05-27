@@ -22,6 +22,8 @@ public:
     double soc() const;
     charger_type best_compatible_type(const Car &c) const;
     std::vector<charger_type> supported_types() const;
+    Node &operator=(const Node &other);
+    friend bool operator==(const Node &left, const Node &right);
 };
 
 

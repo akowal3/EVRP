@@ -48,5 +48,11 @@ class RoutingRequest:
         else:
             return None
 
+    def source_is_charger(self) -> bool:
+        return self.source_coordinates is None
+
+    def destination_is_charger(self) -> bool:
+        return self.destination_coordinates is None
+
     def is_between_chargers(self):
         return self.source_coordinates is None and self.destination_coordinates is None

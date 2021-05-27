@@ -75,12 +75,12 @@ class OSRM:
 
         return res
 
-    def edge_list(self, chargers: List[Charger]):
+    def edge_list(self, chargers_from: List[Charger], chargers_to: List[Charger]):
         res = []
         distance_lower_bound = 10 * 1000
         distance_upper_bound = 600 * 1000
-        for i, src in enumerate(chargers):
-            for j, dst in enumerate(chargers):
+        for src in chargers_from:
+            for dst in chargers_to:
                 if src.internalID != dst.internalID:
                     distance_m, duration_s = self.route_dt([src.location(), dst.location()])
                     if distance_lower_bound <= distance_m <= distance_upper_bound and duration_s >= 10:

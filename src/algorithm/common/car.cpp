@@ -83,11 +83,23 @@ bool Car::can_traverse(const Edge &e) const {
 }
 
 bool Car::can_traverse(const Edge &e, double initialSoC) const {
-    return soc_cmp(power_left(e, initialSoC), OP::GREATER_EQUAL, min_charge_level());
+    return can_traverse(e, initialSoC, soc_min);
+}
+
+bool Car::can_traverse(const Edge &e, double initialSoC, double required_endSoC) const {
+    return soc_cmp(power_left(e, initialSoC), OP::GREATER_EQUAL, battery_capacity * required_endSoC);
+}
+
+bool Car::can_traverse_final(const Edge &e, double initialSoC) const {
+    return can_traverse(e, initialSoC, soc_min_final);
 }
 
 bool Car::can_traverse_with_max_soc(const Edge &e) const {
     return can_traverse(e, this->soc_max);
+}
+
+bool Car::can_traverse_with_max_soc_final(const Edge &e) const {
+    return can_traverse_final(e, this->soc_max);
 }
 
 bool Car::will_charge(const Edge &e) const {
@@ -119,11 +131,19 @@ Time Car::get_charge_time(const Node *chargingStation, double initialSoC, double
 
 // This function calculates the time necessary to charge a car in order to traverse the edge
 Time Car::get_charge_time_to_traverse(const Edge &e, double initialSoC) const {
-    double requiredSoC = consumed_power(e) / battery_capacity + soc_min;
+    return get_min_required_charge_time_to_traverse(e, initialSoC, soc_min);
+}
+
+Time Car::get_min_required_charge_time_to_traverse(const Edge &e, double initialSoC, double endSoC) const {
+    double requiredSoC = consumed_power(e) / battery_capacity + endSoC;
 
     if (requiredSoC > 1.0) throw "SoC required to traverse this edge is greater than battery capacity";
 
     return get_charge_time(e.sourceCharger(), initialSoC, requiredSoC);
+}
+
+Time Car::get_charge_time_to_traverse_final(const Edge &e, double initialSoC) const {
+    return get_min_required_charge_time_to_traverse(e, initialSoC, soc_min_final);
 }
 
 double Car::power_left(const Edge &e) const {
@@ -188,6 +208,9 @@ double Car::max_soc() const {
 }
 double Car::min_soc() const {
     return this->soc_min;
+}
+double Car::min_soc_final() const {
+    return this->soc_min_final;
 }
 
 double Car::initial_soc() const {

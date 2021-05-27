@@ -66,9 +66,65 @@ TEST_CASE("Simple router verifier", "[ROUTER]") {
     }
 }
 
+TEST_CASE("Router ==operator", "[ROUTER]") {
+
+    int node_count = 1000;
+    std::vector<Node> nodes;
+    nodes.reserve(node_count);
+
+    for (int i = 0; i < node_count; i++) {
+        charger_type type = (random() % 2) ? charger_type::FAST_175KW : charger_type::SLOW_50KW;
+        nodes.emplace_back(Node(i, 1.0, type));
+    }
+
+    std::vector<BuildingEdge> edges;
+    int edge_count = 30000;
+    edges.reserve(edge_count);
+
+    for (int i = 0; i < edge_count; ++i) {
+        unsigned from = random() % node_count;
+        unsigned to = random() % node_count;
+        while (from == to) to = random() % node_count;
+        assert(from != to);
+        unsigned distance = random() % 600 + 80;
+        unsigned speed = random() % 200 + 30;
+        edges.emplace_back(BuildingEdge(from, to, distance, speed));
+    }
+
+    Router r = Router(node_count, edges);
+    Router r2 = Router(node_count, edges);
+
+    REQUIRE(r == r2);
+    REQUIRE(r2 == r);
+    REQUIRE(!(r2 != r));
+    REQUIRE(!(r != r2));
+
+    r = Router(nodes, edges);
+    r2 = Router(nodes, edges);
+
+    REQUIRE(r == r2);
+    REQUIRE(r2 == r);
+    REQUIRE(!(r2 != r));
+    REQUIRE(!(r != r2));
+
+    r.add_node(Node(node_count), {
+                                         BuildingEdge(node_count, 8, 100, 70),
+                                 });
+    REQUIRE(r != r2);
+    REQUIRE(r2 != r);
+    REQUIRE(!(r2 == r));
+    REQUIRE(!(r == r2));
+
+    r.remove_node_by_id(node_count);
+    REQUIRE(r == r2);
+    REQUIRE(r2 == r);
+    REQUIRE(!(r2 != r));
+    REQUIRE(!(r != r2));
+}
+
 
 TEST_CASE("Stress test", "[ROUTER]") {
-    srandom(std::time(nullptr));
+    //    srandom(std::time(nullptr));
 
     int node_count = 1000;
     std::vector<Node> nodes;
@@ -94,7 +150,7 @@ TEST_CASE("Stress test", "[ROUTER]") {
     }
 
     Router r = Router(nodes, edges);
-    Car c = Car(0.7);
+    Car c = Car::TeslaModel3(0.7, 0.15, 0.9, 0.4);
 
     for (int i = 0; i < 20; i++) {
         unsigned from = random() % node_count;
@@ -108,86 +164,6 @@ TEST_CASE("Stress test", "[ROUTER]") {
         std::cout << r.route(from, to, c) << std::endl;
     }
 }
-
-TEST_CASE("Stress test with node addition", "[ROUTER]") {
-    typedef struct {
-        unsigned from;
-        unsigned to;
-        RouterResult res;
-    } TestResult;
-
-    //    srandom(std::time(nullptr));
-
-    int node_count = 50;
-    std::vector<Node> nodes;
-    nodes.reserve(node_count);
-
-    for (int i = 0; i < node_count; i++) {
-        charger_type type = (random() % 2) ? charger_type::FAST_175KW : charger_type::SLOW_50KW;
-        nodes.emplace_back(Node(i, 1.0, type));
-    }
-
-    std::vector<BuildingEdge> edges;
-    int edge_count = 3000;
-    edges.reserve(edge_count);
-
-    for (int i = 0; i < edge_count; ++i) {
-        unsigned from = random() % node_count;
-        unsigned to = random() % node_count;
-        while (from == to) to = random() % node_count;
-        assert(from != to);
-        unsigned distance = random() % 600 + 80;
-        unsigned speed = random() % 200 + 30;
-        edges.emplace_back(BuildingEdge(from, to, distance, speed));
-    }
-
-    Router r = Router(nodes, edges);
-    Car c = Car(0.7);
-
-
-    unsigned reps = 20;
-    std::vector<TestResult> results;
-    results.reserve(reps);
-
-    for (int i = 0; i < reps; i++) {
-        unsigned from = random() % node_count;
-        unsigned to = random() % node_count;
-        while (from == to) to = random() % node_count;
-        assert(from != to);
-        results.emplace_back(TestResult{ from, to, r.route(from, to, c) });
-    }
-
-    auto newNodeID = node_count;
-    Node n = Node(newNodeID);
-
-    std::vector<BuildingEdge> new_edges;
-    int newEdgeCount = 100;
-    new_edges.reserve(newEdgeCount * 4);
-
-    for (int i = 0; i < newEdgeCount; ++i) {
-        unsigned from = random() % (node_count + 1);
-        unsigned to = random() % (node_count + 1);
-        while (from == to || to == newNodeID || from == newNodeID) to = random() % (node_count + 1);
-        assert(from != to);
-        assert(0 <= from && from <= newNodeID);
-        assert(0 <= to && to <= newNodeID);
-
-        unsigned distance = random() % 600 + 80;
-        unsigned speed = random() % 200 + 30;
-
-        new_edges.emplace_back(BuildingEdge(newNodeID, to, distance, speed));
-        new_edges.emplace_back(BuildingEdge(newNodeID, from, distance, speed));
-        new_edges.emplace_back(BuildingEdge(from, newNodeID, distance, speed));
-        new_edges.emplace_back(BuildingEdge(to, newNodeID, distance, speed));
-    }
-
-    r.add_node(n, new_edges);
-
-    for (auto &prev : results) {
-        auto res = r.route(prev.from, prev.to, c);
-    }
-}
-
 
 TEST_CASE("Node addition", "[ROUTER]") {
     std::vector<BuildingEdge> edges = {
@@ -221,6 +197,7 @@ TEST_CASE("Node addition", "[ROUTER]") {
 
     std::cout << r.route(0, dst.id(), c) << std::endl;
 
+    r2.route(0, 6, c);
     REQUIRE(r != r2);
 
     Node src = Node(9);

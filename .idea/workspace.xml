@@ -24,12 +24,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="trying to get node addition to work">
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="fixed map exceptions when adding temporary nodes (source and destination)&#10;The problem was the fact that a vector is resized, pointers to its elements might change. Therefore, when pushing back nodes to the node vector in Router, the pointers to chargers changed leading to exceptions in Router.route function">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/router.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/router.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/car.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm/common/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/car.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm/common/edge.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/edge.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/algorithm/router/router.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/router/router.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/backend.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/bindings/bindings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/bindings/bindings.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/router_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/router_test.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,7 +37,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -106,13 +106,19 @@
     </option>
   </component>
   <component name="RunManager" selected="CMake Application.bindings">
-    <configuration name="Graph stress test" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH]" TEST_METHOD="Graph stress test" TEST_MODE="SUITE_TEST">
+    <configuration name="Node addition" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Node addition" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Node addition" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Node addition" TEST_MODE="SUITE_TEST">
+    <configuration name="Router ==operator" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Router ==operator" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Simple router verifier" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Simple router verifier" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -181,30 +187,8 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="EVRP" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/backend" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/backend/app.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="true" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Catch.TESTS" />
-      <item itemvalue="Catch.Graph stress test" />
       <item itemvalue="Catch.Node addition" />
       <item itemvalue="CMake Application.UTILS" />
       <item itemvalue="CMake Application.bindings" />
@@ -214,17 +198,18 @@
       <item itemvalue="CMake Application.GRAPH" />
       <item itemvalue="CMake Application.ROUTER" />
       <item itemvalue="CMake Application.TESTCASES" />
-      <item itemvalue="Python.app" />
       <item itemvalue="Catch.Stress test" />
       <item itemvalue="Catch.Stress test with node addition" />
+      <item itemvalue="Catch.Simple router verifier" />
+      <item itemvalue="Catch.Router ==operator" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Catch.Stress test" />
+        <item itemvalue="Catch.Router ==operator" />
         <item itemvalue="Catch.Node addition" />
         <item itemvalue="Catch.Stress test with node addition" />
-        <item itemvalue="Catch.Stress test" />
-        <item itemvalue="Python.app" />
-        <item itemvalue="Catch.Graph stress test" />
+        <item itemvalue="Catch.Simple router verifier" />
       </list>
     </recent_temporary>
   </component>
@@ -272,7 +257,7 @@
       <workItem from="1621513666739" duration="8065000" />
       <workItem from="1621588079190" duration="39459000" />
       <workItem from="1621978746964" duration="11053000" />
-      <workItem from="1622030025845" duration="29853000" />
+      <workItem from="1622030025845" duration="44049000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -533,7 +518,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622115672767</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="fixed map exceptions when adding temporary nodes (source and destination)&#10;The problem was the fact that a vector is resized, pointers to its elements might change. Therefore, when pushing back nodes to the node vector in Router, the pointers to chargers changed leading to exceptions in Router.route function">
+      <created>1622127966908</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1622127966908</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -567,7 +559,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/RoutingKit" />
     </ignored-roots>
-    <MESSAGE value="Temporarily removed additional Car constructor.&#10;Removed checks from printing in graph_test." />
     <MESSAGE value="Minor refactoring&#10;Added further car tests.&#10;Refactored code a bit (include &lt;.h&gt; instead of &quot;.h&quot;)" />
     <MESSAGE value="[BROKEN] Refactored testcases for graph building.&#10;Connect to RoutingKit test is commented out" />
     <MESSAGE value="Commented Connect to RoutingKit testcase back in" />
@@ -592,7 +583,8 @@
     <MESSAGE value="added simple flask app&#10;added additional car constructors to match requests from users" />
     <MESSAGE value="minor changes in backend" />
     <MESSAGE value="trying to get node addition to work" />
-    <option name="LAST_COMMIT_MESSAGE" value="trying to get node addition to work" />
+    <MESSAGE value="fixed map exceptions when adding temporary nodes (source and destination)&#10;The problem was the fact that a vector is resized, pointers to its elements might change. Therefore, when pushing back nodes to the node vector in Router, the pointers to chargers changed leading to exceptions in Router.route function" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed map exceptions when adding temporary nodes (source and destination)&#10;The problem was the fact that a vector is resized, pointers to its elements might change. Therefore, when pushing back nodes to the node vector in Router, the pointers to chargers changed leading to exceptions in Router.route function" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -632,24 +624,9 @@
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/testing/router_test.cpp</url>
-          <line>96</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/testing/testcases/graph_cases.hpp</url>
           <line>12</line>
           <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/testing/router_test.cpp</url>
-          <line>243</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/testing/router_test.cpp</url>
-          <line>183</line>
-          <option name="timeStamp" value="43" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

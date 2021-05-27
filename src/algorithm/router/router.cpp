@@ -11,7 +11,8 @@
 using PriorityQueue = std::priority_queue<Label, std::vector<Label>, std::greater<>>;
 
 Router::Router(int charger_count, const std::vector<BuildingEdge> &edges) {
-    this->nodes = std::vector<Node>{};
+    this->temp_nodes = {};
+
     this->nodes.reserve(charger_count);
     for (int id = 0; id < charger_count; id++) {
         this->nodes.emplace_back(Node(id));
@@ -27,6 +28,8 @@ Router::Router(int charger_count, const std::vector<BuildingEdge> &edges) {
 
 Router::Router(std::vector<Node> nodes, const std::vector<BuildingEdge> &edges) :
     nodes(std::move(nodes)) {
+    this->temp_nodes = {};
+
     for (const BuildingEdge &e : edges) {
         for (auto speed_modifier : Graph::SPEED_STEPS) {
             this->edges[e.from].push_back(Edge(&this->nodes.at(e.from), &this->nodes.at(e.to), e.distance, e.max_speed * speed_modifier));
@@ -154,56 +157,76 @@ std::unordered_map<unsigned int, Label> Router::route_internal(unsigned int sour
             for (auto &edge : connections->second) {//edges.at(currentID)
 
                 unsigned connectionID = edge.headID();
-                Time travel_time = edge.get_travel_time();
 
-                if (shortest_path_tree.count(connectionID) == 1) {
+                if (shortest_path_tree.count(connectionID) == 1 || connectionID == sourceID) {
                     continue;
                 }
 
+                Time travel_time = edge.get_travel_time();
+
                 std::vector<Label> labels;
-                // 1. Go to neighbor without any charging, if possible.
-                if (c.can_traverse(edge, current.soc())) {
-                    labels.emplace_back(Label(label_type::NO_CHARGE, connectionID, currentID, current.get_total_time() + travel_time,
-                                              0, c.soc_left(edge, current.soc()), &edge));
-                }
-                // 2. Do a full recharge, if needed.
-                if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
-                    c.can_traverse_with_max_soc(edge)) {
 
-                    Time full_charge_time = c.get_charge_time_to_max(edge, current.soc());
-                    labels.emplace_back(Label(label_type::CHARGE_MAXIMUM, connectionID, currentID,
-                                              current.get_total_time() + travel_time + full_charge_time,
-                                              full_charge_time, c.soc_left_from_max_soc(edge), &edge));
-                }
+                if (connectionID != destinationID) {
+                    // 1. Go to neighbor without any charging, if possible.
+                    if (c.can_traverse(edge, current.soc())) {
+                        labels.emplace_back(Label(label_type::NO_CHARGE, connectionID, currentID, current.get_total_time() + travel_time,
+                                                  0, c.soc_left(edge, current.soc()), &edge));
+                    }
+                    // 2. Do a full recharge, if needed.
+                    if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
+                        c.can_traverse_with_max_soc(edge)) {
+
+                        Time full_charge_time = c.get_charge_time_to_max(edge, current.soc());
+                        labels.emplace_back(Label(label_type::CHARGE_MAXIMUM, connectionID, currentID,
+                                                  current.get_total_time() + travel_time + full_charge_time,
+                                                  full_charge_time, c.soc_left_from_max_soc(edge), &edge));
+                    }
 
 
-                // 3. Only charge enough to get to neighbor.
-                if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
-                    !c.can_traverse(edge, current.soc()) &&
-                    c.can_traverse_with_max_soc(edge)) {
-                    Time partial_charge_time = c.get_charge_time_to_traverse(edge, current.soc());
-                    labels.emplace_back(Label(label_type::CHARGE_MINIMUM, connectionID, currentID,
-                                              current.get_total_time() + travel_time + partial_charge_time,
-                                              partial_charge_time, c.min_soc(), &edge));
+                    // 3. Only charge enough to get to neighbor.
+                    if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
+                        !c.can_traverse(edge, current.soc()) &&
+                        c.can_traverse_with_max_soc(edge)) {
+                        Time partial_charge_time = c.get_charge_time_to_traverse(edge, current.soc());
+                        labels.emplace_back(Label(label_type::CHARGE_MINIMUM, connectionID, currentID,
+                                                  current.get_total_time() + travel_time + partial_charge_time,
+                                                  partial_charge_time, c.min_soc(), &edge));
+                    }
+
+                    //                    // 4. Charge to 70%
+                    //                    if (soc_cmp(current.soc(), OP::SMALLER, 0.7) &&
+                    //                        c.can_traverse(edge, 0.7)) {
+                    //                        Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.7);
+                    //                        labels.emplace_back(Label(label_type::CHARGE_70, connectionID, currentID,
+                    //                                                  current.get_total_time() + travel_time + partial_charge_time,
+                    //                                                  partial_charge_time, c.soc_left(edge, 0.7), &edge));
+                    //                    }
+                    //
+                    //                    // 4. Charge to 80%
+                    //                    if (soc_cmp(current.soc(), OP::SMALLER, 0.8) &&
+                    //                        c.can_traverse(edge, 0.8)) {
+                    //                        Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.8);
+                    //                        labels.emplace_back(Label(label_type::CHARGE_80, connectionID, currentID,
+                    //                                                  current.get_total_time() + travel_time + partial_charge_time,
+                    //                                                  partial_charge_time, c.soc_left(edge, 0.8), &edge));
+                    //                    }
+
+                } else {
+                    if (c.can_traverse_final(edge, current.soc())) {
+                        labels.emplace_back(Label(label_type::NO_CHARGE, connectionID, currentID, current.get_total_time() + travel_time,
+                                                  0, c.soc_left(edge, current.soc()), &edge));
+                    }
+
+                    if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
+                        !c.can_traverse_final(edge, current.soc()) &&
+                        c.can_traverse_with_max_soc_final(edge)) {
+                        Time partial_charge_time = c.get_charge_time_to_traverse_final(edge, current.soc());
+                        labels.emplace_back(Label(label_type::CHARGE_MINIMUM, connectionID, currentID,
+                                                  current.get_total_time() + travel_time + partial_charge_time,
+                                                  partial_charge_time, c.min_soc_final(), &edge));
+                    }
                 }
 
-                // 4. Charge to 70%
-                if (soc_cmp(current.soc(), OP::SMALLER, 0.7) &&
-                    c.can_traverse(edge, 0.7)) {
-                    Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.7);
-                    labels.emplace_back(Label(label_type::CHARGE_70, connectionID, currentID,
-                                              current.get_total_time() + travel_time + partial_charge_time,
-                                              partial_charge_time, 0.7, &edge));
-                }
-
-                // 4. Charge to 80%
-                if (soc_cmp(current.soc(), OP::SMALLER, 0.8) &&
-                    c.can_traverse(edge, 0.8)) {
-                    Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.8);
-                    labels.emplace_back(Label(label_type::CHARGE_80, connectionID, currentID,
-                                              current.get_total_time() + travel_time + partial_charge_time,
-                                              partial_charge_time, 0.8, &edge));
-                }
 
                 // Update this nodes label bag. This is similar to "relaxing" edges in standard Dijkstra's.
                 auto search = label_map.find(connectionID);
@@ -246,20 +269,37 @@ bool operator==(const Router &left, const Router &right) {
 
     bool nodes_equal = std::equal(left.nodes.begin(), left.nodes.end(), right.nodes.begin());
 
-    bool edges_equal = std::all_of(left.edges.begin(), left.edges.end(), [&right](const auto &p) {
-        if (auto right_edges = right.edges.find(p.first); right_edges != right.edges.end()) {
-            return std::equal(p.second.begin(), p.second.end(), right_edges->second.begin());
-        }
-        return false;
-    });
+    bool edges_equal = std::all_of(left.edges.begin(), left.edges.end(), [&](const auto &p) {
+                           if (auto right_edges = right.edges.find(p.first); right_edges != right.edges.end()) {
+                               return std::equal(p.second.begin(), p.second.end(), right_edges->second.begin());
+                           }
+                           return false;
+                       }) &&
+                       std::all_of(right.edges.begin(), right.edges.end(), [&](const auto &p) {
+                           if (auto left_edges = left.edges.find(p.first); left_edges != left.edges.end()) {
+                               return std::equal(p.second.begin(), p.second.end(), left_edges->second.begin());
+                           }
+                           return false;
+                       });
 
-    bool temp_nodes_equal = left.temp_nodes == right.temp_nodes;
+    bool temp_nodes_equal = std::all_of(left.temp_nodes.begin(), left.temp_nodes.end(), [&](const auto &p) {
+                                if (auto n = right.temp_nodes.find(p.first); n != right.temp_nodes.end()) {
+                                    return p.second == n->second;
+                                }
+                                return false;
+                            }) &&
+                            std::all_of(right.temp_nodes.begin(), right.temp_nodes.end(), [&](const auto &p) {
+                                if (auto n = left.temp_nodes.find(p.first); n != left.temp_nodes.end()) {
+                                    return p.second == n->second;
+                                }
+                                return false;
+                            });
 
     return nodes_equal && edges_equal && temp_nodes_equal;
 }
 
 bool operator!=(const Router &left, const Router &right) {
-    return !(left == right);
+    return !operator==(left, right);
 }
 
 

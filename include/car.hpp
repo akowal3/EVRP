@@ -27,7 +27,10 @@ public:
 
     bool can_traverse(const Edge &e) const;
     bool can_traverse(const Edge &e, double initialSoC) const;
+    bool can_traverse(const Edge &e, double initialSoC, double required_endSoC) const;
     bool can_traverse_with_max_soc(const Edge &e) const;
+    bool can_traverse_final(const Edge &e, double initialSoC) const;
+    bool can_traverse_with_max_soc_final(const Edge &e) const;
     bool will_charge(const Edge &e) const;
     bool will_charge(const Edge &e, double initialSoC, double endSoC) const;
 
@@ -46,9 +49,12 @@ public:
     Time get_charge_time_to_max(const Edge &e, double initialSoC) const;
     Time get_charge_time_to_traverse(const Edge &e, double initialSoC) const;
     Time get_charge_time(const Edge &e) const;
+    Time get_min_required_charge_time_to_traverse(const Edge &e, double initialSoC, double endSoC) const;
+    Time get_charge_time_to_traverse_final(const Edge &e, double initialSoC) const;
 
     double max_soc() const;
     double min_soc() const;
+    double min_soc_final() const;
     double initial_soc() const;
 
 private:

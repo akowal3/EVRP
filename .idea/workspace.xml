@@ -24,12 +24,24 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="fixed map exceptions when adding temporary nodes (source and destination)&#10;The problem was the fact that a vector is resized, pointers to its elements might change. Therefore, when pushing back nodes to the node vector in Router, the pointers to chargers changed leading to exceptions in Router.route function">
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="[TEMPORARY] added final report plan">
+      <change afterPath="$PROJECT_DIR$/src/backend/waypoint.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evrp_plan.md" beforeDir="false" afterPath="$PROJECT_DIR$/evrp_plan.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/car.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/car.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/node.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/node.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/router.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/router.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/utils.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/include/utils.hpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/algorithm/common/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/car.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm/common/edge.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/edge.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm/common/node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/node.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm/router/label.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/router/label.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/algorithm/router/router.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/router/router.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm/utils/utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/utils/utils.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/backend.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/bindings/bindings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/bindings/bindings.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/charger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/charger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testing/router_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/router_test.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,11 +49,12 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CMakeLists.txt" />
+        <option value="TypeScript File" />
         <option value="Python Script" />
       </list>
     </option>
@@ -86,17 +99,18 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="PyConsoleConfigurable.Python Console" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/src/frontend/evrp-frontend/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/backend" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app" />
       <recent name="$PROJECT_DIR$/src/backend" />
       <recent name="$PROJECT_DIR$/src/backend/bindings" />
       <recent name="$PROJECT_DIR$/src/algorithm" />
       <recent name="$PROJECT_DIR$/dependencies" />
-      <recent name="$PROJECT_DIR$/include" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -105,32 +119,32 @@
       <command value="Edge traversal" />
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.bindings">
+  <component name="RunManager" selected="Catch.Choose to charge to 100%">
+    <configuration name="Choose to charge to 100%" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_METHOD="Choose to charge to 100%" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Node addition" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Node addition" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Router ==operator" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Router ==operator" TEST_MODE="SUITE_TEST">
+    <configuration name="Router ==operator" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Router ==operator" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Simple router verifier" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Simple router verifier" TEST_MODE="SUITE_TEST">
+    <configuration name="Stress test with node addition" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Stress test with node addition" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Stress test with node addition" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Stress test with node addition" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Stress test" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Stress test" TEST_MODE="SUITE_TEST">
+    <configuration name="Stress test" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Stress test" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -172,11 +186,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="bindings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="bindings" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -187,29 +196,34 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <list>
-      <item itemvalue="Catch.TESTS" />
+      <item itemvalue="Catch.Choose to charge to 100%" />
       <item itemvalue="Catch.Node addition" />
-      <item itemvalue="CMake Application.UTILS" />
-      <item itemvalue="CMake Application.bindings" />
-      <item itemvalue="CMake Application.build_RK_LIB" />
+      <item itemvalue="Catch.Router ==operator" />
+      <item itemvalue="Catch.Stress test with node addition" />
+      <item itemvalue="Catch.Stress test" />
+      <item itemvalue="Catch.TESTS" />
       <item itemvalue="CMake Application.COMMON" />
       <item itemvalue="CMake Application.EVRP" />
       <item itemvalue="CMake Application.GRAPH" />
       <item itemvalue="CMake Application.ROUTER" />
       <item itemvalue="CMake Application.TESTCASES" />
-      <item itemvalue="Catch.Stress test" />
-      <item itemvalue="Catch.Stress test with node addition" />
-      <item itemvalue="Catch.Simple router verifier" />
-      <item itemvalue="Catch.Router ==operator" />
+      <item itemvalue="CMake Application.UTILS" />
+      <item itemvalue="CMake Application.bindings" />
+      <item itemvalue="CMake Application.build_RK_LIB" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Catch.Choose to charge to 100%" />
         <item itemvalue="Catch.Stress test" />
+        <item itemvalue="Catch.Stress test with node addition" />
         <item itemvalue="Catch.Router ==operator" />
         <item itemvalue="Catch.Node addition" />
-        <item itemvalue="Catch.Stress test with node addition" />
-        <item itemvalue="Catch.Simple router verifier" />
       </list>
     </recent_temporary>
   </component>
@@ -257,7 +271,12 @@
       <workItem from="1621513666739" duration="8065000" />
       <workItem from="1621588079190" duration="39459000" />
       <workItem from="1621978746964" duration="11053000" />
-      <workItem from="1622030025845" duration="44049000" />
+      <workItem from="1622030025845" duration="45836000" />
+      <workItem from="1622190193733" duration="44742000" />
+      <workItem from="1622394707594" duration="160000" />
+      <workItem from="1622395836856" duration="8455000" />
+      <workItem from="1622470655122" duration="912000" />
+      <workItem from="1622537000236" duration="11367000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -525,7 +544,21 @@
       <option name="project" value="LOCAL" />
       <updated>1622127966908</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="added the minimum final SoC requirement to the algorithm.&#10;Now user can specify what is the minimum SoC he wishes to arrive at the destination with, which can be different from the minimum SoC acceptable at the charger arrival">
+      <created>1622149689452</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1622149689452</updated>
+    </task>
+    <task id="LOCAL-00040" summary="[TEMPORARY] added final report plan">
+      <created>1622150136345</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1622150136345</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -559,8 +592,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/RoutingKit" />
     </ignored-roots>
-    <MESSAGE value="Minor refactoring&#10;Added further car tests.&#10;Refactored code a bit (include &lt;.h&gt; instead of &quot;.h&quot;)" />
-    <MESSAGE value="[BROKEN] Refactored testcases for graph building.&#10;Connect to RoutingKit test is commented out" />
     <MESSAGE value="Commented Connect to RoutingKit testcase back in" />
     <MESSAGE value="Improved RoutingKit tests" />
     <MESSAGE value="Started working on router class" />
@@ -584,7 +615,9 @@
     <MESSAGE value="minor changes in backend" />
     <MESSAGE value="trying to get node addition to work" />
     <MESSAGE value="fixed map exceptions when adding temporary nodes (source and destination)&#10;The problem was the fact that a vector is resized, pointers to its elements might change. Therefore, when pushing back nodes to the node vector in Router, the pointers to chargers changed leading to exceptions in Router.route function" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed map exceptions when adding temporary nodes (source and destination)&#10;The problem was the fact that a vector is resized, pointers to its elements might change. Therefore, when pushing back nodes to the node vector in Router, the pointers to chargers changed leading to exceptions in Router.route function" />
+    <MESSAGE value="added the minimum final SoC requirement to the algorithm.&#10;Now user can specify what is the minimum SoC he wishes to arrive at the destination with, which can be different from the minimum SoC acceptable at the charger arrival" />
+    <MESSAGE value="[TEMPORARY] added final report plan" />
+    <option name="LAST_COMMIT_MESSAGE" value="[TEMPORARY] added final report plan" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -620,13 +653,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/include/utils.hpp</url>
-          <line>37</line>
+          <line>38</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/testing/testcases/graph_cases.hpp</url>
           <line>12</line>
           <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/testing/router_test.cpp</url>
+          <line>271</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/testing/router_test.cpp</url>
+          <line>275</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

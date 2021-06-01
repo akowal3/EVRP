@@ -90,16 +90,20 @@ RouterResult Router::build_result(const std::unordered_map<unsigned int, Label> 
 
 
     while (current.get_nodeID() != sourceID) {
+        auto consumed_soc = c.consumed_soc(*current.edge);
         res.socs_in.push_back(current.soc());
-        res.socs_out.push_back(current.soc() + c.consumed_soc(*current.edge));
+        res.socs_out.push_back(current.soc() + consumed_soc);
         res.charge_times.push_back(current.get_charge_time());
         res.arcs.push_back(current.edge);
         res.nodes.push_back(current.edge->destinationCharger());
         res.charges.push_back(current.type);
+        res.consumed_energy.push_back(c.consumed_power(*current.edge));
+        res.consumed_soc.push_back(consumed_soc);
         current = spt.at(current.get_parentID());
     }
 
     res.nodes.push_back(res.arcs.back()->sourceCharger());
+    res.socs_in.push_back(c.initial_soc());// ensure that source point has values for both socs_in and socs_out
 
     for (auto t : res.charge_times) {
         res.charge_time += t;
@@ -111,6 +115,10 @@ RouterResult Router::build_result(const std::unordered_map<unsigned int, Label> 
     std::reverse(res.arcs.begin(), res.arcs.end());
     std::reverse(res.nodes.begin(), res.nodes.end());
     std::reverse(res.charges.begin(), res.charges.end());
+    std::reverse(res.consumed_energy.begin(), res.consumed_energy.end());
+    std::reverse(res.consumed_soc.begin(), res.consumed_soc.end());
+
+    res.socs_out.push_back(res.socs_in.back());// ensure that destination point has values for both socs_in and socs_out
 
     return res;
 }
@@ -127,7 +135,7 @@ std::unordered_map<unsigned int, Label> Router::route_internal(unsigned int sour
     // lazy deletes as std::priority_queue doesn't allow for arbitrary deletes
     std::unordered_set<unsigned> deleted;
 
-    label_queue.emplace(Label(sourceID, c.initial_soc()));// soc_left = c.initialSoC() coming from the query
+    label_queue.emplace(Label(sourceID, c.initial_soc()));
 
     while (!label_queue.empty()) {
         Label current = label_queue.top();
@@ -135,12 +143,13 @@ std::unordered_map<unsigned int, Label> Router::route_internal(unsigned int sour
 
         unsigned currentID = current.get_nodeID();
 
-        if (deleted.count(current.get_labelID()) == 1 ||
-            shortest_path_tree.count(currentID) == 1) {
+        if (deleted.find(current.get_labelID()) != deleted.end() ||
+            shortest_path_tree.find(currentID) != shortest_path_tree.end()) {
             continue;
         }
 
-        shortest_path_tree.emplace(currentID, current);
+        //        shortest_path_tree.emplace(currentID, current);
+        shortest_path_tree.insert({ currentID, current });
 
         // Search is done.
         if (currentID == destinationID) {
@@ -174,7 +183,8 @@ std::unordered_map<unsigned int, Label> Router::route_internal(unsigned int sour
                     }
                     // 2. Do a full recharge, if needed.
                     if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
-                        c.can_traverse_with_max_soc(edge)) {
+                        c.can_traverse_with_max_soc(edge) &&
+                        c.can_charge(edge)) {
 
                         Time full_charge_time = c.get_charge_time_to_max(edge, current.soc());
                         labels.emplace_back(Label(label_type::CHARGE_MAXIMUM, connectionID, currentID,
@@ -182,34 +192,35 @@ std::unordered_map<unsigned int, Label> Router::route_internal(unsigned int sour
                                                   full_charge_time, c.soc_left_from_max_soc(edge), &edge));
                     }
 
+                    // 4. Charge to 70%
+                    if (soc_cmp(current.soc(), OP::SMALLER, 0.6) &&
+                        c.can_traverse(edge, 0.6) && c.can_charge(edge)) {
+                        Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.6);
+                        labels.emplace_back(Label(label_type::CHARGE_70, connectionID, currentID,
+                                                  current.get_total_time() + travel_time + partial_charge_time,
+                                                  partial_charge_time, c.soc_left(edge, 0.6), &edge));
+                    }
+
+                    // 4. Charge to 80%
+                    if (soc_cmp(current.soc(), OP::SMALLER, 0.8) &&
+                        c.can_traverse(edge, 0.8) && c.can_charge(edge)) {
+                        Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.8);
+                        labels.emplace_back(Label(label_type::CHARGE_80, connectionID, currentID,
+                                                  current.get_total_time() + travel_time + partial_charge_time,
+                                                  partial_charge_time, c.soc_left(edge, 0.8), &edge));
+                    }
 
                     // 3. Only charge enough to get to neighbor.
                     if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
                         !c.can_traverse(edge, current.soc()) &&
-                        c.can_traverse_with_max_soc(edge)) {
+                        c.can_traverse_with_max_soc(edge) &&
+                        c.can_charge(edge)) {
                         Time partial_charge_time = c.get_charge_time_to_traverse(edge, current.soc());
                         labels.emplace_back(Label(label_type::CHARGE_MINIMUM, connectionID, currentID,
                                                   current.get_total_time() + travel_time + partial_charge_time,
                                                   partial_charge_time, c.min_soc(), &edge));
                     }
 
-                    //                    // 4. Charge to 70%
-                    //                    if (soc_cmp(current.soc(), OP::SMALLER, 0.7) &&
-                    //                        c.can_traverse(edge, 0.7)) {
-                    //                        Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.7);
-                    //                        labels.emplace_back(Label(label_type::CHARGE_70, connectionID, currentID,
-                    //                                                  current.get_total_time() + travel_time + partial_charge_time,
-                    //                                                  partial_charge_time, c.soc_left(edge, 0.7), &edge));
-                    //                    }
-                    //
-                    //                    // 4. Charge to 80%
-                    //                    if (soc_cmp(current.soc(), OP::SMALLER, 0.8) &&
-                    //                        c.can_traverse(edge, 0.8)) {
-                    //                        Time partial_charge_time = c.get_charge_time(edge.sourceCharger(), current.soc(), 0.8);
-                    //                        labels.emplace_back(Label(label_type::CHARGE_80, connectionID, currentID,
-                    //                                                  current.get_total_time() + travel_time + partial_charge_time,
-                    //                                                  partial_charge_time, c.soc_left(edge, 0.8), &edge));
-                    //                    }
 
                 } else {
                     if (c.can_traverse_final(edge, current.soc())) {
@@ -219,7 +230,8 @@ std::unordered_map<unsigned int, Label> Router::route_internal(unsigned int sour
 
                     if (soc_cmp(current.soc(), OP::SMALLER, c.max_soc()) &&
                         !c.can_traverse_final(edge, current.soc()) &&
-                        c.can_traverse_with_max_soc_final(edge)) {
+                        c.can_traverse_with_max_soc_final(edge) &&
+                        c.can_charge(edge)) {
                         Time partial_charge_time = c.get_charge_time_to_traverse_final(edge, current.soc());
                         labels.emplace_back(Label(label_type::CHARGE_MINIMUM, connectionID, currentID,
                                                   current.get_total_time() + travel_time + partial_charge_time,
@@ -306,18 +318,24 @@ bool operator!=(const Router &left, const Router &right) {
 std::ostream &operator<<(std::ostream &os, const RouterResult &res) {
     for (int i = 0; i < res.nodes.size(); i++) {
         // print node
-        if (i == 0) {
-            os << res.nodes[i]->id() << ": " << res.socs_out[i] << std::endl;
-        } else if (i == res.nodes.size() - 1) {
-            os << res.nodes[i]->id() << ": " << res.socs_in[i - 1] << std::endl;
+        //        if (i == 0) {
+        //            os << res.nodes[i]->id() << ": " << res.socs_out[i] << std::endl;
+        //        } else if (i == res.nodes.size() - 1) {
+        //            os << res.nodes[i]->id() << ": " << res.socs_in[i - 1] << std::endl;
+        //        } else {
+        //            os << res.nodes[i]->id() << ": " << res.socs_in[i - 1] << " -> " << res.socs_out[i] << " in " << res.charge_times[i] / 3600.0 << " hours (" << res.charges[i] << ")" << std::endl;
+        //        }
+
+        if (soc_cmp(res.socs_in[i], OP::EQUAL, res.socs_out[i])) {
+            os << res.nodes[i]->id() << ": " << res.socs_in[i] << std::endl;
         } else {
-            os << res.nodes[i]->id() << ": " << res.socs_in[i - 1] << " -> " << res.socs_out[i] << " in " << res.charge_times[i] / 3600.0 << " hours (" << res.charges[i] << ")" << std::endl;
+            os << res.nodes[i]->id() << ": " << res.socs_in[i] << " -> " << res.socs_out[i] << " in " << res.charge_times[i] / 3600.0 << " hours (" << res.charges[i] << ")" << std::endl;
         }
 
         // print path
         if (i != res.nodes.size() - 1) {
             auto edge = res.arcs[i];
-            os << "| " << edge->get_distance() << " km @ " << edge->get_speed() << " km/h in " << edge->get_travel_time() / 3600.0 << " hours." << std::endl;
+            os << "| " << edge->get_distance() << " km @ " << edge->get_speed() << " km/h in " << edge->get_travel_time() / 3600.0 << " hours. Consumed: " << 100 * res.consumed_soc[i] << "% (" << res.consumed_energy[i] << " kWh)" << std::endl;
         }
     }
 

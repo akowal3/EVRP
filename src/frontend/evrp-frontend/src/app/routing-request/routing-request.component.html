@@ -1,0 +1,90 @@
+<div class="routing-request-container">
+    <form [formGroup]="evRequest" (ngSubmit)="onSubmit(evRequest)" ngNativeValidate>
+
+        <div>
+            <label>
+                EV Model
+                <select class="custom-select" (change)="selectCar($event)" formControlName="car">
+                    <option *ngFor="let c of car; index as i" [ngValue]="i">{{c}}</option>
+                </select>
+            </label>
+        </div>
+
+        <div>
+            <div *ngIf="!useChargerIDs; then srcCoords else srcID"></div>
+            <label>
+                Source
+                <ng-template #srcCoords>
+                    <input formControlName="source_coordinates" placeholder="eg. 52.255700, 20.940975">
+                </ng-template>
+                <ng-template #srcID>
+                    <input formControlName="source_id" placeholder="chargerID">
+                </ng-template>
+            </label>
+
+        </div>
+
+        <div>
+            <div *ngIf="!useChargerIDs; then dstCoords else dstID"></div>
+            <label>
+                Destination
+                <ng-template #dstCoords>
+                    <input formControlName="destination_coordinates" placeholder="eg. 52.255700, 20.940975">
+                </ng-template>
+                <ng-template #dstID>
+                    <input formControlName="destination_id" placeholder="chargerID">
+                </ng-template>
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Minimum SoC at charger
+                <input formControlName="socMin" placeholder="%">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Maximum SoC
+                <input formControlName="socMax" placeholder="%">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Initial SoC at source
+                <input formControlName="startSoc" placeholder="%">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Minimum SoC at destination
+                <input formControlName="endSoc" placeholder="%">
+            </label>
+        </div>
+
+
+        <br>
+
+
+        <button type="submit">Route</button>
+
+        <div>
+            <label>
+                Use chargerIDs
+                <input
+                        type="checkbox"
+                        [checked]="useChargerIDs"
+                        (change)="useChargerIDs = !useChargerIDs"/>
+            </label>
+        </div>
+
+
+    </form>
+
+</div>
+
+
+

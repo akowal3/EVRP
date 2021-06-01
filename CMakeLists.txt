@@ -60,6 +60,6 @@ add_executable(TESTS testing/test.cpp testing/graph_test.cpp testing/car_test.cp
 target_link_libraries(TESTS PRIVATE Catch2 RK_LIB TESTCASES COMMON ROUTER GRAPH UTILS)
 
 pybind11_add_module(bindings src/backend/bindings/bindings.cpp)
-target_link_libraries(bindings PRIVATE COMMON ROUTER GRAPH UTILS)
+target_link_libraries(bindings PRIVATE UTILS COMMON ROUTER GRAPH)
 
 

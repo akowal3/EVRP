@@ -70,5 +70,7 @@ std::ostream &operator<<(std::ostream &os, const charger_type &type) {
             return os << "FAST_175KW";
         case charger_type::SLOW_50KW:
             return os << "SLOW_50KW";
+        case charger_type::NO_CHARGER:
+            return os << "NO_CHARGER";
     }
 }

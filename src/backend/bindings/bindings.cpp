@@ -76,6 +76,7 @@ PYBIND11_MODULE(bindings, m) {
     py::enum_<charger_type>(m, "charger_type")
             .value("SLOW_50KW", charger_type::SLOW_50KW)
             .value("FAST_175KW", charger_type::FAST_175KW)
+            .value("NO_CHARGER", charger_type::NO_CHARGER)
             .export_values();
 
     py::class_<Node>(m, "Node")

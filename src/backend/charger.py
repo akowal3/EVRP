@@ -35,7 +35,7 @@ class Charger:
         elif self.charger_type is ChargerType.SLOW_50KW:
             cpp_charger_type = charger_type.SLOW_50KW
         elif self.charger_type is ChargerType.NO_CHARGER:
-            cpp_charger_type = charger_type.SLOW_50KW
+            cpp_charger_type = charger_type.NO_CHARGER
 
         return Node(self.internalID, 1.0, cpp_charger_type)
 

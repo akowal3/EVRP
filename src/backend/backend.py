@@ -9,10 +9,11 @@ from edge import Edge
 from ocm import OCM
 from osrm import OSRM
 from routing_request import RoutingRequest
+from waypoint import Waypoint
 
 sys.path.append("../../cmake-build-debug")
 sys.path.append("cmake-build-debug")
-from bindings import Node, BuildingEdge, Router, Car
+from bindings import Node, BuildingEdge, Router, Car, RouterResult
 
 
 class EvrpBackend:
@@ -52,6 +53,8 @@ class EvrpBackend:
 
         print(route)
 
+        # waypoints = self.convertToWaypoints(route)
+
         charger_ids = [n.ID for n in route.nodes]
         osrm_route = self.get_osrm_route(charger_ids)
 
@@ -61,6 +64,11 @@ class EvrpBackend:
             'charge_time': route.charge_time,
             'total_time': route.total_time
         }
+
+    def convertToWaypoints(self, route: RouterResult) -> List[Waypoint]:
+        charger_ids = [n.ID for n in route.nodes]
+
+        return []
 
     def process_request(self, req: RoutingRequest):
         src = self.process_source(req)

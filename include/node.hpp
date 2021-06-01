@@ -16,6 +16,7 @@ private:
 
 public:
     Node(unsigned ID, double SoC, charger_type type);
+    Node(unsigned ID, charger_type type);
     Node(unsigned ID, double SoC);
     Node(unsigned int ID);
     unsigned id() const;

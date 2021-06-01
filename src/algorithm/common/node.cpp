@@ -4,14 +4,17 @@
 
 #include <node.hpp>
 
-Node::Node(unsigned int ID, double SoC, charger_type type) :
+Node::Node(unsigned ID, double SoC, charger_type type) :
     ID(ID), charge_level(SoC), type(type) {}
 
 Node::Node(unsigned ID, double SoC) :
     ID(ID), charge_level(SoC), type(charger_type::FAST_175KW) {}
 
 Node::Node(unsigned ID) :
-    ID(ID), charge_level(100.0), type(charger_type::FAST_175KW) {}
+    ID(ID), charge_level(1.0), type(charger_type::FAST_175KW) {}
+
+Node::Node(unsigned ID, charger_type type) :
+    ID(ID), charge_level(1.0), type(type) {}
 
 unsigned Node::id() const {
     return this->ID;

@@ -34,6 +34,9 @@ public:
     bool will_charge(const Edge &e) const;
     bool will_charge(const Edge &e, double initialSoC, double endSoC) const;
 
+    bool can_charge(const Node *n) const;
+    bool can_charge(const Edge &e) const;
+
     Time traverse(const Edge &e) const;
     double consumed_power(const Edge &e) const;
     double consumed_soc(const Edge &e) const;

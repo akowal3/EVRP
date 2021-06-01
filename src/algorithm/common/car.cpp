@@ -110,6 +110,14 @@ bool Car::will_charge(const Edge &e, double initialSoC, double endSoC) const {
     return soc_cmp(power_left(e, initialSoC) / battery_capacity, OP::SMALLER, endSoC);
 }
 
+bool Car::can_charge(const Edge &e) const {
+    return can_charge(e.sourceCharger());
+}
+
+bool Car::can_charge(const Node *n) const {
+    return n->best_compatible_type(*this) != charger_type::NO_CHARGER;
+}
+
 // Used for Graph traversal when edge contains all the information about the SoC at a given point
 Time Car::get_charge_time(const Edge &e) const {
     return get_charge_time(e.destinationCharger(), power_left(e) / battery_capacity, e.end_charge_level());
@@ -126,7 +134,7 @@ Time Car::get_charge_time(const Node *chargingStation, double initialSoC, double
         return 0;// no charging required
 
     const ChargerProfile &charger = ChargerProfiles.at(chargingStation->best_compatible_type(*this));
-    return charger.get_charging_time(initialSoC, endSoC, battery_capacity);
+    return charger.get_charging_time(initialSoC, endSoC, battery_capacity) + 15 * 60;
 }
 
 // This function calculates the time necessary to charge a car in order to traverse the edge

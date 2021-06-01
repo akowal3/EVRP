@@ -31,6 +31,7 @@ enum class OP {
 enum class charger_type {
     FAST_175KW,
     SLOW_50KW,
+    NO_CHARGER,
 };
 
 bool soc_cmp(double left, OP operand, double right);

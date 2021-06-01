@@ -1,6 +1,7 @@
 import sys
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 from backend import EvrpBackend
 from routing_request import RoutingRequest
@@ -9,11 +10,12 @@ sys.path.append("../../cmake-build-debug")
 sys.path.append("cmake-build-debug")
 
 app = Flask(__name__)
+CORS(app)
 
 backend = EvrpBackend().from_pickle()
 
 
-@app.route('/evroute/', methods=['POST'])
+@app.route('/evroute/', methods=['POST', 'OPTIONS'])
 def evroute():
     # try:
     #     req = RoutingRequest(request.json)
@@ -21,9 +23,12 @@ def evroute():
     #     print(e)
     #     return backend.construct_error(e)
 
-    req = RoutingRequest(request.json)
-    response = backend.process_request(req)
+    response = {}
+    if request.method == 'POST':
+        req = RoutingRequest(request.json)
+        response = backend.process_request(req)
 
+    response = jsonify(response)
     return response
 
 # if __name__ == '__main__':

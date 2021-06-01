@@ -200,7 +200,7 @@ TEST_CASE("Node addition", "[ROUTER]") {
     r2.route(0, 6, c);
     REQUIRE(r != r2);
 
-    Node src = Node(9);
+    Node src = Node(9, 1.0, charger_type::NO_CHARGER);
 
     r.add_node(src, {
                             BuildingEdge(9, 0, 20, 50),
@@ -240,4 +240,38 @@ TEST_CASE("Node addition", "[ROUTER]") {
     REQUIRE(r2 == r);
     //
     //    std::cout << r.route(src.id(), 5, c) << std::endl;
+}
+
+TEST_CASE("Choose to charge to 100%") {
+
+    Car c = Car::TeslaModel3(0.9, 0.2, 0.9, 0.18);
+
+    std::vector<Node> nodes = {
+        Node(0, charger_type::NO_CHARGER),
+        Node(1, charger_type::FAST_175KW),
+        Node(2, charger_type::SLOW_50KW),
+        Node(3, charger_type::SLOW_50KW),
+        Node(4, charger_type::SLOW_50KW),
+        Node(5, charger_type::NO_CHARGER),
+    };
+
+    std::vector<BuildingEdge> edges = {
+        BuildingEdge(0, 1, 300, 110),
+        BuildingEdge(0, 2, 300, 110),
+        BuildingEdge(0, 3, 300, 110),
+        BuildingEdge(1, 4, 200, 80),
+        BuildingEdge(2, 4, 200, 80),
+        BuildingEdge(3, 4, 200, 80),
+        BuildingEdge(4, 5, 14, 200),
+    };
+
+    auto r = Router(nodes, edges);
+
+    auto x = r.route_internal(0, 5, c);
+
+    std::cout << "Internal done" << std::endl;
+
+    auto route = r.route(0, 5, c);
+
+    std::cout << route << std::endl;
 }

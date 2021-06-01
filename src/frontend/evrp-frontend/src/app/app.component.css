@@ -1,0 +1,23 @@
+.container {
+    display: grid;
+    grid-template-columns: 20fr 80fr;
+    grid-template-rows: 13vh 85vh;
+    grid-template-areas: "   .    map-wrapper"
+                         "sidebar map-wrapper";
+    grid-column-gap: 10px;
+}
+
+.sidebar {
+    grid-area: sidebar;
+    position: inherit;
+    height: 100%;
+    width: 100%;
+}
+
+.map-wrapper {
+    grid-area: map-wrapper;
+    position: inherit;
+    height: 100%;
+    width: 100%;
+}
+  

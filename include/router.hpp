@@ -21,6 +21,8 @@ typedef struct {
     std::vector<double> socs_out;
     std::vector<label_type> charges;
     std::vector<Time> charge_times;
+    std::vector<double> consumed_energy;
+    std::vector<double> consumed_soc;
     Time total_time;
     Time charge_time;
 } RouterResult;

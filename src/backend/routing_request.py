@@ -25,6 +25,7 @@ class RoutingRequest:
         self.min_end_soc: float = j['config']['endSoc']
         self.car_id: int = j['car']['carID']
         self.custom_car: Dict[str, Any] = j['car']['custom']
+        self.charger_overhead: int = int(j['config']['charger_overhead_in_minutes']) * 60  # convert minutes to seconds
 
     def car(self):
         if self.car_id == 0:
@@ -40,11 +41,12 @@ class RoutingRequest:
                        self.custom_car['Mass'],
                        self.custom_car['IdleConsumption'],
                        self.custom_car['DriveTrainEfficiency'],
-                       {})
+                       {},
+                       self.charger_overhead)
         elif self.car_id == 1:
-            return Car.TeslaModel3(self.start_soc, self.soc_min, self.soc_max, self.min_end_soc)
+            return Car.TeslaModel3(self.start_soc, self.soc_min, self.soc_max, self.min_end_soc, self.charger_overhead)
         elif self.car_id == 2:
-            return Car.RenaultZoe(self.start_soc, self.soc_min, self.soc_max, self.min_end_soc)
+            return Car.RenaultZoe(self.start_soc, self.soc_min, self.soc_max, self.min_end_soc, self.charger_overhead)
         else:
             return None
 

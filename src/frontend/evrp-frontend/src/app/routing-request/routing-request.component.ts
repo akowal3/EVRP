@@ -30,6 +30,7 @@ export class RoutingRequestComponent implements OnInit {
             endSoc: new FormControl(40.0, this.socValidators),
             socMax: new FormControl(90, this.socValidators),
             car: new FormControl(1),
+            charger_overhead: new FormControl(15, [Validators.required, Validators.min(0), Validators.max(120)])
         });
         this.useChargerIDs = false;
     }
@@ -83,9 +84,11 @@ export class RoutingRequestComponent implements OnInit {
         request.config.socMax = this.evRequest.value.socMax / 100.0
         request.config.startSoc = this.evRequest.value.startSoc / 100.0
         request.config.endSoc = this.evRequest.value.endSoc / 100.0
+        request.config.charger_overhead_in_minutes = this.evRequest.value.charger_overhead
 
         request.car.carID = this.evRequest.value.car
         request.car.custom = {}
+
 
         return <JSON>request
     }

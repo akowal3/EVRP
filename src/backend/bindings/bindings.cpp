@@ -23,18 +23,21 @@ PYBIND11_MODULE(bindings, m) {
 
     py::class_<Car>(m, "Car")
             .def(py::init<double>())
-            .def(py::init<double,//soc_initial
-                          double,//soc_min
-                          double,//soc_max
-                          double,//soc_min_final
-                          double,//battery_capacity
-                          double,//CrossSectionalArea
-                          double,//RollingResistanceCoeff
-                          double,//DragCoeff
-                          int,   //Mass
-                          double,//IdleConsumption
-                          double,//DriveTrainEfficiency
-                          std::unordered_map<charger_type, ChargerProfile>>())
+            .def(py::init<
+                    double,//soc_initial
+                    double,//soc_min
+                    double,//soc_max
+                    double,//soc_min_final
+                    double,//battery_capacity
+                    double,//CrossSectionalArea
+                    double,//RollingResistanceCoeff
+                    double,//DragCoeff
+                    int,   //Mass
+                    double,//IdleConsumption
+                    double,//DriveTrainEfficiency
+                    std::unordered_map<charger_type, ChargerProfile>,
+                    unsigned//charging_overhead
+                    >())
             .def_static("TeslaModel3", &Car::TeslaModel3);
 
 
@@ -47,6 +50,8 @@ PYBIND11_MODULE(bindings, m) {
             .def_readwrite("charge_times", &RouterResult::charge_times)
             .def_readwrite("total_time", &RouterResult::total_time)
             .def_readwrite("charge_time", &RouterResult::charge_time)
+            .def_readwrite("consumed_energy", &RouterResult::consumed_energy)
+            .def_readwrite("consumed_soc", &RouterResult::consumed_soc)
             .def("__repr__",
                  [](const RouterResult &r) {
                      std::ostringstream os;

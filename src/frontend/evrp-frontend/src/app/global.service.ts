@@ -17,21 +17,27 @@ export class GlobalService {
     }
 }
 
-export interface waypoint {
-    distance: number;
-    hint: string;
-    location: number[];
-    name: string;
+export interface EVRouteEdge {
+    speed_kmh: number;
+    distance_km: number;
+    consumed_energy: number;
+    consumed_soc: number;
+
 }
 
-export interface OSRM {
-    code: string;
-    routes: any[];
-    waypoints: waypoint[];
+export interface EVRouteWaypoint {
+    latitude: number;
+    longitude: number;
+    socIn: number;
+    socOut: number;
+    chargerName: string;
+    chargingTime: number;
+    chargerID: number;
 }
 
 export interface EVRoute {
-    osrm: OSRM;
+    waypoints: EVRouteWaypoint[];
+    edges: EVRouteEdge[];
     charge_time: number;
     total_time: number;
     code: string;

@@ -119,6 +119,8 @@ RouterResult Router::build_result(const std::unordered_map<unsigned int, Label> 
     std::reverse(res.consumed_soc.begin(), res.consumed_soc.end());
 
     res.socs_out.push_back(res.socs_in.back());// ensure that destination point has values for both socs_in and socs_out
+    res.charge_times.push_back(0);
+    res.charges.push_back(label_type::NO_CHARGE);
 
     return res;
 }

@@ -47,8 +47,8 @@ export class MapComponent implements AfterViewInit {
         console.log("from map")
         console.log(data)
 
-        let waypoints = data.osrm.waypoints.map((p) => {
-            return L.latLng(p.location[1], p.location[0])
+        let waypoints = data.waypoints.map((p) => {
+            return L.latLng(p.latitude, p.longitude)
         });
 
         if (this.routing_control != undefined) {
@@ -61,7 +61,7 @@ export class MapComponent implements AfterViewInit {
             plan: new L.Routing.Plan(waypoints, {
                 createMarker: function (i: number, start: L.Routing.Waypoint, n: number) {
 
-                    if (i == 0) return new L.Marker(start.latLng, {opacity: 0.0, interactive: false});
+                    // if (i == 0) return new L.Marker(start.latLng, {opacity: 0.0, interactive: false});
                     return new L.Marker(start.latLng);
                 }
             }),

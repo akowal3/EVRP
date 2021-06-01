@@ -27,20 +27,10 @@ Car::Car(double soc_initial) :
         { charger_type::SLOW_50KW, ChargerProfile::FastCharger(45.0) },
     };
     this->soc_min_final = this->soc_min;
+    this->charging_overhead_time = 0;
 }
 
-Car::Car(double soc_initial,
-         double soc_min,
-         double soc_max,
-         double soc_min_final,
-         double battery_capacity,
-         double CrossSectionalArea,
-         double RollingResistanceCoeff,
-         double DragCoeff,
-         int Mass,
-         double IdleConsumption,
-         double DriveTrainEfficiency,
-         std::unordered_map<charger_type, ChargerProfile> ChargerProfiles) :
+Car::Car(double soc_initial, double soc_min, double soc_max, double soc_min_final, double battery_capacity, double CrossSectionalArea, double RollingResistanceCoeff, double DragCoeff, int Mass, double IdleConsumption, double DriveTrainEfficiency, std::unordered_map<charger_type, ChargerProfile> ChargerProfiles, Time charging_overhead) :
     soc_initial(soc_initial),
     soc_min(soc_min),
     soc_max(soc_max),
@@ -52,10 +42,11 @@ Car::Car(double soc_initial,
     Mass(Mass),
     IdleConsumption(IdleConsumption),
     DriveTrainEfficiency(DriveTrainEfficiency),
-    ChargerProfiles(std::move(ChargerProfiles)){};
+    ChargerProfiles(std::move(ChargerProfiles)),
+    charging_overhead_time(charging_overhead){};
 
 
-Car Car::TeslaModel3(double soc_initial, double soc_min, double soc_max, double soc_min_final) {
+Car Car::TeslaModel3(double soc_initial, double soc_min, double soc_max, double soc_min_final, unsigned charging_overhead) {
     // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
     return Car(soc_initial, soc_min, soc_max, soc_min_final,
                70.0, 2.2,
@@ -63,10 +54,11 @@ Car Car::TeslaModel3(double soc_initial, double soc_min, double soc_max, double 
                {
                        { charger_type::FAST_175KW, ChargerProfile::FastCharger(90.0) },
                        { charger_type::SLOW_50KW, ChargerProfile::FastCharger(45.0) },
-               });
+               },
+               charging_overhead);
 }
 
-Car Car::RenaultZoe(double soc_initial, double soc_min, double soc_max, double soc_min_final) {
+Car Car::RenaultZoe(double soc_initial, double soc_min, double soc_max, double soc_min_final, unsigned charging_overhead) {
     // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
     return Car(soc_initial, soc_min, soc_max, soc_min_final,
                70.0, 2.2,
@@ -74,7 +66,8 @@ Car Car::RenaultZoe(double soc_initial, double soc_min, double soc_max, double s
                {
                        { charger_type::FAST_175KW, ChargerProfile::FastCharger(90.0) },
                        { charger_type::SLOW_50KW, ChargerProfile::FastCharger(45.0) },
-               });
+               },
+               charging_overhead);
 }
 
 
@@ -134,7 +127,7 @@ Time Car::get_charge_time(const Node *chargingStation, double initialSoC, double
         return 0;// no charging required
 
     const ChargerProfile &charger = ChargerProfiles.at(chargingStation->best_compatible_type(*this));
-    return charger.get_charging_time(initialSoC, endSoC, battery_capacity) + 15 * 60;
+    return charger.get_charging_time(initialSoC, endSoC, battery_capacity) + this->charging_overhead_time;
 }
 
 // This function calculates the time necessary to charge a car in order to traverse the edge

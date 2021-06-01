@@ -150,7 +150,7 @@ TEST_CASE("Stress test", "[ROUTER]") {
     }
 
     Router r = Router(nodes, edges);
-    Car c = Car::TeslaModel3(0.7, 0.15, 0.9, 0.4);
+    Car c = Car::TeslaModel3(0.7, 0.15, 0.9, 0.4, 0);
 
     for (int i = 0; i < 20; i++) {
         unsigned from = random() % node_count;
@@ -244,7 +244,7 @@ TEST_CASE("Node addition", "[ROUTER]") {
 
 TEST_CASE("Choose to charge to 100%") {
 
-    Car c = Car::TeslaModel3(0.9, 0.2, 0.9, 0.18);
+    Car c = Car::TeslaModel3(0.9, 0.2, 0.9, 0.18, 15 * 60);
 
     std::vector<Node> nodes = {
         Node(0, charger_type::NO_CHARGER),

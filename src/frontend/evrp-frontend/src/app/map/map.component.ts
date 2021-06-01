@@ -8,6 +8,8 @@ import {EVRoute, GlobalService} from "../global.service";
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.css']
 })
+
+
 export class MapComponent implements AfterViewInit {
     private m: any;
     private routing_control: L.Routing.Control | undefined;
@@ -43,9 +45,11 @@ export class MapComponent implements AfterViewInit {
         this.initMap();
     }
 
+
     processResponse(data: EVRoute) {
         console.log("from map")
         console.log(data)
+
 
         let waypoints = data.waypoints.map((p) => {
             return L.latLng(p.latitude, p.longitude)
@@ -61,8 +65,31 @@ export class MapComponent implements AfterViewInit {
             plan: new L.Routing.Plan(waypoints, {
                 createMarker: function (i: number, start: L.Routing.Waypoint, n: number) {
 
-                    // if (i == 0) return new L.Marker(start.latLng, {opacity: 0.0, interactive: false});
-                    return new L.Marker(start.latLng);
+                    let current = data.waypoints[i];
+
+                    if (i != 0 && i != n - 1 && current.chargingTime == 0) {
+                        // if chosen not to charge on particular charger, then remove the marker for that charger
+                        return new L.Marker(start.latLng, {opacity: 0.0, interactive: false});
+                    }
+
+                    let socIn = GlobalService.formatPercentage(current.socIn);
+                    let socOut = GlobalService.formatPercentage(current.socOut);
+                    let chargingTime = GlobalService.formatTime(current.chargingTime);
+                    let chargerContent = 'Charge from ' + socIn + ' to ' + socOut + ' in ' + chargingTime + '.';
+                    let popupDescription = '';
+
+
+                    if (i === 0) {
+                        popupDescription = 'Source';
+                        if (current.chargingTime != 0)
+                            popupDescription += '. ' + chargerContent;
+
+                    } else if (i === n - 1)
+                        popupDescription = 'Destination';
+                    else
+                        popupDescription = chargerContent;
+
+                    return new L.Marker(start.latLng).bindPopup(popupDescription).openPopup();
                 }
             }),
             showAlternatives: false,
@@ -79,4 +106,6 @@ export class MapComponent implements AfterViewInit {
         // let t = new L.Routing.Waypoint(L.latLng([51.22, 11.22]), 'test', {});
 
     }
+
+
 }

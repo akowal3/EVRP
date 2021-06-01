@@ -15,6 +15,22 @@ export class GlobalService {
     passRequest(data: EVRoute) {
         this.evRequest.next(data);
     }
+
+    static formatTime(time: number): string {
+        let hours = Math.floor(time / 3600);
+        let minutes = Math.floor((time % 3600) / 60);
+
+        if (!hours) {
+            return minutes + ' min'
+        } else {
+            return hours + ' h, ' + minutes + ' min';
+        }
+    }
+
+    static formatPercentage(percentage: number): string {
+        return (percentage * 100).toFixed(1).toString() + '%'
+    }
+
 }
 
 export interface EVRouteEdge {

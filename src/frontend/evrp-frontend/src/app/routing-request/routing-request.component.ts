@@ -66,7 +66,10 @@ export class RoutingRequestComponent implements OnInit {
         if (location_choice == 0) {
             this.g.mouseLocationRequest.next();
             this.pickCoordinatesFromMap.source = true;
+        } else if (location_choice == 2) {
+            this.evRequest.patchValue({'source_coordinates': null})
         }
+
     }
 
     selectDestinationLocation() {
@@ -74,6 +77,8 @@ export class RoutingRequestComponent implements OnInit {
         if (location_choice == 0) {
             this.g.mouseLocationRequest.next();
             this.pickCoordinatesFromMap.destination = true;
+        } else if (location_choice == 2) {
+            this.evRequest.patchValue({'destination_coordinates': null})
         }
     }
 

@@ -28,19 +28,13 @@ export class MapComponent implements AfterViewInit {
             minZoom: 3,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(this.m);
-
-        this.m.once('dblclick', (e: any) => {
-                let latitude = e.latlng.lat
-                let longitude = e.latlng.lng
-                console.log(e.latlng);
-                this.g.mouseLocation.next([latitude, longitude]);
-            }
-        );
-
+        
         this.g.mouseLocationRequest$.subscribe((n: any) => {
                 this.m.once('dblclick', (e: any) => {
                         let latitude = e.latlng.lat
                         let longitude = e.latlng.lng
+                        console.log(e.latlng);
+
                         this.g.mouseLocation.next([latitude, longitude]);
                     }
                 );

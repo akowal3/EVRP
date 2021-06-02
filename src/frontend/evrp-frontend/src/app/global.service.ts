@@ -6,16 +6,18 @@ import {Subject} from "rxjs";
 })
 export class GlobalService {
 
-    evRequest = new Subject<EVRoute>()
-    evRequest$ = this.evRequest.asObservable()
+    evRequest = new Subject<EVRoute>();
+    evRequest$ = this.evRequest.asObservable();
+
+    mouseLocationRequest = new Subject();
+    mouseLocationRequest$ = this.mouseLocationRequest.asObservable();
+
+    mouseLocation = new Subject<number[]>();
+    mouseLocation$ = this.mouseLocation.asObservable();
 
     constructor() {
     }
-
-    passRequest(data: EVRoute) {
-        this.evRequest.next(data);
-    }
-
+    
     static formatTime(time: number): string {
         let hours = Math.floor(time / 3600);
         let minutes = Math.floor((time % 3600) / 60);

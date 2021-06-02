@@ -16,6 +16,8 @@ export class MapComponent implements AfterViewInit {
     private readonly router: L.Routing.IRouter;
 
     private initMap(): void {
+        // L.Map.addInitHook('addHandler', 'cursor', L.Cursor)
+
         this.m = L.map('map', {
             center: [51.9194, 19.1451],
             zoom: 6.5
@@ -27,12 +29,31 @@ export class MapComponent implements AfterViewInit {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(this.m);
 
+        this.m.once('dblclick', (e: any) => {
+                let latitude = e.latlng.lat
+                let longitude = e.latlng.lng
+                console.log(e.latlng);
+                this.g.mouseLocation.next([latitude, longitude]);
+            }
+        );
+
+        this.g.mouseLocationRequest$.subscribe((n: any) => {
+                this.m.once('dblclick', (e: any) => {
+                        let latitude = e.latlng.lat
+                        let longitude = e.latlng.lng
+                        this.g.mouseLocation.next([latitude, longitude]);
+                    }
+                );
+            }
+        )
+
     }
 
     constructor(private g: GlobalService) {
         g.evRequest$.subscribe(data => {
             this.processResponse(data)
         })
+
 
         this.router = L.Routing.osrmv1({
             serviceUrl: 'http://localhost:5000/route/v1',

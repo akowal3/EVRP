@@ -4,14 +4,26 @@
         <div>
             <label>
                 EV Model
-                <select class="custom-select" (change)="selectCar($event)" formControlName="car">
+                <select class="custom-select" formControlName="car">
                     <option *ngFor="let c of car; index as i" [ngValue]="i">{{c}}</option>
                 </select>
             </label>
         </div>
 
+
         <div>
-            <div *ngIf="!useChargerIDs; then srcCoords else srcID"></div>
+            <label>
+                Choose source
+                <select class="custom-select" (change)="selectSourceLocation()" formControlName="source_location_choice">
+                    <option disabled></option>
+                    <option *ngFor="let o of locationOption; index as i" [ngValue]="i">{{o}}</option>
+                </select>
+            </label>
+        </div>
+
+
+        <div>
+            <div *ngIf="evRequest.value.source_location_choice != 2; then srcCoords else srcID"></div>
             <label>
                 Source
                 <ng-template #srcCoords>
@@ -21,11 +33,20 @@
                     <input formControlName="source_id" placeholder="chargerID">
                 </ng-template>
             </label>
-
         </div>
 
         <div>
-            <div *ngIf="!useChargerIDs; then dstCoords else dstID"></div>
+            <label>
+                Choose destination
+                <select class="custom-select" (change)="selectDestinationLocation()" formControlName="destination_location_choice">
+                    <option disabled></option>
+                    <option *ngFor="let o of locationOption; index as i" [ngValue]="i">{{o}}</option>
+                </select>
+            </label>
+        </div>
+
+        <div>
+            <div *ngIf="evRequest.value.destination_location_choice != 2; then dstCoords else dstID"></div>
             <label>
                 Destination
                 <ng-template #dstCoords>
@@ -77,16 +98,6 @@
 
 
         <button type="submit">Route</button>
-
-        <div>
-            <label>
-                Use chargerIDs
-                <input
-                        type="checkbox"
-                        [checked]="useChargerIDs"
-                        (change)="useChargerIDs = !useChargerIDs"/>
-            </label>
-        </div>
 
 
     </form>

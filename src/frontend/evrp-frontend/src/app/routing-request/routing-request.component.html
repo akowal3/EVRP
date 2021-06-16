@@ -1,0 +1,108 @@
+<div class="routing-request-container">
+    <form [formGroup]="evRequest" (ngSubmit)="onSubmit(evRequest)" ngNativeValidate>
+
+        <div>
+            <label>
+                EV Model
+                <select class="custom-select" formControlName="car">
+                    <option *ngFor="let c of car; index as i" [ngValue]="i">{{c}}</option>
+                </select>
+            </label>
+        </div>
+
+
+        <div>
+            <label>
+                Choose source
+                <select class="custom-select" (change)="selectSourceLocation()" formControlName="source_location_choice">
+                    <option disabled></option>
+                    <option *ngFor="let o of locationOption; index as i" [ngValue]="i">{{o}}</option>
+                </select>
+            </label>
+        </div>
+
+
+        <div>
+            <div *ngIf="evRequest.value.source_location_choice != 2; then srcCoords else srcID"></div>
+            <label>
+                Source
+                <ng-template #srcCoords>
+                    <input formControlName="source_coordinates" placeholder="eg. 52.255700, 20.940975">
+                </ng-template>
+                <ng-template #srcID>
+                    <input formControlName="source_id" placeholder="chargerID">
+                </ng-template>
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Choose destination
+                <select class="custom-select" (change)="selectDestinationLocation()" formControlName="destination_location_choice">
+                    <option disabled></option>
+                    <option *ngFor="let o of locationOption; index as i" [ngValue]="i">{{o}}</option>
+                </select>
+            </label>
+        </div>
+
+        <div>
+            <div *ngIf="evRequest.value.destination_location_choice != 2; then dstCoords else dstID"></div>
+            <label>
+                Destination
+                <ng-template #dstCoords>
+                    <input formControlName="destination_coordinates" placeholder="eg. 52.255700, 20.940975">
+                </ng-template>
+                <ng-template #dstID>
+                    <input formControlName="destination_id" placeholder="chargerID">
+                </ng-template>
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Minimum SoC at charger
+                <input formControlName="socMin" placeholder="%">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Maximum SoC
+                <input formControlName="socMax" placeholder="%">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Initial SoC at source
+                <input formControlName="startSoc" placeholder="%">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Minimum SoC at destination
+                <input formControlName="endSoc" placeholder="%">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                Charger overhead time (minutes)
+                <input formControlName="charger_overhead" placeholder="mins">
+            </label>
+        </div>
+
+
+        <br>
+
+
+        <button type="submit">Route</button>
+
+
+    </form>
+
+</div>
+
+
+

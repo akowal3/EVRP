@@ -5,6 +5,8 @@
 
 #include <catch.hpp>
 #include <graph_cases.hpp>
+#include <iostream>
+#include <random>
 #include <router.hpp>
 #include <sstream>
 #include <utils.hpp>
@@ -62,4 +64,214 @@ TEST_CASE("Simple router verifier", "[ROUTER]") {
             AND_THEN("Route takes " << ret.total_time / 3600.0 << " hours (" << ret.total_time << " seconds). Including " << ret.charge_time / 3600.0 << " hours of charging"){};
         }
     }
+}
+
+TEST_CASE("Router ==operator", "[ROUTER]") {
+
+    int node_count = 1000;
+    std::vector<Node> nodes;
+    nodes.reserve(node_count);
+
+    for (int i = 0; i < node_count; i++) {
+        charger_type type = (random() % 2) ? charger_type::FAST_175KW : charger_type::SLOW_50KW;
+        nodes.emplace_back(Node(i, 1.0, type));
+    }
+
+    std::vector<BuildingEdge> edges;
+    int edge_count = 30000;
+    edges.reserve(edge_count);
+
+    for (int i = 0; i < edge_count; ++i) {
+        unsigned from = random() % node_count;
+        unsigned to = random() % node_count;
+        while (from == to) to = random() % node_count;
+        assert(from != to);
+        unsigned distance = random() % 600 + 80;
+        unsigned speed = random() % 200 + 30;
+        edges.emplace_back(BuildingEdge(from, to, distance, speed));
+    }
+
+    Router r = Router(node_count, edges);
+    Router r2 = Router(node_count, edges);
+
+    REQUIRE(r == r2);
+    REQUIRE(r2 == r);
+    REQUIRE(!(r2 != r));
+    REQUIRE(!(r != r2));
+
+    r = Router(nodes, edges);
+    r2 = Router(nodes, edges);
+
+    REQUIRE(r == r2);
+    REQUIRE(r2 == r);
+    REQUIRE(!(r2 != r));
+    REQUIRE(!(r != r2));
+
+    r.add_node(Node(node_count), {
+                                         BuildingEdge(node_count, 8, 100, 70),
+                                 });
+    REQUIRE(r != r2);
+    REQUIRE(r2 != r);
+    REQUIRE(!(r2 == r));
+    REQUIRE(!(r == r2));
+
+    r.remove_node_by_id(node_count);
+    REQUIRE(r == r2);
+    REQUIRE(r2 == r);
+    REQUIRE(!(r2 != r));
+    REQUIRE(!(r != r2));
+}
+
+
+TEST_CASE("Stress test", "[ROUTER]") {
+    //    srandom(std::time(nullptr));
+
+    int node_count = 1000;
+    std::vector<Node> nodes;
+    nodes.reserve(node_count);
+
+    for (int i = 0; i < node_count; i++) {
+        charger_type type = (random() % 2) ? charger_type::FAST_175KW : charger_type::SLOW_50KW;
+        nodes.emplace_back(Node(i, 1.0, type));
+    }
+
+    std::vector<BuildingEdge> edges;
+    int edge_count = 30000;
+    edges.reserve(edge_count);
+
+    for (int i = 0; i < edge_count; ++i) {
+        unsigned from = random() % node_count;
+        unsigned to = random() % node_count;
+        while (from == to) to = random() % node_count;
+        assert(from != to);
+        unsigned distance = random() % 600 + 80;
+        unsigned speed = random() % 200 + 30;
+        edges.emplace_back(BuildingEdge(from, to, distance, speed));
+    }
+
+    Router r = Router(nodes, edges);
+    Car c = Car::TeslaModel3(0.7, 0.15, 0.9, 0.4, 0);
+
+    for (int i = 0; i < 20; i++) {
+        unsigned from = random() % node_count;
+        unsigned to = random() % node_count;
+        while (from == to) to = random() % node_count;
+        assert(from != to);
+
+        r.route_internal(from, to, c);
+        std::cout << "Internal was fine" << std::endl;
+
+        std::cout << r.route(from, to, c) << std::endl;
+    }
+}
+
+TEST_CASE("Node addition", "[ROUTER]") {
+    std::vector<BuildingEdge> edges = {
+        BuildingEdge(0, 1, 100, 120),
+        BuildingEdge(1, 2, 25, 11),
+        BuildingEdge(2, 3, 110, 140),
+        BuildingEdge(3, 4, 44, 133),
+        //        BuildingEdge(4, 5, 44, 133),
+        BuildingEdge(0, 5, 70, 100),
+        BuildingEdge(5, 6, 70, 100),
+        BuildingEdge(6, 7, 150, 100),
+        BuildingEdge(7, 4, 100, 100),
+        BuildingEdge(6, 2, 100, 70),
+        BuildingEdge(6, 3, 100, 70),
+
+    };
+    int node_count = 8;
+    Router r = Router(node_count, edges);
+    Router r2 = Router(node_count, edges);
+
+    REQUIRE(r == r2);
+
+    Car c = Car(0.5);
+    std::cout << r.route(0, 7, c) << std::endl;
+
+    Node dst = Node(8);
+
+    r.add_node(dst, {
+                            BuildingEdge(6, 8, 100, 70),
+                    });
+
+    std::cout << r.route(0, dst.id(), c) << std::endl;
+
+    r2.route(0, 6, c);
+    REQUIRE(r != r2);
+
+    Node src = Node(9, 1.0, charger_type::NO_CHARGER);
+
+    r.add_node(src, {
+                            BuildingEdge(9, 0, 20, 50),
+                            BuildingEdge(9, 5, 20, 50),
+                            BuildingEdge(9, 4, 100, 70),
+                            BuildingEdge(9, 6, 100, 70),
+                            BuildingEdge(9, 8, 150, 70),
+                    });
+
+    std::cout << "node added" << std::endl;
+
+    std::cout << r.route(src.id(), dst.id(), c) << std::endl;
+
+    r.remove_node(src);
+
+    r.remove_node(dst);
+
+    REQUIRE(r2 == r);
+
+    r.add_node(dst, {
+                            BuildingEdge(6, 8, 100, 70),
+                    });
+
+    r.add_node(src, {
+                            BuildingEdge(9, 0, 20, 50),
+                            BuildingEdge(9, 5, 20, 50),
+                            BuildingEdge(9, 4, 100, 70),
+                            BuildingEdge(9, 6, 100, 70),
+                    });
+
+    std::cout << r.route(src.id(), dst.id(), c) << std::endl;
+
+    r.remove_node(src);
+
+    r.remove_node(dst);
+
+    REQUIRE(r2 == r);
+    //
+    //    std::cout << r.route(src.id(), 5, c) << std::endl;
+}
+
+TEST_CASE("Choose to charge to 100%") {
+
+    Car c = Car::TeslaModel3(0.9, 0.2, 0.9, 0.18, 15 * 60);
+
+    std::vector<Node> nodes = {
+        Node(0, charger_type::NO_CHARGER),
+        Node(1, charger_type::FAST_175KW),
+        Node(2, charger_type::SLOW_50KW),
+        Node(3, charger_type::SLOW_50KW),
+        Node(4, charger_type::SLOW_50KW),
+        Node(5, charger_type::NO_CHARGER),
+    };
+
+    std::vector<BuildingEdge> edges = {
+        BuildingEdge(0, 1, 300, 110),
+        BuildingEdge(0, 2, 300, 110),
+        BuildingEdge(0, 3, 300, 110),
+        BuildingEdge(1, 4, 200, 80),
+        BuildingEdge(2, 4, 200, 80),
+        BuildingEdge(3, 4, 200, 80),
+        BuildingEdge(4, 5, 14, 200),
+    };
+
+    auto r = Router(nodes, edges);
+
+    auto x = r.route_internal(0, 5, c);
+
+    std::cout << "Internal done" << std::endl;
+
+    auto route = r.route(0, 5, c);
+
+    std::cout << route << std::endl;
 }

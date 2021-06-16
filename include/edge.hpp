@@ -28,6 +28,7 @@ public:
     double end_charge_level() const;
     const Node *destinationCharger() const;
     const Node *sourceCharger() const;
+    friend bool operator==(const Edge &left, const Edge &right);
 };
 
 // Dummy datastructure used to create simple graph by hand
@@ -38,7 +39,7 @@ public:
     unsigned distance;
     unsigned max_speed;
     BuildingEdge(unsigned from, unsigned to, unsigned distance, unsigned max_speed);
-    Time get_travel_time(double speed_modifier) const;
+    Time get_travel_time(double speed_modifier = 1.0) const;
 };
 
 #endif//EVRP_EDGE_H

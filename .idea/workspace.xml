@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
+      <config projectName="EVRP" targetName="bindings" />
       <config projectName="EVRP" targetName="EVRP" />
       <config projectName="EVRP" targetName="TESTS" />
       <config projectName="EVRP" targetName="TESTCASES" />
@@ -20,21 +24,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="added submodules">
-      <change afterPath="$PROJECT_DIR$/dependencies/Catch2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Choosing chargerID clears coordinates">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/car.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/charger_profile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/charger_profile.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/edge.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/edge.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/node.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graph/graph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/graph/graph.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/label.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/router/label.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/router.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/router/router.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/utils/utils.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm/common/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/car.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/backend.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/routing_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/routing_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/app.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/app.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/map/map.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/map/map.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/routing-request/routing-request.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/routing-request/routing-request.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/graph_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/graph_test.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +41,15 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CMakeLists.txt" />
+        <option value="TypeScript File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -78,18 +86,22 @@
     <property name="cidr.known.project.marker" value="true" />
     <property name="cmake.loaded.for.project" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/testing/testcases" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/backend" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/src/frontend/evrp-frontend/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/backend" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app" />
+      <recent name="$PROJECT_DIR$/src/backend" />
+      <recent name="$PROJECT_DIR$/src/backend/bindings" />
       <recent name="$PROJECT_DIR$/src/algorithm" />
       <recent name="$PROJECT_DIR$/dependencies" />
-      <recent name="$PROJECT_DIR$/include" />
-      <recent name="$PROJECT_DIR$/testing/include" />
-      <recent name="$PROJECT_DIR$/testing/testcases" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -99,25 +111,31 @@
     </option>
   </component>
   <component name="RunManager" selected="Catch.TESTS">
-    <configuration name="Charge time is additive" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CAR, CHARGER]" TEST_METHOD="Charge time is additive" TEST_MODE="SUITE_TEST">
+    <configuration name="Build graph" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH]" TEST_METHOD="Build graph" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChargerProfile charging time" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CHARGER]" TEST_METHOD="ChargerProfile charging time" TEST_MODE="SUITE_TEST">
+    <configuration name="Choose to charge to 100%" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_METHOD="Choose to charge to 100%" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChargerProfileRange" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[CHARGER]" TEST_METHOD="ChargerProfileRange" TEST_MODE="SUITE_TEST">
+    <configuration name="Graph stress test" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH]" TEST_METHOD="Graph stress test" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Connect to RoutingKit" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH, RK]" TEST_METHOD="Connect to RoutingKit" TEST_MODE="SUITE_TEST">
+    <configuration name="Node addition" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Node addition" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Stress test" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Stress test" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -159,7 +177,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="bindings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="bindings" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -169,54 +187,29 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="scratch_2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="EVRP" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Catch.TESTS" />
-      <item itemvalue="Catch.Connect to RoutingKit" />
-      <item itemvalue="Catch.Charge time is additive" />
-      <item itemvalue="Catch.ChargerProfile charging time" />
-      <item itemvalue="Catch.ChargerProfileRange" />
-      <item itemvalue="CMake Application.UTILS" />
-      <item itemvalue="CMake Application.build_RK_LIB" />
+      <item itemvalue="Catch.Choose to charge to 100%" />
+      <item itemvalue="Catch.Node addition" />
+      <item itemvalue="Catch.Stress test" />
+      <item itemvalue="Catch.Build graph" />
+      <item itemvalue="Catch.Graph stress test" />
       <item itemvalue="CMake Application.COMMON" />
       <item itemvalue="CMake Application.EVRP" />
       <item itemvalue="CMake Application.GRAPH" />
       <item itemvalue="CMake Application.ROUTER" />
       <item itemvalue="CMake Application.TESTCASES" />
-      <item itemvalue="Python.scratch_2" />
+      <item itemvalue="CMake Application.UTILS" />
+      <item itemvalue="CMake Application.bindings" />
+      <item itemvalue="CMake Application.build_RK_LIB" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Catch.ChargerProfileRange" />
-        <item itemvalue="Catch.ChargerProfile charging time" />
-        <item itemvalue="Catch.Charge time is additive" />
-        <item itemvalue="Python.scratch_2" />
-        <item itemvalue="Catch.Connect to RoutingKit" />
+        <item itemvalue="Catch.Graph stress test" />
+        <item itemvalue="Catch.Stress test" />
+        <item itemvalue="Catch.Build graph" />
+        <item itemvalue="Catch.Choose to charge to 100%" />
+        <item itemvalue="Catch.Node addition" />
       </list>
     </recent_temporary>
   </component>
@@ -259,7 +252,22 @@
       <workItem from="1621243117364" duration="16425000" />
       <workItem from="1621320421743" duration="785000" />
       <workItem from="1621343845250" duration="8068000" />
-      <workItem from="1621367411193" duration="4735000" />
+      <workItem from="1621367411193" duration="26848000" />
+      <workItem from="1621462104763" duration="1140000" />
+      <workItem from="1621513666739" duration="8065000" />
+      <workItem from="1621588079190" duration="39459000" />
+      <workItem from="1621978746964" duration="11053000" />
+      <workItem from="1622030025845" duration="45836000" />
+      <workItem from="1622190193733" duration="44742000" />
+      <workItem from="1622394707594" duration="160000" />
+      <workItem from="1622395836856" duration="8455000" />
+      <workItem from="1622470655122" duration="912000" />
+      <workItem from="1622537000236" duration="26835000" />
+      <workItem from="1622635381476" duration="16844000" />
+      <workItem from="1622979644645" duration="11772000" />
+      <workItem from="1623177741141" duration="24074000" />
+      <workItem from="1623686323779" duration="3076000" />
+      <workItem from="1623794123085" duration="8625000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -478,7 +486,119 @@
       <option name="project" value="LOCAL" />
       <updated>1621351175117</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="moved files to subdirectories">
+      <created>1621373001792</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1621373001792</updated>
+    </task>
+    <task id="LOCAL-00033" summary="started working on backend in Python3">
+      <created>1621549029393</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1621549029393</updated>
+    </task>
+    <task id="LOCAL-00034" summary="fixed node list not being passed from python to cpp when constructing Router">
+      <created>1621595159987</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1621595159988</updated>
+    </task>
+    <task id="LOCAL-00035" summary="added simple flask app&#10;added additional car constructors to match requests from users">
+      <created>1621718540172</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1621718540172</updated>
+    </task>
+    <task id="LOCAL-00036" summary="minor changes in backend">
+      <created>1621792169052</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1621792169052</updated>
+    </task>
+    <task id="LOCAL-00037" summary="trying to get node addition to work">
+      <created>1622115672767</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1622115672767</updated>
+    </task>
+    <task id="LOCAL-00038" summary="fixed map exceptions when adding temporary nodes (source and destination)&#10;The problem was the fact that a vector is resized, pointers to its elements might change. Therefore, when pushing back nodes to the node vector in Router, the pointers to chargers changed leading to exceptions in Router.route function">
+      <created>1622127966908</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1622127966908</updated>
+    </task>
+    <task id="LOCAL-00039" summary="added the minimum final SoC requirement to the algorithm.&#10;Now user can specify what is the minimum SoC he wishes to arrive at the destination with, which can be different from the minimum SoC acceptable at the charger arrival">
+      <created>1622149689452</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1622149689452</updated>
+    </task>
+    <task id="LOCAL-00040" summary="[TEMPORARY] added final report plan">
+      <created>1622150136345</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1622150136345</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Added frontend. Connected frontend to backend">
+      <created>1622563516699</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1622563516699</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Added charger overhead time">
+      <created>1622564087412</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1622564087412</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Added charger overhead time to frontend and backend">
+      <created>1622564968214</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1622564968214</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Removed unnecessary OSRM call on the backend side.&#10;Modified the backend-&gt;frontend response JSON to contain more information about the route">
+      <created>1622569343656</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1622569343656</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Added pop-up charging information to chargers on the map">
+      <created>1622577746371</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1622577746371</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Added ability to choose location on the map instead of typing in the coordinates">
+      <created>1622649136943</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1622649136943</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Choosing chargerID clears coordinates">
+      <created>1622649958902</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1622649958902</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -512,22 +632,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/RoutingKit" />
     </ignored-roots>
-    <MESSAGE value="Connected graph to RoutingKit&#10;It appears to be working on a toy example." />
-    <MESSAGE value="Clion stuff" />
-    <MESSAGE value="small refactoring" />
-    <MESSAGE value="[CAR tests broken] Added energy consumption modifier. &#10;It's a very simple linear modifier with respect to speed the car travels. Should be changed for more sophisticated one!&#10;Tests are broken because they were calculated based on the assumption that energy consumption is constant at every speed.&#10;Refactored car.get_charge_time to operate with battery percentage instead of battery capacity." />
-    <MESSAGE value="Added better path printing coming from RoutingKit" />
-    <MESSAGE value="Added speed dependent energy consumption model.&#10;Model is rather simple, based on physics. Needs further verification, but is reasonable (according to some websites).&#10;Rewrote/added some tests.&#10;Added custom macros for catch2 (now it fails with message)" />
-    <MESSAGE value="Temporarily removed additional Car constructor.&#10;Removed checks from printing in graph_test." />
-    <MESSAGE value="Minor refactoring&#10;Added further car tests.&#10;Refactored code a bit (include &lt;.h&gt; instead of &quot;.h&quot;)" />
-    <MESSAGE value="[BROKEN] Refactored testcases for graph building.&#10;Connect to RoutingKit test is commented out" />
-    <MESSAGE value="Commented Connect to RoutingKit testcase back in" />
-    <MESSAGE value="Improved RoutingKit tests" />
-    <MESSAGE value="Started working on router class" />
-    <MESSAGE value="Fixed router implementation. &#10;Added ability to charge to 70%, along the bare minimum to travel, charge to soc_max and don't charge. Ensured that the final charger will be reached with &gt; min_soc. Added simple printing function for the shortest path." />
-    <MESSAGE value="Added tests for Router.&#10;Fixed bug when router was unable to route to the end. Added RouterReturn struct to easily get meaningful results from router (similar to the results from RoutingKit)" />
-    <MESSAGE value="Testing car and router" />
-    <MESSAGE value="Added comparison function for SoCs.&#10;This enables to perform epsilon comparison. In other words, we treat SoC as XX.X number, and the remaining digits are irrelevant. We perform epsilon = 0.1 comparison between the SoC levels ie. 69.9 == 69.88, 42.0 &gt;= 42.09 etc." />
     <MESSAGE value="Added more tests. Added time comparison function" />
     <MESSAGE value="Fixed my failed attempt at amending commits xD" />
     <MESSAGE value="Added insertion operator for RouterResult" />
@@ -537,7 +641,23 @@
     <MESSAGE value="added simple sanity-check test to verify the model is roughly following the database" />
     <MESSAGE value="added slow charger profile" />
     <MESSAGE value="added submodules" />
-    <option name="LAST_COMMIT_MESSAGE" value="added submodules" />
+    <MESSAGE value="moved files to subdirectories" />
+    <MESSAGE value="started working on backend in Python3" />
+    <MESSAGE value="fixed node list not being passed from python to cpp when constructing Router" />
+    <MESSAGE value="added simple flask app&#10;added additional car constructors to match requests from users" />
+    <MESSAGE value="minor changes in backend" />
+    <MESSAGE value="trying to get node addition to work" />
+    <MESSAGE value="fixed map exceptions when adding temporary nodes (source and destination)&#10;The problem was the fact that a vector is resized, pointers to its elements might change. Therefore, when pushing back nodes to the node vector in Router, the pointers to chargers changed leading to exceptions in Router.route function" />
+    <MESSAGE value="added the minimum final SoC requirement to the algorithm.&#10;Now user can specify what is the minimum SoC he wishes to arrive at the destination with, which can be different from the minimum SoC acceptable at the charger arrival" />
+    <MESSAGE value="[TEMPORARY] added final report plan" />
+    <MESSAGE value="Added frontend. Connected frontend to backend" />
+    <MESSAGE value="Added charger overhead time" />
+    <MESSAGE value="Added charger overhead time to frontend and backend" />
+    <MESSAGE value="Removed unnecessary OSRM call on the backend side.&#10;Modified the backend-&gt;frontend response JSON to contain more information about the route" />
+    <MESSAGE value="Added pop-up charging information to chargers on the map" />
+    <MESSAGE value="Added ability to choose location on the map instead of typing in the coordinates" />
+    <MESSAGE value="Choosing chargerID clears coordinates" />
+    <option name="LAST_COMMIT_MESSAGE" value="Choosing chargerID clears coordinates" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -570,6 +690,21 @@
           <url>file://$PROJECT_DIR$/src/router.cpp</url>
           <line>142</line>
           <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/include/utils.hpp</url>
+          <line>38</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/testing/testcases/graph_cases.hpp</url>
+          <line>12</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/testing/router_test.cpp</url>
+          <line>275</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

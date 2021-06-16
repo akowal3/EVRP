@@ -16,18 +16,20 @@ Label::Label(unsigned int nodeID, double SoC) :
     remaining_soc(SoC), edge(nullptr), labelID(labelCounter++), type(label_type::INITIAL_DUMMY) {}
 
 bool Label::operator<(const Label &other) const {
-    return total_time < other.total_time;
+    return time_cmp(total_time, OP::SMALLER, other.total_time);//total_time < other.total_time;
 }
 
 bool Label::operator>(const Label &other) const {
-    return total_time > other.total_time;
+    return time_cmp(total_time, OP::GREATER, other.total_time);//total_time > other.total_time;
 }
 
 // this Label dominates other label when travel time is lower and soc_left is higher
 // Potentially these conditions should be relaxed.
 bool Label::dominates(const Label &other) const {
-    return time_cmp(total_time, OP::SMALLER, other.total_time) &&
-           soc_cmp(remaining_soc, OP::GREATER_EQUAL, other.remaining_soc);
+    return (time_cmp(total_time, OP::SMALLER, other.total_time) &&
+            soc_cmp(remaining_soc, OP::GREATER_EQUAL, other.remaining_soc)) ||
+           (time_cmp(total_time, OP::SMALLER_EQUAL, other.total_time) &&
+            soc_cmp(remaining_soc, OP::GREATER, other.remaining_soc));
 }
 
 unsigned Label::get_nodeID() const { return nodeID; }

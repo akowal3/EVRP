@@ -1,0 +1,36 @@
+.routing-request-container {
+    line-height: 2;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/*.ng-valid[required], .ng-valid.required {*/
+/*    border-left: 5px solid #42A948; !* green *!*/
+/*}*/
+
+/*.ng-invalid:not(form) {*/
+/*    border-left: 5px solid #a94442; !* red *!*/
+/*}*/
+
+input, .custom-select {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    float: right;
+    clear: both;
+    font-family: inherit;
+    font-size: inherit;
+    /*max-width: 150px;*/
+}
+
+/*.custom-select {*/
+/*    float: right;*/
+/*    clear: both;*/
+/*    font-family: inherit;*/
+/*    font-size: inherit;*/
+/*}*/
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+}

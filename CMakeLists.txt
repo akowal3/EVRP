@@ -15,15 +15,15 @@ include_directories(dependencies/RoutingKit/include)
 
 ### LIBRARIES & COMMON FILES ###
 # Combine common classes into single library
-add_library(UTILS src/algorithm/utils/utils.cpp)
+add_library(UTILS SHARED src/algorithm/utils/utils.cpp)
 
-add_library(COMMON src/algorithm/common/car.cpp src/algorithm/common/edge.cpp src/algorithm/common/node.cpp src/algorithm/common/charger_profile.cpp)
+add_library(COMMON SHARED src/algorithm/common/car.cpp src/algorithm/common/edge.cpp src/algorithm/common/node.cpp src/algorithm/common/charger_profile.cpp)
 target_link_libraries(COMMON PUBLIC UTILS)
 
-add_library(GRAPH src/algorithm/graph/graph.cpp)
+add_library(GRAPH SHARED src/algorithm/graph/graph.cpp)
 target_link_libraries(GRAPH PUBLIC COMMON)
 
-add_library(ROUTER src/algorithm/router/router.cpp src/algorithm/router/label.cpp)
+add_library(ROUTER SHARED src/algorithm/router/router.cpp src/algorithm/router/label.cpp)
 target_link_libraries(ROUTER PUBLIC COMMON)
 
 # Link external libraries to the main executable
@@ -42,6 +42,8 @@ add_dependencies(RK_LIB build_RK_LIB)
 add_library(Catch2 INTERFACE) # Catch2 unit tests library
 target_include_directories(Catch2 INTERFACE testing/include)
 
+add_subdirectory(dependencies/pybind11) # compile pybind
+
 ### EXECUTABLES ###
 # Main project executable
 add_executable(EVRP src/algorithm/main.cpp)
@@ -55,11 +57,9 @@ target_include_directories(TESTCASES PUBLIC testing/include)
 target_include_directories(TESTCASES PUBLIC testing/testcases)
 
 add_executable(TESTS testing/test.cpp testing/graph_test.cpp testing/car_test.cpp testing/router_test.cpp testing/charger_test.cpp)
+target_link_libraries(TESTS PRIVATE Catch2 RK_LIB TESTCASES COMMON ROUTER GRAPH UTILS)
 
-target_link_libraries(TESTS RK_LIB TESTCASES COMMON ROUTER GRAPH UTILS Catch2)
-
-#add_dependencies(TESTS build_RK_LIB)
-
-#target_include_directories(TESTS PUBLIC testing/testcases)
+pybind11_add_module(bindings src/backend/bindings/bindings.cpp)
+target_link_libraries(bindings PRIVATE UTILS COMMON ROUTER GRAPH)
 
 

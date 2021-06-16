@@ -13,13 +13,9 @@
 Car::Car(double soc_initial) :
     soc_initial(soc_initial) {
     // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
-    this->battery_capacity = 70.0;            // (kWh) battery usable
-    this->energy_consumption = 131.0 / 1000.0;// (Wh/km) Combined - Mild Weather
-    this->charging_power = 85.0;              // (kW)  Supercharver v2 150kW
-    this->range = 535.0;                      // (km) Combined - Mild Weather
+    this->battery_capacity = 70.0;// (kWh) battery usable
     this->soc_min = 0.1;
     this->soc_max = 0.95;
-    this->charging_rate = charging_power / battery_capacity;
     this->CrossSectionalArea = 2.2;// cross sectional area in m2
     this->RollingResistanceCoeff = 0.007;
     this->DragCoeff = 0.23;
@@ -30,18 +26,73 @@ Car::Car(double soc_initial) :
         { charger_type::FAST_175KW, ChargerProfile::FastCharger(90.0) },
         { charger_type::SLOW_50KW, ChargerProfile::FastCharger(45.0) },
     };
+    this->soc_min_final = this->soc_min;
+    this->charging_overhead_time = 0;
 }
+
+Car::Car(double soc_initial, double soc_min, double soc_max, double soc_min_final, double battery_capacity, double CrossSectionalArea, double RollingResistanceCoeff, double DragCoeff, int Mass, double IdleConsumption, double DriveTrainEfficiency, std::unordered_map<charger_type, ChargerProfile> ChargerProfiles, Time charging_overhead) :
+    soc_initial(soc_initial),
+    soc_min(soc_min),
+    soc_max(soc_max),
+    soc_min_final(soc_min_final),
+    battery_capacity(battery_capacity),
+    CrossSectionalArea(CrossSectionalArea),
+    RollingResistanceCoeff(RollingResistanceCoeff),
+    DragCoeff(DragCoeff),
+    Mass(Mass),
+    IdleConsumption(IdleConsumption),
+    DriveTrainEfficiency(DriveTrainEfficiency),
+    ChargerProfiles(std::move(ChargerProfiles)),
+    charging_overhead_time(charging_overhead){};
+
+
+Car Car::TeslaModel3(double soc_initial, double soc_min, double soc_max, double soc_min_final, unsigned charging_overhead) {
+    // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
+    return Car(soc_initial, soc_min, soc_max, soc_min_final,
+               70.0, 2.2,
+               0.007, 0.23, 2000, 1.5, 0.95,
+               {
+                       { charger_type::FAST_175KW, ChargerProfile::FastCharger(90.0) },
+                       { charger_type::SLOW_50KW, ChargerProfile::FastCharger(45.0) },
+               },
+               charging_overhead);
+}
+
+Car Car::RenaultZoe(double soc_initial, double soc_min, double soc_max, double soc_min_final, unsigned charging_overhead) {
+    // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1164/Renault-Zoe-ZE50-R110
+    return Car(soc_initial, soc_min, soc_max, soc_min_final,
+               52.0, 2.43,
+               0.007, 0.29, 1468, 1.5, 0.95,
+               {
+                       { charger_type::FAST_175KW, ChargerProfile::FastCharger(41.0) },
+                       { charger_type::SLOW_50KW, ChargerProfile::FastCharger(41.0) },
+               },
+               charging_overhead);
+}
+
 
 bool Car::can_traverse(const Edge &e) const {
     return soc_cmp(power_left(e), OP::GREATER_EQUAL, min_charge_level());
 }
 
 bool Car::can_traverse(const Edge &e, double initialSoC) const {
-    return soc_cmp(power_left(e, initialSoC), OP::GREATER_EQUAL, min_charge_level());
+    return can_traverse(e, initialSoC, soc_min);
+}
+
+bool Car::can_traverse(const Edge &e, double initialSoC, double required_endSoC) const {
+    return soc_cmp(power_left(e, initialSoC), OP::GREATER_EQUAL, battery_capacity * required_endSoC);
+}
+
+bool Car::can_traverse_final(const Edge &e, double initialSoC) const {
+    return can_traverse(e, initialSoC, soc_min_final);
 }
 
 bool Car::can_traverse_with_max_soc(const Edge &e) const {
     return can_traverse(e, this->soc_max);
+}
+
+bool Car::can_traverse_with_max_soc_final(const Edge &e) const {
+    return can_traverse_final(e, this->soc_max);
 }
 
 bool Car::will_charge(const Edge &e) const {
@@ -50,6 +101,14 @@ bool Car::will_charge(const Edge &e) const {
 
 bool Car::will_charge(const Edge &e, double initialSoC, double endSoC) const {
     return soc_cmp(power_left(e, initialSoC) / battery_capacity, OP::SMALLER, endSoC);
+}
+
+bool Car::can_charge(const Edge &e) const {
+    return can_charge(e.sourceCharger());
+}
+
+bool Car::can_charge(const Node *n) const {
+    return n->best_compatible_type(*this) != charger_type::NO_CHARGER;
 }
 
 // Used for Graph traversal when edge contains all the information about the SoC at a given point
@@ -68,16 +127,24 @@ Time Car::get_charge_time(const Node *chargingStation, double initialSoC, double
         return 0;// no charging required
 
     const ChargerProfile &charger = ChargerProfiles.at(chargingStation->best_compatible_type(*this));
-    return charger.get_charging_time(initialSoC, endSoC, battery_capacity);
+    return charger.get_charging_time(initialSoC, endSoC, battery_capacity) + this->charging_overhead_time;
 }
 
 // This function calculates the time necessary to charge a car in order to traverse the edge
 Time Car::get_charge_time_to_traverse(const Edge &e, double initialSoC) const {
-    double requiredSoC = consumed_power(e) / battery_capacity + soc_min;
+    return get_min_required_charge_time_to_traverse(e, initialSoC, soc_min);
+}
+
+Time Car::get_min_required_charge_time_to_traverse(const Edge &e, double initialSoC, double endSoC) const {
+    double requiredSoC = consumed_power(e) / battery_capacity + endSoC;
 
     if (requiredSoC > 1.0) throw "SoC required to traverse this edge is greater than battery capacity";
 
     return get_charge_time(e.sourceCharger(), initialSoC, requiredSoC);
+}
+
+Time Car::get_charge_time_to_traverse_final(const Edge &e, double initialSoC) const {
+    return get_min_required_charge_time_to_traverse(e, initialSoC, soc_min_final);
 }
 
 double Car::power_left(const Edge &e) const {
@@ -106,7 +173,7 @@ double Car::calculate_consumption_rate(double v_kmh) const {
     double F_drag = std::pow(v_ms, 2) * this->DragCoeff * this->CrossSectionalArea;
     double F_slope = this->Mass * G * std::sin(slope);
 
-    double P = (F_rolling + F_drag + F_slope) * this->DriveTrainEfficiency * v_ms + (this->IdleConsumption * 1000);// W
+    double P = (F_rolling + F_drag + F_slope) / this->DriveTrainEfficiency * v_ms + (this->IdleConsumption * 1000);// W
 
     return P / v_kmh;// Wh/km
 }
@@ -142,6 +209,9 @@ double Car::max_soc() const {
 }
 double Car::min_soc() const {
     return this->soc_min;
+}
+double Car::min_soc_final() const {
+    return this->soc_min_final;
 }
 
 double Car::initial_soc() const {

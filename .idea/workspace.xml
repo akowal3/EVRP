@@ -24,23 +24,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Choosing chargerID clears coordinates">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm/common/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/car.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/backend.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/routing_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/routing_request.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/app.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/app.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/map/map.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/map/map.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/routing-request/routing-request.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/routing-request/routing-request.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing/graph_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/graph_test.cpp" afterDir="false" />
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Final commit">
+      <change beforePath="$PROJECT_DIR$/src/backend/bindings/bindings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/bindings/bindings.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -267,7 +259,7 @@
       <workItem from="1622979644645" duration="11772000" />
       <workItem from="1623177741141" duration="24074000" />
       <workItem from="1623686323779" duration="3076000" />
-      <workItem from="1623794123085" duration="8625000" />
+      <workItem from="1623794123085" duration="8994000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -598,7 +590,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622649958902</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Final commit">
+      <created>1623852801104</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1623852801104</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -632,7 +631,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/RoutingKit" />
     </ignored-roots>
-    <MESSAGE value="Added more tests. Added time comparison function" />
     <MESSAGE value="Fixed my failed attempt at amending commits xD" />
     <MESSAGE value="Added insertion operator for RouterResult" />
     <MESSAGE value="[WIP] added charger profiles&#10;working on solving failing tests" />
@@ -657,7 +655,8 @@
     <MESSAGE value="Added pop-up charging information to chargers on the map" />
     <MESSAGE value="Added ability to choose location on the map instead of typing in the coordinates" />
     <MESSAGE value="Choosing chargerID clears coordinates" />
-    <option name="LAST_COMMIT_MESSAGE" value="Choosing chargerID clears coordinates" />
+    <MESSAGE value="Final commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

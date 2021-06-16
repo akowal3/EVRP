@@ -38,7 +38,8 @@ PYBIND11_MODULE(bindings, m) {
                     std::unordered_map<charger_type, ChargerProfile>,
                     unsigned//charging_overhead
                     >())
-            .def_static("TeslaModel3", &Car::TeslaModel3);
+            .def_static("TeslaModel3", &Car::TeslaModel3)
+            .def_static("RenaultZoe", &Car::RenaultZoe);
 
 
     py::class_<RouterResult>(m, "RouterResult")

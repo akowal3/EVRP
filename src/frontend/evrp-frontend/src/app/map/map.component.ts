@@ -28,7 +28,7 @@ export class MapComponent implements AfterViewInit {
             minZoom: 3,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(this.m);
-        
+
         this.g.mouseLocationRequest$.subscribe((n: any) => {
                 this.m.once('dblclick', (e: any) => {
                         let latitude = e.latlng.lat
@@ -77,6 +77,10 @@ export class MapComponent implements AfterViewInit {
         this.routing_control = L.Routing.control({
             router: this.router,
             waypoints: waypoints,
+            // routeLine: function (route: L.Routing.IRoute, options: L.Routing.LineOptions): L.Routing.Line {
+            //     console.log(route)
+            //     return new L.Routing.Line(route, options)
+            // },
             plan: new L.Routing.Plan(waypoints, {
                 createMarker: function (i: number, start: L.Routing.Waypoint, n: number) {
 
@@ -114,6 +118,23 @@ export class MapComponent implements AfterViewInit {
         });
 
         this.routing_control.addTo(this.m);
+
+        // L.Routing.control({
+        //     router: this.router,
+        //     waypoints: [waypoints[0], waypoints[1]],
+        //     routeLine: function (route: L.Routing.IRoute, options: L.Routing.LineOptions): L.Routing.Line {
+        //
+        //         options.styles = [{color: 'black', opacity: 0.15, weight: 9}, {color: 'white', opacity: 0.8, weight: 6}, {color: 'blue', opacity: 1, weight: 3}]
+        //         return new L.Routing.Line(route, options)
+        //     },
+        //     showAlternatives: false,
+        //     show: false, // hide the default direction box as it is unnecessary
+        //     autoRoute: true,
+        //     fitSelectedRoutes: false,
+        //     // plan: new L.Routing.Plan([waypoints[0], waypoints[1]], {
+        //     //     createMarker: undefined,
+        //     // }),
+        // }).addTo(this.m);
 
 
         // let t = L.latLng([51.22, 11.22])

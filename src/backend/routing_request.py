@@ -17,15 +17,18 @@ class RoutingRequest:
     def __init__(self, j: Dict[str, Any]):
         self.source_charger_id: int = j['source']['chargerID']
         self.destination_charger_id: int = j['destination']['chargerID']
-        self.source_coordinates: Tuple[float, float] = self.coordinates(j['source']['coordinates'])
-        self.destination_coordinates: Tuple[float, float] = self.coordinates(j['destination']['coordinates'])
+        self.source_coordinates: Tuple[float, float] = self.coordinates(
+            j['source']['coordinates'])
+        self.destination_coordinates: Tuple[float, float] = self.coordinates(
+            j['destination']['coordinates'])
         self.soc_min: float = j['config']['socMin']
         self.soc_max: float = j['config']['socMax']
         self.start_soc: float = j['config']['startSoc']
         self.min_end_soc: float = j['config']['endSoc']
         self.car_id: int = j['car']['carID']
         self.custom_car: Dict[str, Any] = j['car']['custom']
-        self.charger_overhead: int = int(j['config']['charger_overhead_in_minutes']) * 60  # convert minutes to seconds
+        self.charger_overhead: int = int(
+            j['config']['charger_overhead_in_minutes']) * 60  # convert minutes to seconds
 
     def car(self):
         if self.car_id == 0:

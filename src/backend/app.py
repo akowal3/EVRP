@@ -14,6 +14,9 @@ CORS(app)
 
 backend = EvrpBackend().from_pickle()
 
+print(f'Node count: {len(backend.chargers)}')
+print(f'Edge count: {len(backend.edges)}')
+
 
 @app.route('/evroute/', methods=['POST', 'OPTIONS'])
 def evroute():

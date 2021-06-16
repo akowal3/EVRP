@@ -1,7 +1,6 @@
 import pickle
 import sys
 from typing import List, Tuple, Dict, Any
-
 import yaml
 
 from charger import Charger
@@ -15,6 +14,11 @@ sys.path.append("../../cmake-build-debug")
 sys.path.append("cmake-build-debug")
 from bindings import Node, BuildingEdge, Router, Car
 
+# testing
+import timeit
+import pandas as pd
+from functools import reduce
+
 
 class EvrpBackend:
     def __init__(self):
@@ -23,7 +27,8 @@ class EvrpBackend:
         self.edges: List[Edge] = []
         self.router: Router = None
         self.ocm = OCM(self.config['OSM']['Host'], self.config['OSM']['Key'])
-        self.osrm = OSRM(self.config['OSRM']['Host'], self.config['OSRM']['Port'])
+        self.osrm = OSRM(self.config['OSRM']['Host'],
+                         self.config['OSRM']['Port'])
 
     def initialize_router(self) -> None:
 
@@ -88,7 +93,8 @@ class EvrpBackend:
         else:
             srcID = self.chargers[-1].internalID + 1
             temp_node_src = Charger.temp_node(srcID, req.source_coordinates)
-            edges_from_source = self.osrm.edge_list([temp_node_src], self.chargers)
+            edges_from_source = self.osrm.edge_list(
+                [temp_node_src], self.chargers)
             cpp_edges_from_source = [e.to_cpp() for e in edges_from_source]
             self.router.add_node(temp_node_src.to_cpp(), cpp_edges_from_source)
             self.chargers.append(temp_node_src)
@@ -99,10 +105,14 @@ class EvrpBackend:
             return req.destination_charger_id
         else:
             dstID = self.chargers[-1].internalID + 1
-            temp_node_dst = Charger.temp_node(dstID, req.destination_coordinates)
-            edges_to_destination = self.osrm.edge_list(self.chargers, [temp_node_dst])
-            cpp_edges_to_destination = [e.to_cpp() for e in edges_to_destination]
-            self.router.add_node(temp_node_dst.to_cpp(), cpp_edges_to_destination)
+            temp_node_dst = Charger.temp_node(
+                dstID, req.destination_coordinates)
+            edges_to_destination = self.osrm.edge_list(
+                self.chargers, [temp_node_dst])
+            cpp_edges_to_destination = [e.to_cpp()
+                                        for e in edges_to_destination]
+            self.router.add_node(temp_node_dst.to_cpp(),
+                                 cpp_edges_to_destination)
             self.chargers.append(temp_node_dst)
             return dstID
 
@@ -146,4 +156,70 @@ class EvrpBackend:
         return {
             'code': 'fail',
             'message': str(e)
+        }
+
+    def test(self, req: RoutingRequest, i: int):
+
+        starttime = timeit.default_timer()
+
+        src = self.process_source(req)
+        dst = self.process_destination(req)
+
+        route = self.router.route(src, dst, req.car())
+
+        print(route)
+
+        waypoints = [ResponseWaypoint(self.chargers[node.ID].location(),
+                                      route.socs_in[i],
+                                      route.socs_out[i],
+                                      route.charge_times[i],
+                                      self.chargers[node.ID].osmID) for i, node in enumerate(route.nodes)]
+
+        edges = [ResponseEdge(edge.speed,
+                              edge.distance,
+                              route.consumed_energy[i],
+                              route.consumed_soc[i]) for i, edge in enumerate(route.arcs)]
+
+        resp = {
+            'code': 'ok',
+            'waypoints': [w.toJSON() for w in waypoints],
+            'edges': [e.toJSON() for e in edges],
+            'charge_time': route.charge_time,
+            'total_time': route.total_time
+        }
+
+        self.clear_temporary_nodes(req)
+
+        endtime = timeit.default_timer()
+
+        executionTime = endtime - starttime
+        chargingStops = len(waypoints) - 2
+        chargeTime = route.charge_time
+        journeyTimeCalc = route.total_time
+
+        journeyDistanceCalc = 0
+        for edge in route.arcs:
+            journeyDistanceCalc += edge.distance
+
+        journeyDistanceOSRM, journeyTimeOSRM = self.osrm.route_dt(
+            [req.source_coordinates, req.destination_coordinates])
+
+        # return pd.DataFrame({
+        #     'executionTime': executionTime,
+        #     'chargingStops': chargingStops,
+        #     'chargeTime': chargeTime,
+        #     'journeyTimeCalc': journeyTimeCalc,
+        #     'journeyDistanceCalc': journeyDistanceCalc,
+        #     'journeyTimeOSRM': round(journeyTimeOSRM),
+        #     'journeyDistanceOSRM': round(journeyDistanceOSRM / 1000),
+        # }, index=[i])
+
+        return {
+            'executionTime': executionTime,
+            'chargingStops': chargingStops,
+            'chargeTime': chargeTime,
+            'journeyTimeCalc': journeyTimeCalc,
+            'journeyDistanceCalc': journeyDistanceCalc,
+            'journeyTimeOSRM': round(journeyTimeOSRM),
+            'journeyDistanceOSRM': round(journeyDistanceOSRM / 1000),
         }

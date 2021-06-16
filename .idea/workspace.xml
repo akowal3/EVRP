@@ -24,10 +24,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Added ability to choose location on the map instead of typing in the coordinates">
+    <list default="true" id="434b90dd-6524-4ec3-8430-dd1901e1993f" name="Default Changelist" comment="Choosing chargerID clears coordinates">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm/common/car.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm/common/car.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/backend.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/backend/routing_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/routing_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/app.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/app.component.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/map/map.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/map/map.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/routing-request/routing-request.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/routing-request/routing-request.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/routing-request/routing-request.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/evrp-frontend/src/app/routing-request/routing-request.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing/graph_test.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/testing/graph_test.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +89,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/backend" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="PyConsoleConfigurable.Python Console" />
+    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/src/frontend/evrp-frontend/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
@@ -104,10 +110,11 @@
       <command value="Edge traversal" />
     </option>
   </component>
-  <component name="RunManager" selected="Catch.Choose to charge to 100%">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+  <component name="RunManager" selected="Catch.TESTS">
+    <configuration name="Build graph" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH]" TEST_METHOD="Build graph" TEST_MODE="SUITE_TEST">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="Choose to charge to 100%" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_METHOD="Choose to charge to 100%" TEST_MODE="SUITE_TEST">
@@ -116,19 +123,13 @@
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Graph stress test" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[GRAPH]" TEST_METHOD="Graph stress test" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Node addition" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Node addition" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Router ==operator" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Router ==operator" TEST_MODE="SUITE_TEST">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-        <option name="BeforeTestRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Stress test with node addition" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="TESTS" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="EVRP" RUN_TARGET_NAME="TESTS" TEST_CLASS="[ROUTER]" TEST_METHOD="Stress test with node addition" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -176,11 +177,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="bindings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="EVRP" TARGET_NAME="bindings" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -195,9 +191,9 @@
       <item itemvalue="Catch.TESTS" />
       <item itemvalue="Catch.Choose to charge to 100%" />
       <item itemvalue="Catch.Node addition" />
-      <item itemvalue="Catch.Router ==operator" />
-      <item itemvalue="Catch.Stress test with node addition" />
       <item itemvalue="Catch.Stress test" />
+      <item itemvalue="Catch.Build graph" />
+      <item itemvalue="Catch.Graph stress test" />
       <item itemvalue="CMake Application.COMMON" />
       <item itemvalue="CMake Application.EVRP" />
       <item itemvalue="CMake Application.GRAPH" />
@@ -209,11 +205,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Catch.Graph stress test" />
+        <item itemvalue="Catch.Stress test" />
+        <item itemvalue="Catch.Build graph" />
         <item itemvalue="Catch.Choose to charge to 100%" />
         <item itemvalue="Catch.Node addition" />
-        <item itemvalue="Catch.Stress test" />
-        <item itemvalue="Catch.Stress test with node addition" />
-        <item itemvalue="Catch.Router ==operator" />
       </list>
     </recent_temporary>
   </component>
@@ -267,7 +263,11 @@
       <workItem from="1622395836856" duration="8455000" />
       <workItem from="1622470655122" duration="912000" />
       <workItem from="1622537000236" duration="26835000" />
-      <workItem from="1622635381476" duration="9590000" />
+      <workItem from="1622635381476" duration="16844000" />
+      <workItem from="1622979644645" duration="11772000" />
+      <workItem from="1623177741141" duration="24074000" />
+      <workItem from="1623686323779" duration="3076000" />
+      <workItem from="1623794123085" duration="8625000" />
     </task>
     <task id="LOCAL-00001" summary="changed all line endings to LF">
       <created>1618670960962</created>
@@ -591,7 +591,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622649136943</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="Choosing chargerID clears coordinates">
+      <created>1622649958902</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1622649958902</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -625,7 +632,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/RoutingKit" />
     </ignored-roots>
-    <MESSAGE value="Added comparison function for SoCs.&#10;This enables to perform epsilon comparison. In other words, we treat SoC as XX.X number, and the remaining digits are irrelevant. We perform epsilon = 0.1 comparison between the SoC levels ie. 69.9 == 69.88, 42.0 &gt;= 42.09 etc." />
     <MESSAGE value="Added more tests. Added time comparison function" />
     <MESSAGE value="Fixed my failed attempt at amending commits xD" />
     <MESSAGE value="Added insertion operator for RouterResult" />
@@ -650,7 +656,8 @@
     <MESSAGE value="Removed unnecessary OSRM call on the backend side.&#10;Modified the backend-&gt;frontend response JSON to contain more information about the route" />
     <MESSAGE value="Added pop-up charging information to chargers on the map" />
     <MESSAGE value="Added ability to choose location on the map instead of typing in the coordinates" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added ability to choose location on the map instead of typing in the coordinates" />
+    <MESSAGE value="Choosing chargerID clears coordinates" />
+    <option name="LAST_COMMIT_MESSAGE" value="Choosing chargerID clears coordinates" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

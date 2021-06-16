@@ -59,13 +59,13 @@ Car Car::TeslaModel3(double soc_initial, double soc_min, double soc_max, double 
 }
 
 Car Car::RenaultZoe(double soc_initial, double soc_min, double soc_max, double soc_min_final, unsigned charging_overhead) {
-    // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor
+    // Tesla Model 3 Long Range Dual Motor from https://ev-database.org/car/1164/Renault-Zoe-ZE50-R110
     return Car(soc_initial, soc_min, soc_max, soc_min_final,
-               70.0, 2.2,
-               0.007, 0.23, 2000, 1.5, 0.95,
+               52.0, 2.43,
+               0.007, 0.29, 1468, 1.5, 0.95,
                {
-                       { charger_type::FAST_175KW, ChargerProfile::FastCharger(90.0) },
-                       { charger_type::SLOW_50KW, ChargerProfile::FastCharger(45.0) },
+                       { charger_type::FAST_175KW, ChargerProfile::FastCharger(41.0) },
+                       { charger_type::SLOW_50KW, ChargerProfile::FastCharger(41.0) },
                },
                charging_overhead);
 }
@@ -173,7 +173,7 @@ double Car::calculate_consumption_rate(double v_kmh) const {
     double F_drag = std::pow(v_ms, 2) * this->DragCoeff * this->CrossSectionalArea;
     double F_slope = this->Mass * G * std::sin(slope);
 
-    double P = (F_rolling + F_drag + F_slope) * this->DriveTrainEfficiency * v_ms + (this->IdleConsumption * 1000);// W
+    double P = (F_rolling + F_drag + F_slope) / this->DriveTrainEfficiency * v_ms + (this->IdleConsumption * 1000);// W
 
     return P / v_kmh;// Wh/km
 }
